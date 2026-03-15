@@ -1,0 +1,217 @@
+﻿[INFO] Scanning for projects...
+[INFO] 
+[INFO] ------------------------< com.example:nexcart >-------------------------
+[INFO] Building NexCart 0.0.1-SNAPSHOT
+[INFO]   from pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] >>> spring-boot:3.4.1:run (default-cli) > test-compile @ nexcart >>>
+[INFO] 
+[INFO] --- resources:3.3.1:resources (default-resources) @ nexcart ---
+[INFO] Copying 1 resource from src\main\resources to target\classes
+[INFO] Copying 4 resources from src\main\resources to target\classes
+[INFO] 
+[INFO] --- compiler:3.13.0:compile (default-compile) @ nexcart ---
+[INFO] Nothing to compile - all classes are up to date.
+[INFO] 
+[INFO] --- resources:3.3.1:testResources (default-testResources) @ nexcart ---
+[INFO] Copying 1 resource from src\test\resources to target\test-classes
+[INFO] 
+[INFO] --- compiler:3.13.0:testCompile (default-testCompile) @ nexcart ---
+[INFO] Recompiling the module because of changed source code.
+[INFO] Compiling 1 source file with javac [debug parameters release 17] to target\test-classes
+[INFO] 
+[INFO] <<< spring-boot:3.4.1:run (default-cli) < test-compile @ nexcart <<<
+[INFO] 
+[INFO] 
+[INFO] --- spring-boot:3.4.1:run (default-cli) @ nexcart ---
+[INFO] Attaching agents: []
+
+  .   ____          _            __ _ _
+ /\\ / ___'_ __ _ _(_)_ __  __ _ \ \ \ \
+( ( )\___ | '_ | '_| | '_ \/ _` | \ \ \ \
+ \\/  ___)| |_)| | | | | || (_| |  ) ) ) )
+  '  |____| .__|_| |_|_| |_\__, | / / / /
+ =========|_|==============|___/=/_/_/_/
+
+ :: Spring Boot ::                (v3.4.1)
+
+2026-03-08T12:04:06.324+05:30  INFO 5916 --- [nexcart] [           main] com.nexcart.backend.NexCartApplication   : Starting NexCartApplication using Java 17.0.12 with PID 5916 (C:\Users\anupa\OneDrive\Desktop\NexCart\nexcartBackEnd\target\classes started by anupa in C:\Users\anupa\OneDrive\Desktop\NexCart\nexcartBackEnd)
+2026-03-08T12:04:06.324+05:30  INFO 5916 --- [nexcart] [           main] com.nexcart.backend.NexCartApplication   : No active profile set, falling back to 1 default profile: "default"
+2026-03-08T12:04:07.012+05:30  INFO 5916 --- [nexcart] [           main] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2026-03-08T12:04:07.083+05:30  INFO 5916 --- [nexcart] [           main] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 71 ms. Found 9 JPA repository interfaces.
+2026-03-08T12:04:07.652+05:30  INFO 5916 --- [nexcart] [           main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port 9090 (http)
+2026-03-08T12:04:07.682+05:30  INFO 5916 --- [nexcart] [           main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2026-03-08T12:04:07.682+05:30  INFO 5916 --- [nexcart] [           main] o.apache.catalina.core.StandardEngine    : Starting Servlet engine: [Apache Tomcat/10.1.34]
+2026-03-08T12:04:07.745+05:30  INFO 5916 --- [nexcart] [           main] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2026-03-08T12:04:07.747+05:30  INFO 5916 --- [nexcart] [           main] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 1367 ms
+2026-03-08T12:04:07.869+05:30  INFO 5916 --- [nexcart] [           main] o.hibernate.jpa.internal.util.LogHelper  : HHH000204: Processing PersistenceUnitInfo [name: default]
+2026-03-08T12:04:07.931+05:30  INFO 5916 --- [nexcart] [           main] org.hibernate.Version                    : HHH000412: Hibernate ORM core version 6.6.4.Final
+2026-03-08T12:04:07.978+05:30  INFO 5916 --- [nexcart] [           main] o.h.c.internal.RegionFactoryInitiator    : HHH000026: Second-level cache disabled
+2026-03-08T12:04:08.295+05:30  INFO 5916 --- [nexcart] [           main] o.s.o.j.p.SpringPersistenceUnitInfo      : No LoadTimeWeaver setup: ignoring JPA class transformer
+2026-03-08T12:04:08.327+05:30  INFO 5916 --- [nexcart] [           main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
+2026-03-08T12:04:08.807+05:30  INFO 5916 --- [nexcart] [           main] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Added connection com.mysql.cj.jdbc.ConnectionImpl@fabef2e
+2026-03-08T12:04:08.811+05:30  INFO 5916 --- [nexcart] [           main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
+2026-03-08T12:04:08.997+05:30  INFO 5916 --- [nexcart] [           main] org.hibernate.orm.connections.pooling    : HHH10001005: Database info:
+	Database JDBC URL [Connecting through datasource 'HikariDataSource (HikariPool-1)']
+	Database driver: undefined/unknown
+	Database version: 8.0.44
+	Autocommit mode: undefined/unknown
+	Isolation level: undefined/unknown
+	Minimum pool size: undefined/unknown
+	Maximum pool size: undefined/unknown
+2026-03-08T12:04:10.066+05:30  INFO 5916 --- [nexcart] [           main] o.h.e.t.j.p.i.JtaPlatformInitiator       : HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2026-03-08T12:04:10.339+05:30  INFO 5916 --- [nexcart] [           main] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+2026-03-08T12:04:10.623+05:30  INFO 5916 --- [nexcart] [           main] o.s.d.j.r.query.QueryEnhancerFactory     : Hibernate is in classpath; If applicable, HQL parser will be used.
+Filter Started.
+2026-03-08T12:04:11.626+05:30  WARN 5916 --- [nexcart] [           main] JpaBaseConfiguration$JpaWebConfiguration : spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2026-03-08T12:04:11.972+05:30  INFO 5916 --- [nexcart] [           main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port 9090 (http) with context path '/'
+2026-03-08T12:04:11.994+05:30  INFO 5916 --- [nexcart] [           main] com.nexcart.backend.NexCartApplication   : Started NexCartApplication in 6.1 seconds (process running for 6.486)
+2026-03-08T12:04:45.473+05:30  INFO 5916 --- [nexcart] [nio-9090-exec-1] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
+2026-03-08T12:04:45.473+05:30  INFO 5916 --- [nexcart] [nio-9090-exec-1] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
+2026-03-08T12:04:45.475+05:30  INFO 5916 --- [nexcart] [nio-9090-exec-1] o.s.web.servlet.DispatcherServlet        : Completed initialization in 2 ms
+2026-03-08T12:04:45.480+05:30  INFO 5916 --- [nexcart] [nio-9090-exec-1] c.n.backend.filter.AuthenticationFilter  : Request URI: /api/products
+eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ0ZXN0dXNlcjEyMyIsInJvbGUiOiJDVVNUT01FUiIsImlhdCI6MTc3Mjk0OTY3MCwiZXhwIjoxNzcyOTUzMjcwfQ.ZQtQY5Fg1ksa053qoOMwUZ4KchZG73BOiK3Rgc8vc1XS4yD6gHRbfDLMbCMgz1HucPIdalPCzlohultwwDYe0A
+VALIDATING TOKEN...
+Token Expiry: 2026-03-08T12:31:10.733416
+Current Time: 2026-03-08T12:04:45.739995700
+2026-03-08T12:04:45.747+05:30  INFO 5916 --- [nexcart] [nio-9090-exec-1] c.n.backend.filter.AuthenticationFilter  : Authenticated User: testuser123, Role: CUSTOMER
+2026-03-08T12:04:45.869+05:30  INFO 5916 --- [nexcart] [nio-9090-exec-1] c.n.b.controller.ProductController       : Fetched 10 products for category=null
+2026-03-08T12:04:45.961+05:30  INFO 5916 --- [nexcart] [nio-9090-exec-5] c.n.backend.filter.AuthenticationFilter  : Request URI: /api/products
+eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ0ZXN0dXNlcjEyMyIsInJvbGUiOiJDVVNUT01FUiIsImlhdCI6MTc3Mjk0OTY3MCwiZXhwIjoxNzcyOTUzMjcwfQ.ZQtQY5Fg1ksa053qoOMwUZ4KchZG73BOiK3Rgc8vc1XS4yD6gHRbfDLMbCMgz1HucPIdalPCzlohultwwDYe0A
+VALIDATING TOKEN...
+Token Expiry: 2026-03-08T12:31:10.733416
+Current Time: 2026-03-08T12:04:45.969280900
+2026-03-08T12:04:45.982+05:30  INFO 5916 --- [nexcart] [nio-9090-exec-5] c.n.backend.filter.AuthenticationFilter  : Authenticated User: testuser123, Role: CUSTOMER
+2026-03-08T12:04:45.997+05:30  INFO 5916 --- [nexcart] [nio-9090-exec-5] c.n.b.controller.ProductController       : Fetched 10 products for category=null
+2026-03-08T12:04:46.048+05:30  INFO 5916 --- [nexcart] [nio-9090-exec-3] c.n.backend.filter.AuthenticationFilter  : Request URI: /api/cart/items/count
+eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ0ZXN0dXNlcjEyMyIsInJvbGUiOiJDVVNUT01FUiIsImlhdCI6MTc3Mjk0OTY3MCwiZXhwIjoxNzcyOTUzMjcwfQ.ZQtQY5Fg1ksa053qoOMwUZ4KchZG73BOiK3Rgc8vc1XS4yD6gHRbfDLMbCMgz1HucPIdalPCzlohultwwDYe0A
+VALIDATING TOKEN...
+Token Expiry: 2026-03-08T12:31:10.733416
+Current Time: 2026-03-08T12:04:46.060111600
+2026-03-08T12:04:46.069+05:30  INFO 5916 --- [nexcart] [nio-9090-exec-3] c.n.backend.filter.AuthenticationFilter  : Authenticated User: testuser123, Role: CUSTOMER
+2026-03-08T12:05:17.483+05:30  INFO 5916 --- [nexcart] [nio-9090-exec-4] c.n.backend.filter.AuthenticationFilter  : Request URI: /api/products
+eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ0ZXN0dXNlcjEyMyIsInJvbGUiOiJDVVNUT01FUiIsImlhdCI6MTc3Mjk0OTY3MCwiZXhwIjoxNzcyOTUzMjcwfQ.ZQtQY5Fg1ksa053qoOMwUZ4KchZG73BOiK3Rgc8vc1XS4yD6gHRbfDLMbCMgz1HucPIdalPCzlohultwwDYe0A
+VALIDATING TOKEN...
+Token Expiry: 2026-03-08T12:31:10.733416
+Current Time: 2026-03-08T12:05:17.548504400
+2026-03-08T12:05:17.589+05:30  INFO 5916 --- [nexcart] [nio-9090-exec-4] c.n.backend.filter.AuthenticationFilter  : Authenticated User: testuser123, Role: CUSTOMER
+2026-03-08T12:05:17.680+05:30  INFO 5916 --- [nexcart] [nio-9090-exec-4] c.n.b.controller.ProductController       : Fetched 10 products for category=null
+2026-03-08T12:05:17.809+05:30  INFO 5916 --- [nexcart] [nio-9090-exec-2] c.n.backend.filter.AuthenticationFilter  : Request URI: /api/products
+eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ0ZXN0dXNlcjEyMyIsInJvbGUiOiJDVVNUT01FUiIsImlhdCI6MTc3Mjk0OTY3MCwiZXhwIjoxNzcyOTUzMjcwfQ.ZQtQY5Fg1ksa053qoOMwUZ4KchZG73BOiK3Rgc8vc1XS4yD6gHRbfDLMbCMgz1HucPIdalPCzlohultwwDYe0A
+VALIDATING TOKEN...
+Token Expiry: 2026-03-08T12:31:10.733416
+Current Time: 2026-03-08T12:05:17.852190400
+2026-03-08T12:05:17.884+05:30  INFO 5916 --- [nexcart] [nio-9090-exec-2] c.n.backend.filter.AuthenticationFilter  : Authenticated User: testuser123, Role: CUSTOMER
+2026-03-08T12:05:17.964+05:30  INFO 5916 --- [nexcart] [nio-9090-exec-2] c.n.b.controller.ProductController       : Fetched 10 products for category=null
+2026-03-08T12:05:18.228+05:30  INFO 5916 --- [nexcart] [nio-9090-exec-6] c.n.backend.filter.AuthenticationFilter  : Request URI: /api/cart/items/count
+eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ0ZXN0dXNlcjEyMyIsInJvbGUiOiJDVVNUT01FUiIsImlhdCI6MTc3Mjk0OTY3MCwiZXhwIjoxNzcyOTUzMjcwfQ.ZQtQY5Fg1ksa053qoOMwUZ4KchZG73BOiK3Rgc8vc1XS4yD6gHRbfDLMbCMgz1HucPIdalPCzlohultwwDYe0A
+VALIDATING TOKEN...
+Token Expiry: 2026-03-08T12:31:10.733416
+Current Time: 2026-03-08T12:05:18.259851400
+2026-03-08T12:05:18.278+05:30  INFO 5916 --- [nexcart] [nio-9090-exec-6] c.n.backend.filter.AuthenticationFilter  : Authenticated User: testuser123, Role: CUSTOMER
+2026-03-08T12:05:18.469+05:30  INFO 5916 --- [nexcart] [nio-9090-exec-7] c.n.backend.filter.AuthenticationFilter  : Request URI: /api/products
+eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJjdXN0b21lcl9kZW1vIiwicm9sZSI6IkNVU1RPTUVSIiwiaWF0IjoxNzcyOTQ4NTg2LCJleHAiOjE3NzI5NTIxODZ9.pxLeBxIGj_JkC68KBGgpFZGSSP6NMO2MdxZwYQF9pVp7OVXbgReBR7JoJAt6JMALa55t_NjZz_Wf7hEYjaNdrg
+VALIDATING TOKEN...
+Token Expiry: 2026-03-08T12:13:06.151386
+Current Time: 2026-03-08T12:05:18.499861300
+2026-03-08T12:05:18.518+05:30  INFO 5916 --- [nexcart] [nio-9090-exec-7] c.n.backend.filter.AuthenticationFilter  : Authenticated User: customer_demo, Role: CUSTOMER
+2026-03-08T12:05:18.571+05:30  INFO 5916 --- [nexcart] [nio-9090-exec-7] c.n.b.controller.ProductController       : Fetched 10 products for category=null
+2026-03-08T12:05:18.668+05:30  INFO 5916 --- [nexcart] [nio-9090-exec-8] c.n.backend.filter.AuthenticationFilter  : Request URI: /api/products
+eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJjdXN0b21lcl9kZW1vIiwicm9sZSI6IkNVU1RPTUVSIiwiaWF0IjoxNzcyOTQ4NTg2LCJleHAiOjE3NzI5NTIxODZ9.pxLeBxIGj_JkC68KBGgpFZGSSP6NMO2MdxZwYQF9pVp7OVXbgReBR7JoJAt6JMALa55t_NjZz_Wf7hEYjaNdrg
+VALIDATING TOKEN...
+Token Expiry: 2026-03-08T12:13:06.151386
+Current Time: 2026-03-08T12:05:18.687910100
+2026-03-08T12:05:18.705+05:30  INFO 5916 --- [nexcart] [nio-9090-exec-8] c.n.backend.filter.AuthenticationFilter  : Authenticated User: customer_demo, Role: CUSTOMER
+2026-03-08T12:05:18.731+05:30  INFO 5916 --- [nexcart] [nio-9090-exec-8] c.n.b.controller.ProductController       : Fetched 10 products for category=null
+2026-03-08T12:05:21.391+05:30  INFO 5916 --- [nexcart] [nio-9090-exec-9] c.n.backend.filter.AuthenticationFilter  : Request URI: /api/cart/items/count
+eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJjdXN0b21lcl9kZW1vIiwicm9sZSI6IkNVU1RPTUVSIiwiaWF0IjoxNzcyOTQ4NTg2LCJleHAiOjE3NzI5NTIxODZ9.pxLeBxIGj_JkC68KBGgpFZGSSP6NMO2MdxZwYQF9pVp7OVXbgReBR7JoJAt6JMALa55t_NjZz_Wf7hEYjaNdrg
+VALIDATING TOKEN...
+Token Expiry: 2026-03-08T12:13:06.151386
+Current Time: 2026-03-08T12:05:21.418300900
+2026-03-08T12:05:21.441+05:30  INFO 5916 --- [nexcart] [nio-9090-exec-9] c.n.backend.filter.AuthenticationFilter  : Authenticated User: customer_demo, Role: CUSTOMER
+2026-03-08T12:05:25.978+05:30  INFO 5916 --- [nexcart] [io-9090-exec-10] c.n.backend.filter.AuthenticationFilter  : Request URI: /api/cart/items
+eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJjdXN0b21lcl9kZW1vIiwicm9sZSI6IkNVU1RPTUVSIiwiaWF0IjoxNzcyOTQ4NTg2LCJleHAiOjE3NzI5NTIxODZ9.pxLeBxIGj_JkC68KBGgpFZGSSP6NMO2MdxZwYQF9pVp7OVXbgReBR7JoJAt6JMALa55t_NjZz_Wf7hEYjaNdrg
+VALIDATING TOKEN...
+Token Expiry: 2026-03-08T12:13:06.151386
+Current Time: 2026-03-08T12:05:26.028716800
+2026-03-08T12:05:26.058+05:30  INFO 5916 --- [nexcart] [io-9090-exec-10] c.n.backend.filter.AuthenticationFilter  : Authenticated User: customer_demo, Role: CUSTOMER
+2026-03-08T12:05:26.250+05:30  INFO 5916 --- [nexcart] [io-9090-exec-10] c.n.backend.filter.AuthenticationFilter  : Request URI: /api/cart/items
+eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJjdXN0b21lcl9kZW1vIiwicm9sZSI6IkNVU1RPTUVSIiwiaWF0IjoxNzcyOTQ4NTg2LCJleHAiOjE3NzI5NTIxODZ9.pxLeBxIGj_JkC68KBGgpFZGSSP6NMO2MdxZwYQF9pVp7OVXbgReBR7JoJAt6JMALa55t_NjZz_Wf7hEYjaNdrg
+VALIDATING TOKEN...
+Token Expiry: 2026-03-08T12:13:06.151386
+Current Time: 2026-03-08T12:05:26.297106200
+2026-03-08T12:05:26.340+05:30  INFO 5916 --- [nexcart] [io-9090-exec-10] c.n.backend.filter.AuthenticationFilter  : Authenticated User: customer_demo, Role: CUSTOMER
+2026-03-08T12:05:28.909+05:30  INFO 5916 --- [nexcart] [nio-9090-exec-1] c.n.backend.filter.AuthenticationFilter  : Request URI: /api/users/profile
+2026-03-08T12:05:28.928+05:30  INFO 5916 --- [nexcart] [nio-9090-exec-5] c.n.backend.filter.AuthenticationFilter  : Request URI: /api/users/profile
+eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJjdXN0b21lcl9kZW1vIiwicm9sZSI6IkNVU1RPTUVSIiwiaWF0IjoxNzcyOTQ4NTg2LCJleHAiOjE3NzI5NTIxODZ9.pxLeBxIGj_JkC68KBGgpFZGSSP6NMO2MdxZwYQF9pVp7OVXbgReBR7JoJAt6JMALa55t_NjZz_Wf7hEYjaNdrg
+VALIDATING TOKEN...
+Token Expiry: 2026-03-08T12:13:06.151386
+Current Time: 2026-03-08T12:05:28.959685900
+2026-03-08T12:05:28.984+05:30  INFO 5916 --- [nexcart] [nio-9090-exec-5] c.n.backend.filter.AuthenticationFilter  : Authenticated User: customer_demo, Role: CUSTOMER
+2026-03-08T12:05:29.568+05:30  INFO 5916 --- [nexcart] [nio-9090-exec-3] c.n.backend.filter.AuthenticationFilter  : Request URI: /api/users/profile
+eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJjdXN0b21lcl9kZW1vIiwicm9sZSI6IkNVU1RPTUVSIiwiaWF0IjoxNzcyOTQ4NTg2LCJleHAiOjE3NzI5NTIxODZ9.pxLeBxIGj_JkC68KBGgpFZGSSP6NMO2MdxZwYQF9pVp7OVXbgReBR7JoJAt6JMALa55t_NjZz_Wf7hEYjaNdrg
+VALIDATING TOKEN...
+Token Expiry: 2026-03-08T12:13:06.151386
+Current Time: 2026-03-08T12:05:29.593708600
+2026-03-08T12:05:29.610+05:30  INFO 5916 --- [nexcart] [nio-9090-exec-3] c.n.backend.filter.AuthenticationFilter  : Authenticated User: customer_demo, Role: CUSTOMER
+2026-03-08T12:05:29.643+05:30  INFO 5916 --- [nexcart] [nio-9090-exec-4] c.n.backend.filter.AuthenticationFilter  : Request URI: /api/payment/create
+2026-03-08T12:05:29.647+05:30  INFO 5916 --- [nexcart] [nio-9090-exec-2] c.n.backend.filter.AuthenticationFilter  : Request URI: /api/payment/create
+eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJjdXN0b21lcl9kZW1vIiwicm9sZSI6IkNVU1RPTUVSIiwiaWF0IjoxNzcyOTQ4NTg2LCJleHAiOjE3NzI5NTIxODZ9.pxLeBxIGj_JkC68KBGgpFZGSSP6NMO2MdxZwYQF9pVp7OVXbgReBR7JoJAt6JMALa55t_NjZz_Wf7hEYjaNdrg
+VALIDATING TOKEN...
+Token Expiry: 2026-03-08T12:13:06.151386
+Current Time: 2026-03-08T12:05:29.662801
+2026-03-08T12:05:29.682+05:30  INFO 5916 --- [nexcart] [nio-9090-exec-2] c.n.backend.filter.AuthenticationFilter  : Authenticated User: customer_demo, Role: CUSTOMER
+2026-03-08T12:05:31.712+05:30  INFO 5916 --- [nexcart] [nio-9090-exec-2] c.n.backend.service.PaymentService       : Razorpay order created: id=order_SOdOhzx47cYgY1, amount=86999
+2026-03-08T12:05:47.371+05:30  INFO 5916 --- [nexcart] [nio-9090-exec-6] c.n.backend.filter.AuthenticationFilter  : Request URI: /api/products
+eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ0ZXN0dXNlcjEyMyIsInJvbGUiOiJDVVNUT01FUiIsImlhdCI6MTc3Mjk0OTY3MCwiZXhwIjoxNzcyOTUzMjcwfQ.ZQtQY5Fg1ksa053qoOMwUZ4KchZG73BOiK3Rgc8vc1XS4yD6gHRbfDLMbCMgz1HucPIdalPCzlohultwwDYe0A
+VALIDATING TOKEN...
+Token Expiry: 2026-03-08T12:31:10.733416
+Current Time: 2026-03-08T12:05:47.404489800
+2026-03-08T12:05:47.426+05:30  INFO 5916 --- [nexcart] [nio-9090-exec-6] c.n.backend.filter.AuthenticationFilter  : Authenticated User: testuser123, Role: CUSTOMER
+2026-03-08T12:05:47.478+05:30  INFO 5916 --- [nexcart] [nio-9090-exec-6] c.n.b.controller.ProductController       : Fetched 10 products for category=null
+2026-03-08T12:05:47.587+05:30  INFO 5916 --- [nexcart] [nio-9090-exec-7] c.n.backend.filter.AuthenticationFilter  : Request URI: /api/products
+eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ0ZXN0dXNlcjEyMyIsInJvbGUiOiJDVVNUT01FUiIsImlhdCI6MTc3Mjk0OTY3MCwiZXhwIjoxNzcyOTUzMjcwfQ.ZQtQY5Fg1ksa053qoOMwUZ4KchZG73BOiK3Rgc8vc1XS4yD6gHRbfDLMbCMgz1HucPIdalPCzlohultwwDYe0A
+VALIDATING TOKEN...
+Token Expiry: 2026-03-08T12:31:10.733416
+Current Time: 2026-03-08T12:05:47.628914200
+2026-03-08T12:05:47.640+05:30  INFO 5916 --- [nexcart] [nio-9090-exec-7] c.n.backend.filter.AuthenticationFilter  : Authenticated User: testuser123, Role: CUSTOMER
+2026-03-08T12:05:47.708+05:30  INFO 5916 --- [nexcart] [nio-9090-exec-7] c.n.b.controller.ProductController       : Fetched 10 products for category=null
+2026-03-08T12:05:47.832+05:30  INFO 5916 --- [nexcart] [nio-9090-exec-8] c.n.backend.filter.AuthenticationFilter  : Request URI: /api/cart/items/count
+eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ0ZXN0dXNlcjEyMyIsInJvbGUiOiJDVVNUT01FUiIsImlhdCI6MTc3Mjk0OTY3MCwiZXhwIjoxNzcyOTUzMjcwfQ.ZQtQY5Fg1ksa053qoOMwUZ4KchZG73BOiK3Rgc8vc1XS4yD6gHRbfDLMbCMgz1HucPIdalPCzlohultwwDYe0A
+VALIDATING TOKEN...
+Token Expiry: 2026-03-08T12:31:10.733416
+Current Time: 2026-03-08T12:05:47.947917300
+2026-03-08T12:05:47.980+05:30  INFO 5916 --- [nexcart] [nio-9090-exec-8] c.n.backend.filter.AuthenticationFilter  : Authenticated User: testuser123, Role: CUSTOMER
+2026-03-08T12:05:54.788+05:30  INFO 5916 --- [nexcart] [nio-9090-exec-9] c.n.backend.filter.AuthenticationFilter  : Request URI: /api/payment/verify
+2026-03-08T12:05:54.803+05:30  INFO 5916 --- [nexcart] [io-9090-exec-10] c.n.backend.filter.AuthenticationFilter  : Request URI: /api/payment/verify
+eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJjdXN0b21lcl9kZW1vIiwicm9sZSI6IkNVU1RPTUVSIiwiaWF0IjoxNzcyOTQ4NTg2LCJleHAiOjE3NzI5NTIxODZ9.pxLeBxIGj_JkC68KBGgpFZGSSP6NMO2MdxZwYQF9pVp7OVXbgReBR7JoJAt6JMALa55t_NjZz_Wf7hEYjaNdrg
+VALIDATING TOKEN...
+Token Expiry: 2026-03-08T12:13:06.151386
+Current Time: 2026-03-08T12:05:54.841134200
+2026-03-08T12:05:54.868+05:30  INFO 5916 --- [nexcart] [io-9090-exec-10] c.n.backend.filter.AuthenticationFilter  : Authenticated User: customer_demo, Role: CUSTOMER
+2026-03-08T12:05:54.885+05:30  INFO 5916 --- [nexcart] [io-9090-exec-10] c.n.b.controller.PaymentController       : Verify request: orderId=order_SOdOhzx47cYgY1, paymentId=pay_SOdOpaODb1Q3Vo, userId=4
+2026-03-08T12:05:54.891+05:30  INFO 5916 --- [nexcart] [io-9090-exec-10] c.n.backend.service.PaymentService       : Verifying payment: orderId=order_SOdOhzx47cYgY1, paymentId=pay_SOdOpaODb1Q3Vo
+2026-03-08T12:05:54.954+05:30  INFO 5916 --- [nexcart] [io-9090-exec-10] c.n.backend.service.PaymentService       : Signature validation result: true
+2026-03-08T12:05:54.973+05:30  INFO 5916 --- [nexcart] [io-9090-exec-10] c.n.backend.service.PaymentService       : Order order_SOdOhzx47cYgY1 marked as SUCCESS
+2026-03-08T12:05:55.227+05:30  INFO 5916 --- [nexcart] [io-9090-exec-10] c.n.backend.service.PaymentService       : Cart cleared for userId=4
+2026-03-08T12:05:58.785+05:30  INFO 5916 --- [nexcart] [nio-9090-exec-1] c.n.backend.filter.AuthenticationFilter  : Request URI: /api/products
+eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJjdXN0b21lcl9kZW1vIiwicm9sZSI6IkNVU1RPTUVSIiwiaWF0IjoxNzcyOTQ4NTg2LCJleHAiOjE3NzI5NTIxODZ9.pxLeBxIGj_JkC68KBGgpFZGSSP6NMO2MdxZwYQF9pVp7OVXbgReBR7JoJAt6JMALa55t_NjZz_Wf7hEYjaNdrg
+VALIDATING TOKEN...
+Token Expiry: 2026-03-08T12:13:06.151386
+Current Time: 2026-03-08T12:05:58.799169800
+2026-03-08T12:05:58.806+05:30  INFO 5916 --- [nexcart] [nio-9090-exec-1] c.n.backend.filter.AuthenticationFilter  : Authenticated User: customer_demo, Role: CUSTOMER
+2026-03-08T12:05:58.820+05:30  INFO 5916 --- [nexcart] [nio-9090-exec-1] c.n.b.controller.ProductController       : Fetched 10 products for category=null
+2026-03-08T12:05:58.907+05:30  INFO 5916 --- [nexcart] [nio-9090-exec-5] c.n.backend.filter.AuthenticationFilter  : Request URI: /api/products
+eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJjdXN0b21lcl9kZW1vIiwicm9sZSI6IkNVU1RPTUVSIiwiaWF0IjoxNzcyOTQ4NTg2LCJleHAiOjE3NzI5NTIxODZ9.pxLeBxIGj_JkC68KBGgpFZGSSP6NMO2MdxZwYQF9pVp7OVXbgReBR7JoJAt6JMALa55t_NjZz_Wf7hEYjaNdrg
+VALIDATING TOKEN...
+Token Expiry: 2026-03-08T12:13:06.151386
+Current Time: 2026-03-08T12:05:58.934773200
+2026-03-08T12:05:58.956+05:30  INFO 5916 --- [nexcart] [nio-9090-exec-5] c.n.backend.filter.AuthenticationFilter  : Authenticated User: customer_demo, Role: CUSTOMER
+2026-03-08T12:05:58.962+05:30  INFO 5916 --- [nexcart] [nio-9090-exec-3] c.n.backend.filter.AuthenticationFilter  : Request URI: /api/cart/items/count
+eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJjdXN0b21lcl9kZW1vIiwicm9sZSI6IkNVU1RPTUVSIiwiaWF0IjoxNzcyOTQ4NTg2LCJleHAiOjE3NzI5NTIxODZ9.pxLeBxIGj_JkC68KBGgpFZGSSP6NMO2MdxZwYQF9pVp7OVXbgReBR7JoJAt6JMALa55t_NjZz_Wf7hEYjaNdrg
+VALIDATING TOKEN...
+Token Expiry: 2026-03-08T12:13:06.151386
+Current Time: 2026-03-08T12:05:59.005786900
+2026-03-08T12:05:59.027+05:30  INFO 5916 --- [nexcart] [nio-9090-exec-5] c.n.b.controller.ProductController       : Fetched 10 products for category=null
+2026-03-08T12:05:59.038+05:30  INFO 5916 --- [nexcart] [nio-9090-exec-3] c.n.backend.filter.AuthenticationFilter  : Authenticated User: customer_demo, Role: CUSTOMER

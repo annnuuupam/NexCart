@@ -1,0 +1,874 @@
+.nex-admin-shell {
+  min-height: 100vh;
+  display: grid;
+  grid-template-columns: 310px 1fr;
+  background:
+    radial-gradient(680px 420px at -10% -10%, color-mix(in srgb, var(--primary) 25%, transparent), transparent 70%),
+    radial-gradient(680px 420px at 110% 10%, color-mix(in srgb, var(--accent) 18%, transparent), transparent 70%),
+    var(--bg);
+}
+
+.nex-admin-sidebar {
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 22px;
+  padding: 26px 20px;
+  border-right: 1px solid color-mix(in srgb, var(--border) 90%, #d7deeb);
+  background: color-mix(in srgb, var(--surface) 94%, transparent);
+}
+
+.nex-admin-brand {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 6px 10px;
+}
+
+.nex-admin-brand img {
+  width: 48px;
+  height: 48px;
+  border-radius: 12px;
+  object-fit: cover;
+  flex-shrink: 0;
+}
+
+.nex-admin-brand h2 {
+  margin: 0;
+  font-size: 1.95rem;
+  line-height: 1.1;
+  font-weight: 800;
+}
+
+.nex-admin-brand p {
+  margin: 3px 0 0;
+  font-size: 1.15rem;
+  line-height: 1.2;
+  color: var(--text-muted);
+}
+
+.nex-admin-nav {
+  display: grid;
+  gap: 10px;
+  padding: 4px 2px;
+}
+
+.nex-admin-nav-item,
+.nex-admin-logout {
+  border: 1px solid transparent;
+  background: transparent;
+  color: var(--text);
+  border-radius: 16px;
+  padding: 0 16px;
+  min-height: 56px;
+  width: 100%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 12px;
+  cursor: pointer;
+  font-size: 1.25rem;
+  font-weight: 700;
+  line-height: 1;
+  text-align: left;
+  transition: all 0.2s ease;
+}
+
+.nex-admin-nav-item svg,
+.nex-admin-logout svg {
+  width: 19px;
+  height: 19px;
+  flex-shrink: 0;
+}
+
+.nex-admin-nav-item:hover,
+.nex-admin-logout:hover {
+  border-color: var(--glass-border);
+  background: color-mix(in srgb, var(--surface) 76%, transparent);
+}
+
+.nex-admin-nav-item.active {
+  background: linear-gradient(135deg, color-mix(in srgb, var(--primary) 23%, transparent), color-mix(in srgb, var(--indigo) 22%, transparent));
+  border-color: color-mix(in srgb, var(--primary) 40%, var(--glass-border));
+}
+
+.nex-admin-logout {
+  margin-top: auto;
+  color: #ef4444;
+}
+
+.nex-admin-main {
+  padding: 20px 24px 24px;
+  display: grid;
+  gap: 16px;
+  align-content: start;
+}
+
+.nex-admin-topbar {
+  display: flex;
+  gap: 12px;
+  justify-content: space-between;
+  align-items: center;
+  background: var(--glass-bg);
+  border: 1px solid var(--glass-border);
+  border-radius: var(--radius);
+  padding: 10px 12px;
+  backdrop-filter: blur(14px);
+}
+
+.nex-admin-search {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  border: 1px solid var(--glass-border);
+  border-radius: 999px;
+  padding: 0 12px;
+  height: 42px;
+  background: color-mix(in srgb, var(--surface) 84%, transparent);
+}
+
+.nex-admin-search input {
+  border: 0;
+  background: transparent;
+  color: var(--text);
+  width: 100%;
+  outline: none;
+}
+
+.nex-admin-topbar-right {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.nex-admin-topbar-right select {
+  height: 40px;
+  border: 1px solid var(--glass-border);
+  border-radius: 10px;
+  background: var(--surface);
+  color: var(--text);
+  padding: 0 10px;
+}
+
+.nex-admin-hero {
+  background: linear-gradient(135deg, color-mix(in srgb, var(--primary) 17%, transparent), color-mix(in srgb, var(--indigo) 13%, transparent));
+  border: 1px solid var(--glass-border);
+  border-radius: var(--radius);
+  padding: 20px;
+}
+
+.nex-admin-hero h1 {
+  font-size: clamp(1.2rem, 2.6vw, 1.8rem);
+  font-weight: 800;
+}
+
+.nex-admin-hero p {
+  margin-top: 4px;
+}
+
+.nex-admin-kpis {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 12px;
+}
+
+.nex-admin-kpi-card {
+  border: 1px solid var(--glass-border);
+  background: var(--glass-bg);
+  border-radius: 14px;
+  padding: 14px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  backdrop-filter: blur(12px);
+}
+
+.nex-admin-kpi-card h4 {
+  font-size: 0.82rem;
+  color: var(--text-muted);
+}
+
+.nex-admin-kpi-card p {
+  margin-top: 6px;
+  font-size: 1.3rem;
+  font-weight: 800;
+  color: var(--text);
+}
+
+.nex-admin-kpi-card span {
+  width: 34px;
+  height: 34px;
+  border-radius: 10px;
+  display: grid;
+  place-items: center;
+  background: color-mix(in srgb, var(--primary) 16%, transparent);
+}
+
+.nex-admin-project-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.nex-admin-project-card {
+  border: 1px solid var(--glass-border);
+  border-radius: 12px;
+  background: color-mix(in srgb, var(--surface) 84%, transparent);
+  padding: 14px;
+  display: grid;
+  gap: 10px;
+}
+
+.nex-admin-project-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 8px;
+}
+
+.nex-admin-project-head h3 {
+  font-size: 1rem;
+}
+
+.nex-admin-project-head p {
+  font-size: 0.82rem;
+  color: var(--text-muted);
+}
+
+.nex-admin-table-wrap {
+  max-height: 320px;
+  overflow: auto;
+  border: 1px solid var(--glass-border);
+  border-radius: 10px;
+}
+
+.nex-admin-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.82rem;
+}
+
+.nex-admin-table thead th {
+  position: sticky;
+  top: 0;
+  z-index: 1;
+  background: color-mix(in srgb, var(--surface) 92%, transparent);
+  color: var(--text-muted);
+  font-weight: 700;
+  text-align: left;
+  padding: 10px;
+  border-bottom: 1px solid var(--glass-border);
+}
+
+.nex-admin-table tbody td {
+  padding: 9px 10px;
+  border-bottom: 1px solid color-mix(in srgb, var(--glass-border) 70%, transparent);
+  vertical-align: top;
+}
+
+.nex-admin-table tbody tr:hover {
+  background: color-mix(in srgb, var(--primary) 8%, transparent);
+}
+
+.nex-admin-actions-cell {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+
+.nex-admin-inline-btn {
+  border: 1px solid var(--glass-border);
+  background: var(--surface);
+  color: var(--text);
+  border-radius: 8px;
+  padding: 4px 8px;
+  font-size: 0.74rem;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.nex-admin-inline-btn.danger {
+  color: #ef4444;
+  border-color: color-mix(in srgb, #ef4444 35%, var(--glass-border));
+}
+
+.nex-admin-analytics-wrap {
+  border: 1px solid var(--glass-border);
+  border-radius: var(--radius);
+  background: var(--glass-bg);
+  padding: 16px;
+  backdrop-filter: blur(12px);
+  display: grid;
+  gap: 12px;
+}
+
+.nex-admin-analytics-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+}
+
+.nex-admin-analytics-head h2 {
+  font-size: 1.1rem;
+}
+
+.nex-admin-analytics-head button {
+  border: 1px solid var(--glass-border);
+  background: var(--surface);
+  color: var(--text);
+  border-radius: 10px;
+  padding: 8px 12px;
+  font-weight: 700;
+  display: inline-flex;
+  gap: 8px;
+  align-items: center;
+  cursor: pointer;
+}
+
+.nex-admin-analytics-head button:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+
+.nex-admin-analytics-error {
+  color: #ef4444;
+  font-weight: 700;
+}
+
+.nex-admin-updated-at {
+  font-size: 0.82rem;
+  color: var(--text-muted);
+}
+
+.nex-admin-mini-kpis {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 10px;
+}
+
+.nex-admin-mini-card {
+  border: 1px solid var(--glass-border);
+  border-radius: 12px;
+  padding: 12px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: color-mix(in srgb, var(--surface) 82%, transparent);
+}
+
+.nex-admin-mini-card h4 {
+  font-size: 0.8rem;
+  color: var(--text-muted);
+}
+
+.nex-admin-mini-card p {
+  font-size: 1rem;
+  font-weight: 800;
+  color: var(--text);
+}
+
+.nex-admin-chart-grid {
+  display: grid;
+  grid-template-columns: repeat(12, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.nex-admin-chart-card {
+  border: 1px solid var(--glass-border);
+  border-radius: 12px;
+  background: color-mix(in srgb, var(--surface) 82%, transparent);
+  padding: 14px;
+}
+
+.nex-admin-chart-card h3 {
+  font-size: 0.96rem;
+  margin-bottom: 12px;
+}
+
+.nex-admin-chart-card:nth-child(1) {
+  grid-column: span 4;
+}
+
+.nex-admin-chart-card:nth-child(2) {
+  grid-column: span 5;
+}
+
+.nex-admin-chart-card:nth-child(3) {
+  grid-column: span 3;
+}
+
+.nex-admin-bar-chart {
+  min-height: 210px;
+  height: 210px;
+  display: flex;
+  align-items: flex-end;
+  gap: 10px;
+}
+
+.nex-admin-bar-col {
+  flex: 1;
+  min-width: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 6px;
+}
+
+.nex-admin-bar {
+  width: 100%;
+  min-height: 14px;
+  border-radius: 8px 8px 2px 2px;
+  background: linear-gradient(180deg, #14b8a6 0%, #0ea5e9 100%);
+  box-shadow: 0 6px 18px color-mix(in srgb, #0ea5e9 35%, transparent);
+}
+
+.nex-admin-bar-col span {
+  font-size: 0.72rem;
+  color: var(--text-muted);
+  text-align: center;
+  line-height: 1.2;
+  max-width: 100%;
+  overflow-wrap: anywhere;
+}
+
+.nex-admin-line-wrap {
+  height: 210px;
+}
+
+.nex-admin-line-wrap svg {
+  width: 100%;
+  height: 100%;
+}
+
+.nex-admin-chart-labels {
+  margin-top: 8px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.nex-admin-chart-labels span {
+  font-size: 0.72rem;
+  color: var(--text-muted);
+  padding: 3px 8px;
+  border-radius: 999px;
+  border: 1px solid var(--glass-border);
+}
+
+.nex-admin-pie-layout {
+  display: grid;
+  gap: 12px;
+}
+
+.nex-admin-pie {
+  width: 142px;
+  height: 142px;
+  border-radius: 50%;
+  margin: 0 auto;
+  box-shadow: inset 0 0 0 18px color-mix(in srgb, var(--surface) 72%, transparent);
+}
+
+.nex-admin-legend {
+  display: grid;
+  gap: 8px;
+}
+
+.nex-admin-legend-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.nex-admin-legend-item span {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.nex-admin-legend-item p {
+  font-size: 0.8rem;
+  color: var(--text);
+  overflow-wrap: anywhere;
+}
+
+.nex-admin-actions {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  gap: 12px;
+}
+
+.nex-admin-action-card {
+  text-align: left;
+  border: 1px solid var(--glass-border);
+  background: var(--glass-bg);
+  border-radius: 14px;
+  padding: 16px;
+  cursor: pointer;
+  display: grid;
+  gap: 8px;
+  transition: all 0.2s ease;
+  backdrop-filter: blur(12px);
+}
+
+.nex-admin-action-card h3 {
+  font-size: 1.02rem;
+}
+
+.nex-admin-action-card p {
+  font-size: 0.9rem;
+  line-height: 1.45;
+}
+
+.nex-admin-action-card small {
+  width: fit-content;
+  padding: 4px 9px;
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--primary) 15%, transparent);
+  color: var(--text);
+  font-weight: 700;
+}
+
+.nex-admin-action-card:hover {
+  transform: translateY(-3px);
+  border-color: color-mix(in srgb, var(--primary) 55%, var(--glass-border));
+  box-shadow: var(--shadow-sm);
+}
+
+.nex-admin-empty {
+  grid-column: 1 / -1;
+  border: 1px dashed var(--border);
+  border-radius: 12px;
+  background: color-mix(in srgb, var(--surface) 85%, transparent);
+  padding: 30px;
+  text-align: center;
+}
+
+.spin {
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@media (max-width: 1140px) {
+  .nex-admin-chart-card:nth-child(1),
+  .nex-admin-chart-card:nth-child(2),
+  .nex-admin-chart-card:nth-child(3) {
+    grid-column: span 12;
+  }
+
+  .nex-admin-project-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 1080px) {
+  .nex-admin-shell {
+    grid-template-columns: 1fr;
+  }
+
+  .nex-admin-sidebar {
+    position: static;
+    height: auto;
+    border-right: 0;
+    border-bottom: 1px solid var(--glass-border);
+    padding-bottom: 14px;
+  }
+
+  .nex-admin-nav {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+
+  .nex-admin-logout {
+    margin-top: 8px;
+  }
+}
+
+@media (max-width: 760px) {
+  .nex-admin-main {
+    padding: 14px;
+  }
+
+  .nex-admin-topbar {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .nex-admin-topbar-right {
+    justify-content: space-between;
+  }
+
+  .nex-admin-nav {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+/* ===== Admin UI polish overrides ===== */
+.nex-admin-sidebar {
+  box-shadow: 8px 0 30px rgba(15, 23, 42, 0.08);
+}
+
+.nex-admin-nav-item,
+.nex-admin-logout {
+  transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
+}
+
+.nex-admin-nav-item:hover {
+  transform: translateX(2px);
+}
+
+.nex-admin-topbar {
+  border-radius: var(--radius-lg);
+}
+
+.nex-admin-kpi-card,
+.nex-admin-mini-card,
+.nex-admin-project-card,
+.nex-admin-chart-card {
+  transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+}
+
+.nex-admin-kpi-card:hover,
+.nex-admin-mini-card:hover,
+.nex-admin-project-card:hover,
+.nex-admin-chart-card:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow);
+  border-color: color-mix(in srgb, var(--primary) 25%, var(--glass-border));
+}
+
+.nex-admin-table tbody tr:nth-child(even) {
+  background: color-mix(in srgb, var(--surface) 92%, transparent);
+}
+
+.nex-admin-inline-btn {
+  border-radius: 10px;
+  padding: 6px 10px;
+}
+
+.nex-admin-inline-btn:hover {
+  border-color: color-mix(in srgb, var(--primary) 30%, var(--glass-border));
+  box-shadow: var(--shadow-sm);
+}
+
+
+/* ===== Admin UI consistency overrides ===== */
+.nex-admin-main {
+  gap: var(--space-5);
+}
+
+.nex-admin-kpi-card,
+.nex-admin-mini-card,
+.nex-admin-project-card,
+.nex-admin-chart-card {
+  box-shadow: var(--shadow-card);
+}
+
+.nex-admin-kpi-card:hover,
+.nex-admin-mini-card:hover,
+.nex-admin-project-card:hover,
+.nex-admin-chart-card:hover {
+  box-shadow: var(--shadow-card-hover);
+}
+
+.nex-admin-table thead th {
+  font-size: 0.78rem;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+
+/* ===== Apple minimal admin overrides ===== */
+.nex-admin-sidebar {
+  background: var(--surface);
+  border-right: 1px solid color-mix(in srgb, var(--border) 60%, transparent);
+  box-shadow: none;
+}
+
+.nex-admin-kpi-card,
+.nex-admin-mini-card,
+.nex-admin-project-card,
+.nex-admin-chart-card {
+  background: var(--surface);
+  border: 1px solid color-mix(in srgb, var(--border) 55%, transparent);
+  box-shadow: var(--shadow-soft);
+}
+
+.nex-admin-table thead th {
+  color: var(--text-subtle);
+}
+
+
+/* ===== Stripe palette admin overrides ===== */
+.nex-admin-bar {
+  background: linear-gradient(180deg, var(--primary) 0%, var(--accent) 100%);
+  box-shadow: 0 6px 18px color-mix(in srgb, var(--accent) 35%, transparent);
+}
+
+/* ===== Dark mode admin visibility ===== */
+html[data-theme="dark"] .nex-admin-shell {
+  background:
+    radial-gradient(680px 420px at -10% -10%, rgba(99, 91, 255, 0.2), transparent 70%),
+    radial-gradient(680px 420px at 110% 10%, rgba(6, 182, 212, 0.14), transparent 70%),
+    var(--bg);
+}
+
+html[data-theme="dark"] .nex-admin-sidebar,
+html[data-theme="dark"] .nex-admin-topbar,
+html[data-theme="dark"] .nex-admin-hero,
+html[data-theme="dark"] .nex-admin-kpi-card,
+html[data-theme="dark"] .nex-admin-mini-card,
+html[data-theme="dark"] .nex-admin-project-card,
+html[data-theme="dark"] .nex-admin-chart-card,
+html[data-theme="dark"] .nex-admin-table-wrap {
+  background: var(--surface);
+  border-color: var(--border);
+}
+
+html[data-theme="dark"] .nex-admin-table thead th {
+  color: var(--text-subtle);
+}
+
+html[data-theme="dark"] .nex-admin-inline-btn {
+  background: var(--surface-alt);
+  color: var(--text);
+  border-color: var(--border);
+}
+
+html[data-theme="dark"] .nex-admin-inline-btn.danger {
+  color: #f87171;
+}
+
+/* ===== Apple + Stripe admin refinements ===== */
+.nex-admin-kpi-card,
+.nex-admin-mini-card,
+.nex-admin-project-card,
+.nex-admin-chart-card {
+  border-radius: 16px;
+}
+
+.nex-admin-table {
+  font-size: 0.84rem;
+}
+
+.nex-admin-table tbody tr:nth-child(even) {
+  background: #F8FAFC;
+}
+
+.nex-admin-inline-btn {
+  border-radius: 10px;
+  padding: 6px 10px;
+}
+
+/* ===== Admin palette alignment ===== */
+.nex-admin-bar {
+  background: linear-gradient(180deg, var(--primary) 0%, var(--accent) 100%);
+}
+
+.nex-admin-inline-btn.danger {
+  color: var(--error);
+  border-color: color-mix(in srgb, var(--error) 40%, var(--border));
+}
+
+.nex-admin-inline-btn.success {
+  color: var(--success);
+  border-color: color-mix(in srgb, var(--success) 40%, var(--border));
+}
+/* ===== Admin orders visibility tweaks ===== */
+.nex-admin-shell,
+.nex-admin-main {
+  color: var(--text-primary);
+}
+
+.nex-admin-topbar,
+.nex-admin-hero,
+.nex-admin-kpi-card,
+.nex-admin-table-wrap {
+  background: var(--card-bg);
+  border-color: var(--border-color);
+}
+
+.nex-admin-table thead th,
+.nex-admin-table tbody td {
+  color: var(--text-secondary);
+}
+
+.nex-admin-table tbody td:first-child,
+.nex-admin-table tbody td strong {
+  color: var(--text-primary);
+}
+
+.nex-admin-inline-btn,
+.nex-admin-inline-btn.danger,
+.nex-admin-inline-btn.success {
+  background: var(--card-bg);
+  border-color: var(--border-color);
+}
+/* ===== Admin KPI cards dark mode fix ===== */
+html[data-theme="dark"] .nex-admin-kpi-card,
+body.dark .nex-admin-kpi-card {
+  background: var(--card-bg) !important;
+  border-color: var(--border-color) !important;
+  color: var(--text-primary) !important;
+}
+
+html[data-theme="dark"] .nex-admin-kpi-card h4,
+body.dark .nex-admin-kpi-card h4 {
+  color: var(--text-secondary) !important;
+}
+
+html[data-theme="dark"] .nex-admin-kpi-card p,
+body.dark .nex-admin-kpi-card p {
+  color: var(--text-primary) !important;
+}
+
+/* ===== Admin dark mode fixes for tables/gradients/badges ===== */
+.admin-theme-dark .bg-gradient-to-r {
+  background-image: linear-gradient(135deg, color-mix(in srgb, var(--primary) 18%, transparent), color-mix(in srgb, var(--accent) 14%, transparent)) !important;
+}
+
+.admin-theme-dark .odd\:bg-white:nth-child(odd) {
+  background-color: var(--surface) !important;
+}
+
+.admin-theme-dark .even\:bg-slate-50\/35:nth-child(even) {
+  background-color: color-mix(in srgb, var(--surface) 85%, transparent) !important;
+}
+
+.admin-theme-dark .hover\:bg-blue-50\/30:hover {
+  background-color: color-mix(in srgb, var(--primary) 18%, transparent) !important;
+}
+
+.admin-theme-dark .bg-white,
+.admin-theme-dark .bg-white\/95 {
+  background-color: var(--surface) !important;
+}
+
+.admin-theme-dark .bg-slate-50,
+.admin-theme-dark .bg-slate-50\/50,
+.admin-theme-dark .bg-slate-100,
+.admin-theme-dark .bg-slate-100\/70 {
+  background-color: color-mix(in srgb, var(--surface) 88%, transparent) !important;
+}
+
+.admin-theme-dark .text-emerald-700 { color: #34d399 !important; }
+.admin-theme-dark .text-rose-700 { color: #fca5a5 !important; }
+.admin-theme-dark .text-amber-700 { color: #fbbf24 !important; }
+.admin-theme-dark .text-indigo-700 { color: #a5b4fc !important; }
+
+.admin-theme-dark .bg-emerald-100 { background-color: rgba(16, 185, 129, 0.18) !important; }
+.admin-theme-dark .bg-rose-100 { background-color: rgba(244, 114, 182, 0.16) !important; }
+.admin-theme-dark .bg-amber-100 { background-color: rgba(251, 191, 36, 0.18) !important; }
+.admin-theme-dark .bg-slate-100 { background-color: rgba(148, 163, 184, 0.12) !important; }

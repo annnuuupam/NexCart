@@ -1,0 +1,14 @@
+#root {
+  min-height: 100vh;
+}
+
+.container {
+  width: min(1220px, 100% - 32px);
+  margin: 0 auto;
+}
+
+.product-title {
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--text);
+}

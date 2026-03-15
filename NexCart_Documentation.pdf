@@ -1,0 +1,1071 @@
+%PDF-1.4
+1 0 obj
+<< /Type /Catalog /Pages 2 0 R >>
+endobj
+2 0 obj
+<< /Type /Pages /Kids [ 5 0 R 7 0 R 9 0 R 11 0 R 13 0 R 15 0 R 17 0 R 19 0 R 21 0 R 23 0 R ] /Count 10 >>
+endobj
+3 0 obj
+<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica >>
+endobj
+4 0 obj
+<< /Length 1526 >>
+stream
+BT
+/F1 11 Tf
+72 720 Td
+14 TL
+(NEXCART PROJECT DOCUMENTATION) Tj
+T*
+(=============================) Tj
+T*
+() Tj
+T*
+() Tj
+T*
+(Generated on: 2026-03-13) Tj
+T*
+() Tj
+T*
+(1. Overview) Tj
+T*
+(-----------) Tj
+T*
+() Tj
+T*
+(NexCart is a full-stack e-commerce platform with a customer-facing storefront and an admin) Tj
+T*
+(operations console. The project is split into a React \(Vite\) frontend and a Spring Boot) Tj
+T*
+(backend, backed by a MySQL database. Authentication is handled via JWT stored in an HttpOnly) Tj
+T*
+(cookie, and most API routes are protected by a custom authentication filter.) Tj
+T*
+() Tj
+T*
+(2. Repository Layout) Tj
+T*
+(--------------------) Tj
+T*
+() Tj
+T*
+(- Frontend app: `nexcart`) Tj
+T*
+(- Backend app: `nexcartBackEnd`) Tj
+T*
+(- Additional dashboard template: `dashboard_import/react-admin-dashboard-master` \(separate) Tj
+T*
+(  React project, not wired into the main NexCart app\)) Tj
+T*
+() Tj
+T*
+(3. Tech Stack) Tj
+T*
+(-------------) Tj
+T*
+() Tj
+T*
+(Frontend) Tj
+T*
+() Tj
+T*
+(- React 19 + Vite) Tj
+T*
+(- React Router) Tj
+T*
+(- Tailwind CSS \(via `@tailwindcss/vite`\) and custom CSS) Tj
+T*
+(- Axios and Fetch) Tj
+T*
+(- Recharts for analytics charts) Tj
+T*
+(- Framer Motion + Lottie for animations) Tj
+T*
+() Tj
+T*
+(Backend) Tj
+T*
+() Tj
+T*
+(- Spring Boot 3.4 \(Java 17\)) Tj
+T*
+(- Spring Web + Spring Data JPA) Tj
+T*
+(- MySQL database) Tj
+T*
+(- JWT auth \(jjwt\)) Tj
+T*
+(- Razorpay payment integration) Tj
+T*
+(- JUnit tests) Tj
+T*
+() Tj
+T*
+(4. Running Locally) Tj
+T*
+(------------------) Tj
+T*
+() Tj
+T*
+ET
+endstream
+endobj
+5 0 obj
+<< /Type /Page /Parent 2 0 R /MediaBox [0 0 612 792] /Resources << /Font << /F1 3 0 R >> >> /Contents 4 0 R >>
+endobj
+6 0 obj
+<< /Length 1688 >>
+stream
+BT
+/F1 11 Tf
+72 720 Td
+14 TL
+(4.1 Backend \(Spring Boot\)) Tj
+T*
+() Tj
+T*
+(Prerequisites) Tj
+T*
+(- Java 17) Tj
+T*
+(- Maven \(or use the included wrapper\)) Tj
+T*
+(- MySQL running locally) Tj
+T*
+() Tj
+T*
+(Steps) Tj
+T*
+(1. Configure database connection in `nexcartBackEnd/src/main/resources/application.properties`.) Tj
+T*
+(2. Start the backend server:) Tj
+T*
+(- Windows: `./mvnw.cmd spring-boot:run`) Tj
+T*
+(- macOS/Linux: `./mvnw spring-boot:run`) Tj
+T*
+(3. The API runs on `http://localhost:9090`.) Tj
+T*
+() Tj
+T*
+(4.2 Frontend \(React + Vite\)) Tj
+T*
+() Tj
+T*
+(Prerequisites) Tj
+T*
+(- Node.js + npm) Tj
+T*
+() Tj
+T*
+(Steps) Tj
+T*
+(1. From `nexcart` run:) Tj
+T*
+(- `npm install`) Tj
+T*
+(- `npm run dev`) Tj
+T*
+(2. The app runs on `http://localhost:5174` by default.) Tj
+T*
+() Tj
+T*
+(5. Configuration and Secrets) Tj
+T*
+(----------------------------) Tj
+T*
+() Tj
+T*
+(Backend configuration lives in `nexcartBackEnd/src/main/resources/application.properties`.) Tj
+T*
+() Tj
+T*
+(Key settings) Tj
+T*
+(- `server.port=9090`) Tj
+T*
+(- `spring.datasource.url=jdbc:mysql://localhost:3306/nexcart...`) Tj
+T*
+(- `jwt.secret=...` \(must be at least 64 bytes for HS512\)) Tj
+T*
+(- `razorpay.key_id` and `razorpay.key_secret`) Tj
+T*
+(- `admin.bootstrap.` \(creates or resets the admin account on startup\)) Tj
+T*
+() Tj
+T*
+(Security note) Tj
+T*
+(- The current file contains real credential values. For production, move secrets to environment) Tj
+T*
+(  variables and remove them from version control.) Tj
+T*
+() Tj
+T*
+(CORS) Tj
+T*
+(- Allowed frontend origins: `http://localhost:5174`, `http://localhost:5175`,) Tj
+T*
+(  `http://localhost:5176`.) Tj
+T*
+() Tj
+T*
+(6. Authentication and Authorization) Tj
+T*
+ET
+endstream
+endobj
+7 0 obj
+<< /Type /Page /Parent 2 0 R /MediaBox [0 0 612 792] /Resources << /Font << /F1 3 0 R >> >> /Contents 6 0 R >>
+endobj
+8 0 obj
+<< /Length 1553 >>
+stream
+BT
+/F1 11 Tf
+72 720 Td
+14 TL
+(-----------------------------------) Tj
+T*
+() Tj
+T*
+(- Login endpoint: `POST /api/auth/login`) Tj
+T*
+(- On success, the backend sets an HttpOnly cookie `authToken` \(1 hour expiry\).) Tj
+T*
+(- Custom filter `AuthenticationFilter` protects `/api/` and `/admin/` routes.) Tj
+T*
+(- Admin routes require role `ADMIN`.) Tj
+T*
+(- Public routes are limited to:) Tj
+T*
+(- `POST /api/users/register`) Tj
+T*
+(- `POST /api/auth/login`) Tj
+T*
+() Tj
+T*
+(7. Frontend Architecture) Tj
+T*
+(------------------------) Tj
+T*
+() Tj
+T*
+(7.1 Entry Points) Tj
+T*
+() Tj
+T*
+(- App entry: `nexcart/src/main.jsx`) Tj
+T*
+(- Top-level app: `nexcart/src/App.jsx`) Tj
+T*
+() Tj
+T*
+(7.2 Routes) Tj
+T*
+() Tj
+T*
+(Customer routes) Tj
+T*
+(- `/` login) Tj
+T*
+(- `/register` registration) Tj
+T*
+(- `/home` or `/customerhome` home page) Tj
+T*
+(- `/products` product listing \(same as home\)) Tj
+T*
+(- `/product/:productId` product details) Tj
+T*
+(- `/UserCartPage` cart) Tj
+T*
+(- `/checkout` cart checkout) Tj
+T*
+(- `/orders` order history) Tj
+T*
+(- `/profile` profile) Tj
+T*
+(- `/wishlist` wishlist) Tj
+T*
+(- `/about` about page) Tj
+T*
+() Tj
+T*
+(Support routes) Tj
+T*
+(- `/support/customer-service`) Tj
+T*
+(- `/support/track-order`) Tj
+T*
+(- `/support/returns-refunds`) Tj
+T*
+(- `/support/help-center`) Tj
+T*
+(- `/support/contact-us`) Tj
+T*
+() Tj
+T*
+(Admin routes) Tj
+T*
+(- `/admin` admin login) Tj
+T*
+(- `/admindashboard` admin layout shell) Tj
+T*
+(- `/admindashboard/products`) Tj
+T*
+(- `/admindashboard/categories`) Tj
+T*
+(- `/admindashboard/orders`) Tj
+T*
+ET
+endstream
+endobj
+9 0 obj
+<< /Type /Page /Parent 2 0 R /MediaBox [0 0 612 792] /Resources << /Font << /F1 3 0 R >> >> /Contents 8 0 R >>
+endobj
+10 0 obj
+<< /Length 1429 >>
+stream
+BT
+/F1 11 Tf
+72 720 Td
+14 TL
+(- `/admindashboard/customers`) Tj
+T*
+(- `/admindashboard/coupons`) Tj
+T*
+(- `/admindashboard/analytics`) Tj
+T*
+(- `/admindashboard/support`) Tj
+T*
+(- `/admindashboard/settings`) Tj
+T*
+() Tj
+T*
+(7.3 Key UI Modules) Tj
+T*
+() Tj
+T*
+(- `components/layout`: Header, Footer, Logo, ThemeToggle) Tj
+T*
+(- `components/cart`: Cart icon + modal) Tj
+T*
+(- `components/navigation`: Category navigation) Tj
+T*
+(- `components/ui`: Toasts, skeleton loaders, notices, modal) Tj
+T*
+(- `admin/`: Admin layout, pages, components, and services) Tj
+T*
+() Tj
+T*
+(7.4 Admin API Client) Tj
+T*
+() Tj
+T*
+(Frontend admin screens call backend APIs through:) Tj
+T*
+(- `nexcart/src/admin/services/adminApi.js`) Tj
+T*
+() Tj
+T*
+(This client handles:) Tj
+T*
+(- Products, categories, orders, customers) Tj
+T*
+(- Coupons and settings) Tj
+T*
+(- Support tickets and analytics) Tj
+T*
+(- Session expiry redirects to `/admin`) Tj
+T*
+() Tj
+T*
+(8. Backend API Reference) Tj
+T*
+(------------------------) Tj
+T*
+() Tj
+T*
+(Base URL: `http://localhost:9090`) Tj
+T*
+() Tj
+T*
+(8.1 Auth) Tj
+T*
+() Tj
+T*
+(- `POST /api/auth/login`) Tj
+T*
+(- `POST /api/auth/logout`) Tj
+T*
+(- `GET /api/auth/me`) Tj
+T*
+() Tj
+T*
+(8.2 Users) Tj
+T*
+() Tj
+T*
+(- `POST /api/users/register`) Tj
+T*
+(- `GET /api/users/profile`) Tj
+T*
+(- `PUT /api/users/profile`) Tj
+T*
+(- `PUT /api/users/password`) Tj
+T*
+() Tj
+T*
+(8.3 Products) Tj
+T*
+() Tj
+T*
+(- `GET /api/products`) Tj
+T*
+ET
+endstream
+endobj
+11 0 obj
+<< /Type /Page /Parent 2 0 R /MediaBox [0 0 612 792] /Resources << /Font << /F1 3 0 R >> >> /Contents 10 0 R >>
+endobj
+12 0 obj
+<< /Length 1293 >>
+stream
+BT
+/F1 11 Tf
+72 720 Td
+14 TL
+(- `GET /api/products/{id}`) Tj
+T*
+(- `GET /api/products/{id}/inventory`) Tj
+T*
+(- `GET /api/products/availability?ids=1,2,3`) Tj
+T*
+() Tj
+T*
+(8.4 Categories) Tj
+T*
+() Tj
+T*
+(- `GET /api/categories`) Tj
+T*
+() Tj
+T*
+(8.5 Cart) Tj
+T*
+() Tj
+T*
+(- `GET /api/cart/items`) Tj
+T*
+(- `GET /api/cart/items/count`) Tj
+T*
+(- `POST /api/cart/add`) Tj
+T*
+(- `PUT /api/cart/update`) Tj
+T*
+(- `DELETE /api/cart/delete`) Tj
+T*
+() Tj
+T*
+(8.6 Orders) Tj
+T*
+() Tj
+T*
+(- `GET /api/orders`) Tj
+T*
+(- `POST /api/orders/{orderId}/return-request`) Tj
+T*
+() Tj
+T*
+(8.7 Payments) Tj
+T*
+() Tj
+T*
+(- `POST /api/payment/create`) Tj
+T*
+(- `POST /api/payment/cod`) Tj
+T*
+(- `POST /api/payment/verify`) Tj
+T*
+() Tj
+T*
+(8.8 Coupons) Tj
+T*
+() Tj
+T*
+(- `POST /api/coupons/validate`) Tj
+T*
+(- `GET /api/store/coupons` \(active coupons\)) Tj
+T*
+() Tj
+T*
+(8.9 Reviews) Tj
+T*
+() Tj
+T*
+(- `GET /api/reviews/{productId}`) Tj
+T*
+(- `POST /api/reviews`) Tj
+T*
+() Tj
+T*
+(8.10 Support) Tj
+T*
+() Tj
+T*
+(- `GET /api/support/help-center`) Tj
+T*
+(- `GET /api/support/returns-policy`) Tj
+T*
+(- `GET /api/support/contact`) Tj
+T*
+(- `POST /api/support/tickets`) Tj
+T*
+(- `GET /api/support/tickets/my`) Tj
+T*
+(- `GET /api/support/tickets/my/{ticketNumber}`) Tj
+T*
+(- `GET /api/support/track-order/{orderId}`) Tj
+T*
+ET
+endstream
+endobj
+13 0 obj
+<< /Type /Page /Parent 2 0 R /MediaBox [0 0 612 792] /Resources << /Font << /F1 3 0 R >> >> /Contents 12 0 R >>
+endobj
+14 0 obj
+<< /Length 1386 >>
+stream
+BT
+/F1 11 Tf
+72 720 Td
+14 TL
+() Tj
+T*
+(8.11 Store Insights) Tj
+T*
+() Tj
+T*
+(- `GET /api/store/highlights`) Tj
+T*
+(- `GET /api/store/about`) Tj
+T*
+() Tj
+T*
+(8.12 System Settings \(Customer Side\)) Tj
+T*
+() Tj
+T*
+(- `GET /api/settings`) Tj
+T*
+(- `GET /api/settings/payment-methods`) Tj
+T*
+(- `PUT /api/settings` \(admin only\)) Tj
+T*
+() Tj
+T*
+(8.13 Admin APIs) Tj
+T*
+() Tj
+T*
+(Dashboard and analytics) Tj
+T*
+(- `GET /admin/dashboard/overview?days=14`) Tj
+T*
+() Tj
+T*
+(Business reports) Tj
+T*
+(- `GET /admin/business/daily?date=YYYY-MM-DD`) Tj
+T*
+(- `GET /admin/business/monthly?month=1&year=2026`) Tj
+T*
+(- `GET /admin/business/yearly?year=2026`) Tj
+T*
+(- `GET /admin/business/overall`) Tj
+T*
+() Tj
+T*
+(Products) Tj
+T*
+(- `POST /admin/products/add`) Tj
+T*
+(- `PUT /admin/products/update`) Tj
+T*
+(- `DELETE /admin/products/delete`) Tj
+T*
+() Tj
+T*
+(Categories) Tj
+T*
+(- `GET /admin/categories`) Tj
+T*
+(- `POST /admin/categories`) Tj
+T*
+(- `PUT /admin/categories`) Tj
+T*
+(- `DELETE /admin/categories`) Tj
+T*
+() Tj
+T*
+(Orders) Tj
+T*
+(- `GET /admin/orders`) Tj
+T*
+(- `PUT /admin/orders/status`) Tj
+T*
+(- `PUT /admin/orders/return-status`) Tj
+T*
+() Tj
+T*
+(Users) Tj
+T*
+(- `GET /admin/users`) Tj
+T*
+(- `GET /admin/users/{id}`) Tj
+T*
+(- `DELETE /admin/users/{id}`) Tj
+T*
+(- `PUT /admin/users/{id}/block`) Tj
+T*
+(- `PUT /admin/users/{id}/unblock`) Tj
+T*
+(- `GET /admin/users/{id}/orders`) Tj
+T*
+ET
+endstream
+endobj
+15 0 obj
+<< /Type /Page /Parent 2 0 R /MediaBox [0 0 612 792] /Resources << /Font << /F1 3 0 R >> >> /Contents 14 0 R >>
+endobj
+16 0 obj
+<< /Length 2016 >>
+stream
+BT
+/F1 11 Tf
+72 720 Td
+14 TL
+(- `PUT /admin/user/modify`) Tj
+T*
+(- `PUT /admin/user/block`) Tj
+T*
+(- `GET /admin/user/all`) Tj
+T*
+(- `POST /admin/user/getbyid`) Tj
+T*
+() Tj
+T*
+(Coupons) Tj
+T*
+(- `GET /admin/coupons`) Tj
+T*
+(- `POST /admin/coupons`) Tj
+T*
+(- `PUT /admin/coupons/{id}`) Tj
+T*
+(- `PATCH /admin/coupons/{id}/status`) Tj
+T*
+(- `DELETE /admin/coupons/{id}`) Tj
+T*
+() Tj
+T*
+(Support) Tj
+T*
+(- `GET /admin/support/tickets?status=OPEN&q=...`) Tj
+T*
+(- `GET /admin/support/tickets/{ticketNumber}`) Tj
+T*
+(- `PUT /admin/support/tickets/{ticketNumber}`) Tj
+T*
+(- `GET /admin/support/overview`) Tj
+T*
+() Tj
+T*
+(Settings) Tj
+T*
+(- `GET /admin/settings`) Tj
+T*
+(- `PUT /admin/settings`) Tj
+T*
+() Tj
+T*
+(9. Data Model Summary) Tj
+T*
+(---------------------) Tj
+T*
+() Tj
+T*
+(Main entities and key fields) Tj
+T*
+(- User: `userId`, `username`, `email`, `password`, `role`, `status`, `blocked`, `address`,) Tj
+T*
+(  `createdAt`) Tj
+T*
+(- Product: `productId`, `name`, `description`, `price`, `stock`, `productStatus`, `category`) Tj
+T*
+(- Category: `categoryId`, `categoryName`, `imageUrl`) Tj
+T*
+(- CartItem: `user`, `product`, `quantity`) Tj
+T*
+(- Order: `orderId`, `userId`, `subtotal`, `shipping`, `tax`, `total`, `status`, `paymentStatus`) Tj
+T*
+(- OrderItem: `order`, `productId`, `quantity`, `pricePerUnit`, `totalPrice`) Tj
+T*
+(- Payment: `orderId`, `razorpayPaymentId`, `status`, `amount`, `userId`) Tj
+T*
+(- Coupon: `code`, `discountType`, `discountValue`, `expiryDate`, `usageLimit`, `active`) Tj
+T*
+(- Review: `productId`, `userId`, `rating`, `comment`) Tj
+T*
+(- SupportTicket: `ticketNumber`, `userId`, `type`, `priority`, `status`, `subject`, `message`) Tj
+T*
+(- ReturnRequest: `orderId`, `productId`, `userId`, `requestType`, `status`, `refundStatus`) Tj
+T*
+(- SystemSetting: `settingKey`, `settingValue`) Tj
+T*
+() Tj
+T*
+(10. Database and Seed Data) Tj
+T*
+(--------------------------) Tj
+T*
+() Tj
+T*
+(Database scripts are provided under:) Tj
+T*
+(- `nexcartBackEnd/src/main/resources/db`) Tj
+T*
+() Tj
+T*
+ET
+endstream
+endobj
+17 0 obj
+<< /Type /Page /Parent 2 0 R /MediaBox [0 0 612 792] /Resources << /Font << /F1 3 0 R >> >> /Contents 16 0 R >>
+endobj
+18 0 obj
+<< /Length 1505 >>
+stream
+BT
+/F1 11 Tf
+72 720 Td
+14 TL
+(Key scripts) Tj
+T*
+(- `nexcart_schema.sql` \(tables\)) Tj
+T*
+(- `nexcart_seed.sql` \(seed data\)) Tj
+T*
+(- `nexcart_full_setup.sql` \(full schema + seed\)) Tj
+T*
+(- `nexcart_bulk_products.sql` \(product bulk load\)) Tj
+T*
+(- `nexcart_migration_20260310.sql` \(migration\)) Tj
+T*
+() Tj
+T*
+(The backend is also configured with:) Tj
+T*
+(- `spring.jpa.hibernate.ddl-auto=update`) Tj
+T*
+() Tj
+T*
+(11. User Guide \(Customer\)) Tj
+T*
+(-------------------------) Tj
+T*
+() Tj
+T*
+(11.1 Register and Login) Tj
+T*
+() Tj
+T*
+(1. Open the app at `http://localhost:5174`.) Tj
+T*
+(2. Choose Register to create a new account.) Tj
+T*
+(3. Login with your username and password.) Tj
+T*
+() Tj
+T*
+(11.2 Browse and Shop) Tj
+T*
+() Tj
+T*
+(1. Browse the home/products page.) Tj
+T*
+(2. Use category navigation or search.) Tj
+T*
+(3. Open a product to view details and reviews.) Tj
+T*
+(4. Add items to cart.) Tj
+T*
+() Tj
+T*
+(11.3 Checkout and Orders) Tj
+T*
+() Tj
+T*
+(1. Open cart.) Tj
+T*
+(2. Apply coupons if needed.) Tj
+T*
+(3. Choose payment method.) Tj
+T*
+(4. Place the order.) Tj
+T*
+(5. Track order status under Orders.) Tj
+T*
+() Tj
+T*
+(11.4 Returns and Support) Tj
+T*
+() Tj
+T*
+(1. Open Orders and request return for an item.) Tj
+T*
+(2. Use Support pages for help center, return policy, or contact.) Tj
+T*
+(3. Create a support ticket for issues.) Tj
+T*
+() Tj
+T*
+(12. Admin Guide) Tj
+T*
+(---------------) Tj
+T*
+() Tj
+T*
+(12.1 Admin Login) Tj
+T*
+() Tj
+T*
+(1. Open `http://localhost:5174/admin`.) Tj
+T*
+ET
+endstream
+endobj
+19 0 obj
+<< /Type /Page /Parent 2 0 R /MediaBox [0 0 612 792] /Resources << /Font << /F1 3 0 R >> >> /Contents 18 0 R >>
+endobj
+20 0 obj
+<< /Length 1228 >>
+stream
+BT
+/F1 11 Tf
+72 720 Td
+14 TL
+(2. Login with admin credentials.) Tj
+T*
+(3. You are redirected to `/admindashboard`.) Tj
+T*
+() Tj
+T*
+(12.2 Dashboard) Tj
+T*
+() Tj
+T*
+(The dashboard shows recent business metrics, orders, and key stats.) Tj
+T*
+() Tj
+T*
+(12.3 Manage Catalog) Tj
+T*
+() Tj
+T*
+(- Products: create, update, delete products and images.) Tj
+T*
+(- Categories: manage category list and images.) Tj
+T*
+() Tj
+T*
+(12.4 Manage Orders) Tj
+T*
+() Tj
+T*
+(- View order list) Tj
+T*
+(- Update status and tracking number) Tj
+T*
+(- Handle return requests and refunds) Tj
+T*
+() Tj
+T*
+(12.5 Manage Customers) Tj
+T*
+() Tj
+T*
+(- View users) Tj
+T*
+(- Block/unblock accounts) Tj
+T*
+(- Update roles and profile data) Tj
+T*
+() Tj
+T*
+(12.6 Coupons) Tj
+T*
+() Tj
+T*
+(- Create, update, disable, delete coupons) Tj
+T*
+() Tj
+T*
+(12.7 Support Tickets) Tj
+T*
+() Tj
+T*
+(- Review incoming tickets) Tj
+T*
+(- Update status and admin notes) Tj
+T*
+() Tj
+T*
+(12.8 Settings) Tj
+T*
+() Tj
+T*
+(- Configure store profile, payment methods, shipping, tax, security) Tj
+T*
+() Tj
+T*
+(13. Testing) Tj
+T*
+(-----------) Tj
+T*
+() Tj
+T*
+(Backend tests live in:) Tj
+T*
+(- `nexcartBackEnd/src/test/java`) Tj
+T*
+() Tj
+T*
+(Run tests) Tj
+T*
+(- `./mvnw.cmd test`) Tj
+T*
+() Tj
+T*
+ET
+endstream
+endobj
+21 0 obj
+<< /Type /Page /Parent 2 0 R /MediaBox [0 0 612 792] /Resources << /Font << /F1 3 0 R >> >> /Contents 20 0 R >>
+endobj
+22 0 obj
+<< /Length 1276 >>
+stream
+BT
+/F1 11 Tf
+72 720 Td
+14 TL
+(14. Build and Deployment) Tj
+T*
+(------------------------) Tj
+T*
+() Tj
+T*
+(Frontend build) Tj
+T*
+(- `npm run build`) Tj
+T*
+(- Output: `nexcart/dist`) Tj
+T*
+() Tj
+T*
+(Backend build) Tj
+T*
+(- `./mvnw.cmd -DskipTests package`) Tj
+T*
+(- Output: `nexcartBackEnd/target/.jar`) Tj
+T*
+() Tj
+T*
+(Deployment checklist) Tj
+T*
+(- Configure production database) Tj
+T*
+(- Set JWT secret and payment keys as environment variables) Tj
+T*
+(- Update allowed CORS origins) Tj
+T*
+() Tj
+T*
+(15. Troubleshooting) Tj
+T*
+(-------------------) Tj
+T*
+() Tj
+T*
+(Common issues) Tj
+T*
+(- 401 Unauthorized: login cookie missing or expired.) Tj
+T*
+(- 403 Forbidden: user is blocked or not admin.) Tj
+T*
+(- CORS errors: frontend port not listed in allowed origins.) Tj
+T*
+(- JWT secret error: must be at least 64 bytes.) Tj
+T*
+(- Razorpay errors: verify keys and callback payload.) Tj
+T*
+() Tj
+T*
+(16. Security and Operational Notes) Tj
+T*
+(----------------------------------) Tj
+T*
+() Tj
+T*
+(- Consider enabling HTTPS and secure cookies in production.) Tj
+T*
+(- Move secrets out of `application.properties`.) Tj
+T*
+(- Enable Spring Security for production hardening.) Tj
+T*
+(- Add rate limiting on auth and payment endpoints.) Tj
+T*
+() Tj
+T*
+(End of Document) Tj
+T*
+() Tj
+T*
+ET
+endstream
+endobj
+23 0 obj
+<< /Type /Page /Parent 2 0 R /MediaBox [0 0 612 792] /Resources << /Font << /F1 3 0 R >> >> /Contents 22 0 R >>
+endobj
+xref
+0 24
+0000000000 65535 f 
+0000000009 00000 n 
+0000000058 00000 n 
+0000000179 00000 n 
+0000000249 00000 n 
+0000001827 00000 n 
+0000001953 00000 n 
+0000003693 00000 n 
+0000003819 00000 n 
+0000005424 00000 n 
+0000005550 00000 n 
+0000007032 00000 n 
+0000007160 00000 n 
+0000008506 00000 n 
+0000008634 00000 n 
+0000010073 00000 n 
+0000010201 00000 n 
+0000012270 00000 n 
+0000012398 00000 n 
+0000013956 00000 n 
+0000014084 00000 n 
+0000015365 00000 n 
+0000015493 00000 n 
+0000016822 00000 n 
+trailer
+<< /Size 24 /Root 1 0 R >>
+startxref
+16950
+%%EOF

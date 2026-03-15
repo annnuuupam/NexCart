@@ -1,0 +1,245 @@
+/* Modal overlay */
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(15, 23, 42, 0.6);
+  backdrop-filter: blur(6px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  padding: 24px;
+  animation: modalOverlayIn 0.2s ease;
+}
+
+@keyframes modalOverlayIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+/* Modal content */
+.modal-content {
+  background: var(--card, #fff);
+  border-radius: var(--radius-lg, 16px);
+  padding: 28px;
+  max-width: 520px;
+  width: 100%;
+  max-height: 90vh;
+  overflow-y: auto;
+  box-shadow: 0 24px 48px rgba(0, 0, 0, 0.15);
+  border: 1px solid var(--border, #e2e8f0);
+  animation: modalContentIn 0.25s ease;
+}
+
+@keyframes modalContentIn {
+  from {
+    opacity: 0;
+    transform: scale(0.96) translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
+.modal-content h2 {
+  margin: 0 0 20px 0;
+  font-size: 1.4rem;
+  font-weight: 700;
+  color: var(--text, #0f172a);
+  letter-spacing: -0.02em;
+}
+
+/* Form */
+.modal-form {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.modal-form-item {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.modal-form-item label {
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: var(--text-muted, #64748b);
+}
+
+.modal-form-item input,
+.modal-form-item textarea {
+  padding: 12px 14px;
+  border: 1px solid var(--border, #e2e8f0);
+  border-radius: var(--radius, 12px);
+  font-size: 0.95rem;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.modal-form-item input:focus,
+.modal-form-item textarea:focus {
+  outline: none;
+  border-color: var(--primary, #0d9488);
+  box-shadow: 0 0 0 3px rgba(13, 148, 136, 0.15);
+}
+
+.modal-content > button,
+.modal-form button {
+  margin-right: 10px;
+  margin-top: 8px;
+  padding: 12px 20px;
+  border-radius: var(--radius, 12px);
+  font-weight: 600;
+  font-size: 0.95rem;
+  cursor: pointer;
+  border: none;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.modal-content > button:first-of-type:not(.cancel),
+.modal-form button[type="submit"],
+.modal-form button:not([type="button"]):first-of-type {
+  background: linear-gradient(135deg, var(--primary, #0d9488), var(--primary-hover, #0f766e));
+  color: white;
+}
+
+.modal-content > button:hover,
+.modal-form button:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.1);
+}
+
+.modal-content > button:nth-of-type(2),
+.modal-form .cancel,
+.modal-content button:last-of-type {
+  background: var(--background, #f0fdfa);
+  color: var(--text, #0f172a);
+  border: 1px solid var(--border, #e2e8f0);
+}
+
+/* Product details in modal */
+.full-products {
+  display: flex;
+  gap: 20px;
+  flex-wrap: wrap;
+  margin-bottom: 16px;
+}
+
+.modal-content .product-details {
+  margin-bottom: 8px;
+  font-size: 0.95rem;
+}
+
+.modal-content .product-details.img img {
+  max-width: 200px;
+  width: 100%;
+  height: auto;
+  border-radius: var(--radius, 12px);
+  object-fit: cover;
+}
+
+.product-details-info {
+  flex: 1;
+  min-width: 200px;
+}
+
+/* User details */
+.user-details {
+  margin: 16px 0;
+  padding: 16px;
+  background: var(--background, #f0fdfa);
+  border-radius: var(--radius, 12px);
+}
+
+.user-details p {
+  margin: 8px 0;
+  color: var(--text, #0f172a);
+  font-size: 0.95rem;
+}
+
+/* Business response */
+.business-response-item {
+  margin: 12px 0;
+  padding: 12px 0;
+  border-bottom: 1px solid var(--border, #e2e8f0);
+  font-size: 0.95rem;
+}
+
+.business-response-item:last-child {
+  border-bottom: none;
+}
+
+.business-response-item h5 {
+  margin: 0 0 8px 0;
+  font-size: 1rem;
+  color: var(--text, #0f172a);
+}
+
+.modal-content {
+  background: var(--surface);
+}
+
+.modal-content h2 {
+  font-size: 1.2rem;
+}
+
+.modal-form-item input,
+.modal-form-item textarea {
+  background: var(--surface-alt);
+  color: var(--text);
+}
+
+.business-response-item {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+/* ===== Modal polish overrides ===== */
+.modal-content {
+  background: var(--glass-bg);
+  border: 1px solid var(--glass-border);
+  box-shadow: var(--shadow-xl);
+  backdrop-filter: blur(14px) saturate(130%);
+}
+
+.modal-form-item input,
+.modal-form-item textarea {
+  background: var(--surface);
+}
+
+.modal-content > button,
+.modal-form button {
+  border-radius: 14px;
+}
+
+
+/* ===== Apple + Stripe modal refinements ===== */
+.modal-content {
+  border-radius: 20px;
+  box-shadow: 0 30px 70px rgba(15, 23, 42, 0.18);
+}
+
+.modal-form-item input,
+.modal-form-item textarea {
+  border-radius: 12px;
+  background: #FFFFFF;
+}
+
+/* ===== Modal color system alignment ===== */
+.modal-content {
+  background: #FFFFFF;
+  border-color: var(--border);
+}
+
+.modal-form-item input:focus,
+.modal-form-item textarea:focus {
+  border-color: var(--primary);
+  box-shadow: 0 0 0 3px rgba(99, 91, 255, 0.18);
+}
