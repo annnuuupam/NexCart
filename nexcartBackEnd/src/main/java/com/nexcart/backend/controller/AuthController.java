@@ -5,6 +5,7 @@ import java.util.Map;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.http.ResponseCookie;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -32,17 +33,13 @@ public class AuthController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<?> login(@RequestBody LoginRequest loginRequest, HttpServletResponse response) {
+    public ResponseEntity<?> login(@RequestBody LoginRequest loginRequest, HttpServletRequest request, HttpServletResponse response) {
         try {
             User user = authService.authenticate(loginRequest.getUsername(), loginRequest.getPassword());
             String token = authService.generateToken(user);
 
-            Cookie cookie = new Cookie("authToken", token);
-            cookie.setHttpOnly(true);
-            cookie.setSecure(false);
-            cookie.setPath("/");
-            cookie.setMaxAge(3600);
-            response.addCookie(cookie);
+            ResponseCookie cookie = buildAuthCookie(request, token, 3600);
+            response.addHeader("Set-Cookie", cookie.toString());
 
             Map<String, Object> responseBody = new HashMap<>();
             responseBody.put("message", "Login successful");
@@ -63,11 +60,8 @@ public class AuthController {
                 authService.logout(user);
             }
 
-            Cookie cookie = new Cookie("authToken", "");
-            cookie.setHttpOnly(true);
-            cookie.setMaxAge(0);
-            cookie.setPath("/");
-            response.addCookie(cookie);
+            ResponseCookie cookie = buildAuthCookie(request, "", 0);
+            response.addHeader("Set-Cookie", cookie.toString());
 
             return ResponseEntity.ok(Map.of("message", "Logout successful"));
         } catch (RuntimeException e) {
@@ -92,5 +86,20 @@ public class AuthController {
                 "blocked", user.getBlocked(),
                 "lastLoginAt", user.getLastLoginAt()
         ));
+    }
+
+    private ResponseCookie buildAuthCookie(HttpServletRequest request, String token, int maxAgeSeconds) {
+        String origin = request.getHeader("Origin");
+        boolean isLocal = origin != null && origin.contains("localhost");
+        boolean secure = !isLocal;
+        String sameSite = secure ? "None" : "Lax";
+
+        return ResponseCookie.from("authToken", token)
+                .httpOnly(true)
+                .secure(secure)
+                .path("/")
+                .maxAge(maxAgeSeconds)
+                .sameSite(sameSite)
+                .build();
     }
 }
