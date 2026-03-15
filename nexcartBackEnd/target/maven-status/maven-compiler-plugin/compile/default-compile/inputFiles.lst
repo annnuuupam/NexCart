@@ -17,6 +17,7 @@ C:\Users\anupa\OneDrive\Desktop\NexCart\nexcartBackEnd\src\main\java\com\nexcart
 C:\Users\anupa\OneDrive\Desktop\NexCart\nexcartBackEnd\src\main\java\com\nexcart\backend\admin\service\AdminSupportService.java
 C:\Users\anupa\OneDrive\Desktop\NexCart\nexcartBackEnd\src\main\java\com\nexcart\backend\admin\service\AdminUserService.java
 C:\Users\anupa\OneDrive\Desktop\NexCart\nexcartBackEnd\src\main\java\com\nexcart\backend\config\AdminBootstrapConfig.java
+C:\Users\anupa\OneDrive\Desktop\NexCart\nexcartBackEnd\src\main\java\com\nexcart\backend\config\CorsConfig.java
 C:\Users\anupa\OneDrive\Desktop\NexCart\nexcartBackEnd\src\main\java\com\nexcart\backend\controller\AuthController.java
 C:\Users\anupa\OneDrive\Desktop\NexCart\nexcartBackEnd\src\main\java\com\nexcart\backend\controller\CartController.java
 C:\Users\anupa\OneDrive\Desktop\NexCart\nexcartBackEnd\src\main\java\com\nexcart\backend\controller\CategoryController.java
