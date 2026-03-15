@@ -1,1 +1,14 @@
+com\nexcart\backend\service\PasswordResetRateLimiter.class
+com\nexcart\backend\entity\PasswordResetToken.class
+com\nexcart\backend\service\PasswordResetCleanupScheduler.class
+com\nexcart\backend\repository\PasswordResetAuditRepository.class
+com\nexcart\backend\service\CaptchaService$CaptchaChallenge.class
+com\nexcart\backend\service\EmailService.class
+com\nexcart\backend\service\PasswordResetAuditService.class
+com\nexcart\backend\service\CaptchaService.class
+com\nexcart\backend\service\EmailTemplateService.class
 com\nexcart\backend\entity\ReturnRequestType.class
+com\nexcart\backend\admin\service\AdminResetLogService.class
+com\nexcart\backend\repository\PasswordResetTokenRepository.class
+com\nexcart\backend\service\CaptchaService$CaptchaEntry.class
+com\nexcart\backend\entity\PasswordResetAudit.class

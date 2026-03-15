@@ -3,6 +3,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import { DotLottieReact } from "@lottiefiles/dotlottie-react";
 import { ThemeToggle } from "../../components/layout/ThemeToggle";
+import ForgotPasswordModal from "../../components/auth/ForgotPasswordModal";
 import logo from "../../assets/images/logo.png";
 import "../../styles/LoginPage.css";
 import API_BASE_URL from '../../config/api';
@@ -31,12 +32,15 @@ export default function LoginPage() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState(null);
+  const [showForgot, setShowForgot] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   const navigate = useNavigate();
 
   const handleSignIn = async (e) => {
     e.preventDefault();
     setError(null);
+    setLoading(true);
 
     try {
       const response = await fetch(`${API_BASE_URL}/api/auth/login`, {
@@ -61,6 +65,8 @@ export default function LoginPage() {
       navigate("/customerhome", { replace: true });
     } catch (err) {
       setError(err.message || "Unable to login. Please try again.");
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -176,14 +182,22 @@ export default function LoginPage() {
                 />
               </motion.div>
               <motion.div custom={4} initial="hidden" animate="visible" variants={rightVariants}>
-                <button type="submit" className="login-btn">
-                  Sign in
+                <button type="submit" className="login-btn" disabled={loading}>
+                  {loading ? "Signing in..." : "Sign in"}
                 </button>
               </motion.div>
+              <button
+                type="button"
+                className="login-forgot"
+                onClick={() => setShowForgot(true)}
+              >
+                Forgot password?
+              </button>
             </form>
           </motion.div>
         </div>
       </div>
+      <ForgotPasswordModal open={showForgot} onClose={() => setShowForgot(false)} />
     </div>
   );
 }

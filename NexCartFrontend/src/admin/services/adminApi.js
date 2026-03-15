@@ -99,6 +99,7 @@ export const adminApi = {
     }
   },
   updateUser: (payload) => request("/admin/user/modify", { method: "PUT", body: JSON.stringify(payload) }),
+  resetUserPassword: (userId) => request(`/admin/users/${userId}/reset-password`, { method: "POST" }),
   blockUser: (userId) => requestWithFallback([
     `/admin/users/${userId}/block`,
     "/admin/user/block",
@@ -129,10 +130,31 @@ export const adminApi = {
 
   getSettings: () => request("/admin/settings"),
   updateSettings: (payload) => request("/admin/settings", { method: "PUT", body: JSON.stringify(payload) }),
+  getResetEmailTemplate: () => request("/admin/settings/email-templates/reset"),
+  updateResetEmailTemplate: (template) => request("/admin/settings/email-templates/reset", { method: "PUT", body: JSON.stringify({ template }) }),
 
   getSupportTickets: ({ status = "ALL", q = "" } = {}) => request(`/admin/support/tickets?status=${encodeURIComponent(status)}&q=${encodeURIComponent(q)}`),
   getSupportOverview: () => request("/admin/support/overview"),
   updateSupportTicket: (ticketNumber, payload) => request(`/admin/support/tickets/${encodeURIComponent(ticketNumber)}`, { method: "PUT", body: JSON.stringify(payload) }),
+
+  getResetLogs: ({ q = "", action = "", from = "", to = "" } = {}) => {
+    const params = new URLSearchParams();
+    if (q) params.set("q", q);
+    if (action) params.set("action", action);
+    if (from) params.set("from", from);
+    if (to) params.set("to", to);
+    const path = params.toString() ? `/admin/support/reset-logs?${params.toString()}` : "/admin/support/reset-logs";
+    return request(path);
+  },
+  exportResetLogs: ({ q = "", action = "", from = "", to = "" } = {}) => {
+    const params = new URLSearchParams();
+    if (q) params.set("q", q);
+    if (action) params.set("action", action);
+    if (from) params.set("from", from);
+    if (to) params.set("to", to);
+    const path = params.toString() ? `/admin/support/reset-logs/export?${params.toString()}` : "/admin/support/reset-logs/export";
+    return `${BASE}${path}`;
+  },
 
   getProductDetails: (id) => request(`/api/products/${id}`),
   getReviews: (productId) => request(`/api/reviews/${productId}`),

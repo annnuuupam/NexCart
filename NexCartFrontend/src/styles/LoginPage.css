@@ -365,6 +365,23 @@ html[data-theme="dark"] .login-dropdown-menu {
   transform: translateY(0);
 }
 
+/* ===== Forgot password ===== */
+.login-forgot {
+  margin-top: 14px;
+  width: 100%;
+  border: none;
+  background: transparent;
+  color: var(--primary);
+  font-weight: 700;
+  cursor: pointer;
+  text-align: center;
+  transition: color 0.2s ease;
+}
+
+.login-forgot:hover {
+  color: #1d4ed8;
+}
+
 /* ===== Error message ===== */
 .login-error {
   display: flex;
@@ -449,5 +466,190 @@ html[data-theme="dark"] .login-error {
   background: linear-gradient(135deg, var(--primary), var(--accent));
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
+}
+
+/* ===== Modal ===== */
+.login-modal-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(15, 23, 42, 0.45);
+  display: grid;
+  place-items: center;
+  z-index: 9999;
+  padding: 18px;
+}
+
+.login-modal-card {
+  width: min(520px, 100%);
+  border-radius: 20px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  box-shadow: 0 30px 60px rgba(15, 23, 42, 0.25);
+  padding: 24px;
+}
+
+.login-modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.login-modal-header h3 {
+  margin: 0;
+  font-size: 1.4rem;
+  font-weight: 800;
+  color: var(--text);
+}
+
+.login-modal-close {
+  border: none;
+  background: transparent;
+  font-size: 1.5rem;
+  cursor: pointer;
+  color: var(--text-muted);
+}
+
+.login-modal-body {
+  display: grid;
+  gap: 12px;
+  font-size: 0.95rem;
+  color: var(--text-muted);
+}
+
+.login-modal-label {
+  display: grid;
+  gap: 6px;
+  font-weight: 600;
+  color: var(--text);
+}
+
+.login-modal-label input {
+  border-radius: 12px;
+  border: 1.5px solid var(--border);
+  background: var(--surface-alt);
+  padding: 12px 14px;
+  font-size: 0.95rem;
+}
+
+.login-modal-helper {
+  font-size: 0.85rem;
+  color: var(--text-muted);
+}
+
+.login-modal-error {
+  font-size: 0.85rem;
+  color: #ef4444;
+  font-weight: 600;
+}
+
+.login-modal-token {
+  display: grid;
+  gap: 8px;
+  background: var(--surface-alt);
+  border: 1px dashed var(--border);
+  border-radius: 12px;
+  padding: 12px;
+  font-size: 0.85rem;
+}
+
+.login-modal-token code {
+  word-break: break-all;
+  background: rgba(15, 118, 110, 0.08);
+  padding: 6px 8px;
+  border-radius: 8px;
+  font-family: "Courier New", monospace;
+}
+
+.login-modal-link {
+  color: var(--primary);
+  font-weight: 700;
+}
+
+.login-modal-btn {
+  margin-top: 6px;
+}
+
+.login-modal-captcha {
+  display: grid;
+  gap: 8px;
+}
+
+.login-modal-refresh {
+  width: fit-content;
+  border: 1px solid var(--border);
+  background: var(--surface-alt);
+  padding: 6px 12px;
+  border-radius: 10px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.login-modal-footer {
+  font-size: 0.85rem;
+  color: var(--text-muted);
+}
+
+.login-modal-footer a {
+  color: var(--primary);
+  font-weight: 700;
+}
+
+.login-modal-success {
+  font-weight: 700;
+  color: var(--text);
+}
+
+/* ===== Not Found / Error ===== */
+.notfound-page {
+  display: grid;
+  place-items: center;
+  padding: 32px;
+}
+
+.notfound-shell {
+  width: min(720px, 100%);
+}
+
+.notfound-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 24px;
+  padding: 32px;
+  box-shadow: 0 20px 50px rgba(15, 23, 42, 0.18);
+  text-align: center;
+}
+
+.notfound-kicker {
+  text-transform: uppercase;
+  letter-spacing: 0.2em;
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: var(--text-muted);
+  margin-bottom: 10px;
+}
+
+.notfound-subtext {
+  color: var(--text-muted);
+  margin: 12px auto 22px;
+  max-width: 520px;
+}
+
+.notfound-actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 12px;
+}
+
+.notfound-btn {
+  width: auto;
+  padding: 12px 22px;
+}
+
+.notfound-link {
+  align-self: center;
+  font-weight: 700;
+  color: var(--primary);
 }
 

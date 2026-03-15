@@ -14,6 +14,7 @@ C:\Users\anupa\OneDrive\Desktop\NexCart\nexcartBackEnd\src\main\java\com\nexcart
 C:\Users\anupa\OneDrive\Desktop\NexCart\nexcartBackEnd\src\main\java\com\nexcart\backend\admin\service\AdminDashboardService.java
 C:\Users\anupa\OneDrive\Desktop\NexCart\nexcartBackEnd\src\main\java\com\nexcart\backend\admin\service\AdminOrderService.java
 C:\Users\anupa\OneDrive\Desktop\NexCart\nexcartBackEnd\src\main\java\com\nexcart\backend\admin\service\AdminProductService.java
+C:\Users\anupa\OneDrive\Desktop\NexCart\nexcartBackEnd\src\main\java\com\nexcart\backend\admin\service\AdminResetLogService.java
 C:\Users\anupa\OneDrive\Desktop\NexCart\nexcartBackEnd\src\main\java\com\nexcart\backend\admin\service\AdminSupportService.java
 C:\Users\anupa\OneDrive\Desktop\NexCart\nexcartBackEnd\src\main\java\com\nexcart\backend\admin\service\AdminUserService.java
 C:\Users\anupa\OneDrive\Desktop\NexCart\nexcartBackEnd\src\main\java\com\nexcart\backend\config\AdminBootstrapConfig.java
@@ -39,6 +40,8 @@ C:\Users\anupa\OneDrive\Desktop\NexCart\nexcartBackEnd\src\main\java\com\nexcart
 C:\Users\anupa\OneDrive\Desktop\NexCart\nexcartBackEnd\src\main\java\com\nexcart\backend\entity\Order.java
 C:\Users\anupa\OneDrive\Desktop\NexCart\nexcartBackEnd\src\main\java\com\nexcart\backend\entity\OrderItem.java
 C:\Users\anupa\OneDrive\Desktop\NexCart\nexcartBackEnd\src\main\java\com\nexcart\backend\entity\OrderStatus.java
+C:\Users\anupa\OneDrive\Desktop\NexCart\nexcartBackEnd\src\main\java\com\nexcart\backend\entity\PasswordResetAudit.java
+C:\Users\anupa\OneDrive\Desktop\NexCart\nexcartBackEnd\src\main\java\com\nexcart\backend\entity\PasswordResetToken.java
 C:\Users\anupa\OneDrive\Desktop\NexCart\nexcartBackEnd\src\main\java\com\nexcart\backend\entity\Payment.java
 C:\Users\anupa\OneDrive\Desktop\NexCart\nexcartBackEnd\src\main\java\com\nexcart\backend\entity\PaymentStatus.java
 C:\Users\anupa\OneDrive\Desktop\NexCart\nexcartBackEnd\src\main\java\com\nexcart\backend\entity\Product.java
@@ -65,6 +68,8 @@ C:\Users\anupa\OneDrive\Desktop\NexCart\nexcartBackEnd\src\main\java\com\nexcart
 C:\Users\anupa\OneDrive\Desktop\NexCart\nexcartBackEnd\src\main\java\com\nexcart\backend\repository\JWTTokenRepository.java
 C:\Users\anupa\OneDrive\Desktop\NexCart\nexcartBackEnd\src\main\java\com\nexcart\backend\repository\OrderItemRepository.java
 C:\Users\anupa\OneDrive\Desktop\NexCart\nexcartBackEnd\src\main\java\com\nexcart\backend\repository\OrderRepository.java
+C:\Users\anupa\OneDrive\Desktop\NexCart\nexcartBackEnd\src\main\java\com\nexcart\backend\repository\PasswordResetAuditRepository.java
+C:\Users\anupa\OneDrive\Desktop\NexCart\nexcartBackEnd\src\main\java\com\nexcart\backend\repository\PasswordResetTokenRepository.java
 C:\Users\anupa\OneDrive\Desktop\NexCart\nexcartBackEnd\src\main\java\com\nexcart\backend\repository\PaymentRepository.java
 C:\Users\anupa\OneDrive\Desktop\NexCart\nexcartBackEnd\src\main\java\com\nexcart\backend\repository\ProductImageRepository.java
 C:\Users\anupa\OneDrive\Desktop\NexCart\nexcartBackEnd\src\main\java\com\nexcart\backend\repository\ProductRepository.java
@@ -74,10 +79,16 @@ C:\Users\anupa\OneDrive\Desktop\NexCart\nexcartBackEnd\src\main\java\com\nexcart
 C:\Users\anupa\OneDrive\Desktop\NexCart\nexcartBackEnd\src\main\java\com\nexcart\backend\repository\SystemSettingRepository.java
 C:\Users\anupa\OneDrive\Desktop\NexCart\nexcartBackEnd\src\main\java\com\nexcart\backend\repository\UserRepository.java
 C:\Users\anupa\OneDrive\Desktop\NexCart\nexcartBackEnd\src\main\java\com\nexcart\backend\service\AuthService.java
+C:\Users\anupa\OneDrive\Desktop\NexCart\nexcartBackEnd\src\main\java\com\nexcart\backend\service\CaptchaService.java
 C:\Users\anupa\OneDrive\Desktop\NexCart\nexcartBackEnd\src\main\java\com\nexcart\backend\service\CartService.java
 C:\Users\anupa\OneDrive\Desktop\NexCart\nexcartBackEnd\src\main\java\com\nexcart\backend\service\CouponService.java
+C:\Users\anupa\OneDrive\Desktop\NexCart\nexcartBackEnd\src\main\java\com\nexcart\backend\service\EmailService.java
+C:\Users\anupa\OneDrive\Desktop\NexCart\nexcartBackEnd\src\main\java\com\nexcart\backend\service\EmailTemplateService.java
 C:\Users\anupa\OneDrive\Desktop\NexCart\nexcartBackEnd\src\main\java\com\nexcart\backend\service\InsufficientStockException.java
 C:\Users\anupa\OneDrive\Desktop\NexCart\nexcartBackEnd\src\main\java\com\nexcart\backend\service\OrderService.java
+C:\Users\anupa\OneDrive\Desktop\NexCart\nexcartBackEnd\src\main\java\com\nexcart\backend\service\PasswordResetAuditService.java
+C:\Users\anupa\OneDrive\Desktop\NexCart\nexcartBackEnd\src\main\java\com\nexcart\backend\service\PasswordResetCleanupScheduler.java
+C:\Users\anupa\OneDrive\Desktop\NexCart\nexcartBackEnd\src\main\java\com\nexcart\backend\service\PasswordResetRateLimiter.java
 C:\Users\anupa\OneDrive\Desktop\NexCart\nexcartBackEnd\src\main\java\com\nexcart\backend\service\PaymentService.java
 C:\Users\anupa\OneDrive\Desktop\NexCart\nexcartBackEnd\src\main\java\com\nexcart\backend\service\ProductService.java
 C:\Users\anupa\OneDrive\Desktop\NexCart\nexcartBackEnd\src\main\java\com\nexcart\backend\service\ReviewService.java

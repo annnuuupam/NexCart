@@ -1,6 +1,7 @@
 package com.nexcart.backend.admin.controller;
 
 import com.nexcart.backend.service.SystemSettingsService;
+import com.nexcart.backend.service.EmailTemplateService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -12,9 +13,11 @@ import java.util.Map;
 public class AdminSettingsController {
 
     private final SystemSettingsService systemSettingsService;
+    private final EmailTemplateService emailTemplateService;
 
-    public AdminSettingsController(SystemSettingsService systemSettingsService) {
+    public AdminSettingsController(SystemSettingsService systemSettingsService, EmailTemplateService emailTemplateService) {
         this.systemSettingsService = systemSettingsService;
+        this.emailTemplateService = emailTemplateService;
     }
 
     @GetMapping
@@ -64,5 +67,16 @@ public class AdminSettingsController {
 
         systemSettingsService.updateSettings(updates);
         return ResponseEntity.ok(Map.of("message", "Settings updated"));
+    }
+
+    @GetMapping("/email-templates/reset")
+    public ResponseEntity<?> getResetTemplate() {
+        return ResponseEntity.ok(Map.of("template", emailTemplateService.getResetTemplate()));
+    }
+
+    @PutMapping("/email-templates/reset")
+    public ResponseEntity<?> updateResetTemplate(@RequestBody Map<String, String> payload) {
+        String template = payload == null ? "" : payload.getOrDefault("template", "");
+        return ResponseEntity.ok(Map.of("template", emailTemplateService.updateResetTemplate(template)));
     }
 }

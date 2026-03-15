@@ -10,8 +10,10 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.nexcart.backend.entity.JWTToken;
+import com.nexcart.backend.entity.PasswordResetToken;
 import com.nexcart.backend.entity.User;
 import com.nexcart.backend.repository.JWTTokenRepository;
+import com.nexcart.backend.repository.PasswordResetTokenRepository;
 import com.nexcart.backend.repository.UserRepository;
 
 import io.jsonwebtoken.Jwts;
@@ -28,13 +30,16 @@ public class AuthService {
 
     private final UserRepository userRepository;
     private final JWTTokenRepository jwtTokenRepository;
+    private final PasswordResetTokenRepository passwordResetTokenRepository;
     private final BCryptPasswordEncoder passwordEncoder;
 
     @Autowired
     public AuthService(UserRepository userRepository, JWTTokenRepository jwtTokenRepository,
+                       PasswordResetTokenRepository passwordResetTokenRepository,
                        @Value("${jwt.secret}") String jwtSecret) {
         this.userRepository = userRepository;
         this.jwtTokenRepository = jwtTokenRepository;
+        this.passwordResetTokenRepository = passwordResetTokenRepository;
         this.passwordEncoder = new BCryptPasswordEncoder();
 
         if (jwtSecret.getBytes(StandardCharsets.UTF_8).length < 64) {
@@ -60,6 +65,63 @@ public class AuthService {
         userRepository.save(user);
 
         return user;
+    }
+
+    public Optional<User> findByIdentifier(String identifier) {
+        if (identifier == null || identifier.isBlank()) {
+            return Optional.empty();
+        }
+        String value = identifier.trim();
+        if (value.contains("@")) {
+            return userRepository.findByEmail(value);
+        }
+        Optional<User> byUsername = userRepository.findByUsername(value);
+        return byUsername.isPresent() ? byUsername : userRepository.findByEmail(value);
+    }
+
+    public String createPasswordResetToken(User user) {
+        passwordResetTokenRepository.deleteByUser_UserId(user.getUserId());
+        String token = java.util.UUID.randomUUID().toString().replace("-", "");
+        PasswordResetToken resetToken = new PasswordResetToken(
+                user,
+                token,
+                LocalDateTime.now().plusMinutes(30),
+                LocalDateTime.now()
+        );
+        passwordResetTokenRepository.save(resetToken);
+        return token;
+    }
+
+    public void resetPassword(String token, String newPassword, String confirmPassword) {
+        if (token == null || token.isBlank()) {
+            throw new RuntimeException("Reset token is required");
+        }
+        if (newPassword == null || newPassword.isBlank()) {
+            throw new RuntimeException("New password is required");
+        }
+        if (!newPassword.equals(confirmPassword)) {
+            throw new RuntimeException("New password and confirm password do not match");
+        }
+        if (newPassword.length() < 8) {
+            throw new RuntimeException("New password must be at least 8 characters");
+        }
+        if (!newPassword.matches(".*[A-Z].*") || !newPassword.matches(".*[a-z].*") || !newPassword.matches(".*\\d.*")) {
+            throw new RuntimeException("New password must include uppercase, lowercase, and number");
+        }
+
+        PasswordResetToken resetToken = passwordResetTokenRepository.findByToken(token)
+                .orElseThrow(() -> new RuntimeException("Invalid or expired reset token"));
+
+        if (resetToken.getExpiresAt().isBefore(LocalDateTime.now())) {
+            passwordResetTokenRepository.delete(resetToken);
+            throw new RuntimeException("Reset token has expired");
+        }
+
+        User user = resetToken.getUser();
+        user.setPassword(passwordEncoder.encode(newPassword));
+        user.setUpdatedAt(LocalDateTime.now());
+        userRepository.save(user);
+        passwordResetTokenRepository.delete(resetToken);
     }
 
     public String generateToken(User user) {

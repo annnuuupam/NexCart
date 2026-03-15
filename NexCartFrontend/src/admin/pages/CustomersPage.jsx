@@ -1,5 +1,5 @@
 import React, { useEffect, useMemo, useState } from "react";
-import { Eye, Trash2 } from "lucide-react";
+import { Eye, KeyRound, Trash2 } from "lucide-react";
 import DataTable from "../components/DataTable";
 import AdminSelect from "../components/AdminSelect";
 import { adminApi } from "../services/adminApi";
@@ -19,6 +19,7 @@ const CustomersPage = () => {
   const [loading, setLoading] = useState(false);
   const toast = useToast();
   const [pendingDelete, setPendingDelete] = useState(null);
+  const [pendingReset, setPendingReset] = useState(null);
 
   const loadCustomers = async ({ page = currentPage, size = pageSize, q = search, status = statusFilter } = {}) => {
     setLoading(true);
@@ -112,6 +113,20 @@ const CustomersPage = () => {
     }
   };
 
+  const resetUserPassword = async (customer) => {
+    try {
+      const response = await adminApi.resetUserPassword(customer.userId);
+      toast.success("Password reset link sent.");
+      if (response?.resetToken) {
+        window.prompt("Local reset token (copy and send to user):", response.resetToken);
+      }
+    } catch (error) {
+      toast.error(error.message || "Unable to send reset link. Please try again.");
+    } finally {
+      setPendingReset(null);
+    }
+  };
+
   const sortedCustomers = useMemo(() => {
     const rows = [...customers];
     rows.sort((a, b) => {
@@ -159,6 +174,13 @@ const CustomersPage = () => {
         <div className="flex gap-2">
           <button onClick={() => refreshCustomerDetails(row)} className="rounded-lg border border-slate-200 p-2 hover:bg-slate-50">
             <Eye className="h-4 w-4" />
+          </button>
+          <button
+            onClick={() => setPendingReset(row)}
+            className="rounded-lg border border-amber-200 p-2 text-amber-700 hover:bg-amber-50"
+            aria-label={`Reset password for ${row.username}`}
+          >
+            <KeyRound className="h-4 w-4" />
           </button>
           <button onClick={() => setPendingDelete(row)} className="rounded-lg border border-rose-200 p-2 text-rose-600 hover:bg-rose-50">
             <Trash2 className="h-4 w-4" />
@@ -328,6 +350,33 @@ const CustomersPage = () => {
                 onClick={() => deleteUser(pendingDelete)}
               >
                 Delete User
+              </button>
+            </div>
+          </div>
+        </div>
+      ) : null}
+
+      {pendingReset ? (
+        <div className="fixed inset-0 z-50 grid place-items-center bg-slate-950/30 p-4">
+          <div className="w-full max-w-md rounded-2xl border border-slate-200 bg-white p-6 shadow-xl">
+            <h3 className="text-lg font-bold text-slate-900">Reset password?</h3>
+            <p className="mt-2 text-sm text-slate-600">
+              This will send a reset link to <b>{pendingReset.email || "the user"}</b>. Continue?
+            </p>
+            <div className="mt-5 flex justify-end gap-3">
+              <button
+                type="button"
+                className="rounded-xl border border-slate-200 px-4 py-2 font-semibold"
+                onClick={() => setPendingReset(null)}
+              >
+                Cancel
+              </button>
+              <button
+                type="button"
+                className="rounded-xl bg-amber-600 px-4 py-2 font-semibold text-white"
+                onClick={() => resetUserPassword(pendingReset)}
+              >
+                Send Reset Link
               </button>
             </div>
           </div>

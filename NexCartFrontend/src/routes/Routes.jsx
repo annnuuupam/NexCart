@@ -3,6 +3,7 @@ import { Routes, Route, Navigate } from "react-router-dom";
 
 import LoginPage from "../pages/auth/LoginPage";
 import RegistrationPage from "../pages/auth/RegistrationPage";
+import ResetPasswordPage from "../pages/auth/ResetPasswordPage";
 
 import CustomerHomePage from "../pages/customer/CustomerHomePage";
 import CartPage from "../pages/customer/CartPage";
@@ -16,6 +17,7 @@ import TrackOrderPage from "../pages/customer/support/TrackOrderPage";
 import ReturnsRefundsPage from "../pages/customer/support/ReturnsRefundsPage";
 import HelpCenterPage from "../pages/customer/support/HelpCenterPage";
 import ContactUsPage from "../pages/customer/support/ContactUsPage";
+import NotFoundPage from "../pages/NotFoundPage";
 
 import AdminLogin from "../pages/admin/AdminLogin";
 
@@ -35,6 +37,7 @@ const AppRoutes = () => {
     <Routes>
       <Route path="/" element={<LoginPage />} />
       <Route path="/register" element={<RegistrationPage />} />
+      <Route path="/reset-password" element={<ResetPasswordPage />} />
 
       <Route path="/customerhome" element={<CustomerHomePage />} />
       <Route path="/home" element={<CustomerHomePage />} />
@@ -67,7 +70,7 @@ const AppRoutes = () => {
         <Route path="settings" element={<SettingsPage />} />
       </Route>
 
-      <Route path="*" element={<Navigate to="/" replace />} />
+      <Route path="*" element={<NotFoundPage />} />
     </Routes>
   );
 };

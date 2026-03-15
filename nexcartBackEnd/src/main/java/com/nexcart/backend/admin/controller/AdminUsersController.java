@@ -3,6 +3,10 @@ package com.nexcart.backend.admin.controller;
 import com.nexcart.backend.admin.service.AdminOrderService;
 import com.nexcart.backend.admin.service.AdminUserService;
 import com.nexcart.backend.entity.User;
+import com.nexcart.backend.service.AuthService;
+import com.nexcart.backend.service.EmailService;
+import com.nexcart.backend.service.PasswordResetAuditService;
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -22,10 +26,16 @@ public class AdminUsersController {
 
     private final AdminUserService adminUserService;
     private final AdminOrderService adminOrderService;
+    private final AuthService authService;
+    private final EmailService emailService;
+    private final PasswordResetAuditService auditService;
 
-    public AdminUsersController(AdminUserService adminUserService, AdminOrderService adminOrderService) {
+    public AdminUsersController(AdminUserService adminUserService, AdminOrderService adminOrderService, AuthService authService, EmailService emailService, PasswordResetAuditService auditService) {
         this.adminUserService = adminUserService;
         this.adminOrderService = adminOrderService;
+        this.authService = authService;
+        this.emailService = emailService;
+        this.auditService = auditService;
     }
 
     @GetMapping
@@ -127,6 +137,32 @@ public class AdminUsersController {
             return ResponseEntity.ok(adminOrderService.getOrdersByUserId(id));
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to load order history");
+        }
+    }
+
+    @PostMapping("/{id}/reset-password")
+    public ResponseEntity<?> resetUserPassword(@PathVariable("id") Integer id, HttpServletRequest request) {
+        try {
+            User user = adminUserService.getUserById(id);
+            String token = authService.createPasswordResetToken(user);
+            String resetLink = emailService.buildResetLink(token);
+            emailService.sendPasswordReset(user.getEmail(), resetLink);
+            auditService.log("admin_reset_password_sent", user.getUserId(), user.getEmail(), request.getRemoteAddr(), request.getHeader("User-Agent"));
+
+            Map<String, Object> response = new HashMap<>();
+            response.put("message", "Password reset link sent.");
+
+            String origin = request.getHeader("Origin");
+            if (origin != null && origin.contains("localhost")) {
+                response.put("resetToken", token);
+                response.put("resetLink", resetLink);
+            }
+
+            return ResponseEntity.ok(response);
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(Map.of("error", e.getMessage()));
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(Map.of("error", "Failed to reset password"));
         }
     }
 }

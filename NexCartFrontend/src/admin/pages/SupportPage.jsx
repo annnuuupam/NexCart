@@ -4,6 +4,8 @@ import AdminSelect from "../components/AdminSelect";
 import { adminApi } from "../services/adminApi";
 import { formatDate } from "../utils/format";
 import { useToast } from "../../components/ui/ToastContext";
+import { Download } from "lucide-react";
+import EmailTemplateEditor from "../components/EmailTemplateEditor";
 
 const statusOptions = ["OPEN", "IN_PROGRESS", "RESOLVED", "CLOSED"];
 
@@ -28,6 +30,13 @@ const SupportPage = () => {
   const [search, setSearch] = useState("");
   const [selected, setSelected] = useState(null);
   const [saving, setSaving] = useState(false);
+  const [resetLogs, setResetLogs] = useState([]);
+  const [resetQuery, setResetQuery] = useState("");
+  const [resetAction, setResetAction] = useState("");
+  const [resetFrom, setResetFrom] = useState("");
+  const [resetTo, setResetTo] = useState("");
+  const [resetLoading, setResetLoading] = useState(false);
+  const [resetTemplate, setResetTemplate] = useState("");
   const toast = useToast();
 
   const loadData = async () => {
@@ -43,9 +52,35 @@ const SupportPage = () => {
     }
   };
 
+  const loadResetLogs = async () => {
+    setResetLoading(true);
+    try {
+      const rows = await adminApi.getResetLogs({ q: resetQuery, action: resetAction, from: resetFrom, to: resetTo });
+      setResetLogs(rows || []);
+    } catch (error) {
+      toast.error(error.message || "Unable to load reset logs.");
+    } finally {
+      setResetLoading(false);
+    }
+  };
+
+  const loadTemplate = async () => {
+    try {
+      const data = await adminApi.getResetEmailTemplate();
+      setResetTemplate(data?.template || "");
+    } catch (error) {
+      toast.error(error.message || "Unable to load email template.");
+    }
+  };
+
   useEffect(() => {
     loadData();
   }, [statusFilter]);
+
+  useEffect(() => {
+    loadResetLogs();
+    loadTemplate();
+  }, []);
 
   const searchedRows = useMemo(() => {
     const query = search.trim().toLowerCase();
@@ -105,6 +140,33 @@ const SupportPage = () => {
     },
   ];
 
+  const resetColumns = [
+    { key: "createdAt", label: "When", render: (row) => formatDate(row.createdAt) },
+    { key: "action", label: "Action" },
+    { key: "userId", label: "User ID" },
+    { key: "identifier", label: "Identifier" },
+    { key: "ipAddress", label: "IP" },
+    { key: "userAgent", label: "Agent", render: (row) => (
+      <span title={row.userAgent} className="line-clamp-1 max-w-[240px] inline-block">{row.userAgent || "-"}</span>
+    ) },
+  ];
+
+  const exportLogs = async () => {
+    try {
+      const url = adminApi.exportResetLogs({ q: resetQuery, action: resetAction, from: resetFrom, to: resetTo });
+      const response = await fetch(url, { credentials: "include" });
+      if (!response.ok) throw new Error("Export failed");
+      const blob = await response.blob();
+      const link = document.createElement("a");
+      link.href = window.URL.createObjectURL(blob);
+      link.download = "reset-logs.csv";
+      link.click();
+      window.URL.revokeObjectURL(link.href);
+    } catch (error) {
+      toast.error(error.message || "Unable to export logs");
+    }
+  };
+
   return (
     <section className="space-y-5">
 
@@ -135,6 +197,66 @@ const SupportPage = () => {
       </div>
 
       <DataTable columns={columns} data={searchedRows} emptyText="No support tickets yet" />
+
+      <section className="space-y-3">
+        <div className="flex flex-wrap items-center justify-between gap-2">
+          <div>
+            <h3 className="text-lg font-bold text-slate-900">Password Reset Logs</h3>
+            <p className="text-sm text-slate-500">Audit trail for reset requests and outcomes.</p>
+          </div>
+          <button
+            onClick={exportLogs}
+            className="inline-flex items-center gap-2 rounded-lg border border-slate-200 px-3 py-2 text-sm font-semibold hover:bg-slate-50"
+          >
+            <Download className="h-4 w-4" /> Export CSV
+          </button>
+        </div>
+
+        <div className="grid gap-3 rounded-2xl border border-slate-200 bg-white p-4 shadow-sm md:grid-cols-6">
+          <input
+            value={resetQuery}
+            onChange={(event) => setResetQuery(event.target.value)}
+            placeholder="Search identifier, IP, agent"
+            className="md:col-span-2 w-full rounded-lg border border-slate-200 px-3 py-2"
+          />
+          <input
+            value={resetAction}
+            onChange={(event) => setResetAction(event.target.value)}
+            placeholder="Filter action (optional)"
+            className="w-full rounded-lg border border-slate-200 px-3 py-2"
+          />
+          <input
+            type="date"
+            value={resetFrom}
+            onChange={(event) => setResetFrom(event.target.value)}
+            className="w-full rounded-lg border border-slate-200 px-3 py-2"
+          />
+          <input
+            type="date"
+            value={resetTo}
+            onChange={(event) => setResetTo(event.target.value)}
+            className="w-full rounded-lg border border-slate-200 px-3 py-2"
+          />
+          <button onClick={loadResetLogs} className="rounded-lg border border-slate-200 px-3 py-2 text-sm font-semibold hover:bg-slate-50">
+            {resetLoading ? "Loading..." : "Refresh Logs"}
+          </button>
+        </div>
+
+        <DataTable columns={resetColumns} data={resetLogs} emptyText="No reset activity yet" />
+      </section>
+
+      <EmailTemplateEditor
+        initialValue={resetTemplate}
+        onSave={async (value) => {
+          try {
+            const data = await adminApi.updateResetEmailTemplate(value);
+            setResetTemplate(data?.template || value);
+            toast.success("Template saved.");
+          } catch (error) {
+            toast.error(error.message || "Unable to save template.");
+          }
+        }}
+      />
 
       {selected ? (
         <div className="fixed inset-0 z-50 grid place-items-center bg-slate-950/35 p-4">

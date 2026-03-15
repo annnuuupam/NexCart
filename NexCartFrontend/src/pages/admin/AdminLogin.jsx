@@ -3,6 +3,7 @@ import { Link, useLocation, useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import { DotLottieReact } from "@lottiefiles/dotlottie-react";
 import { ThemeToggle } from "../../components/layout/ThemeToggle";
+import ForgotPasswordModal from "../../components/auth/ForgotPasswordModal";
 import logo from "../../assets/images/logo.png";
 import "../../styles/LoginPage.css";
 import API_BASE_URL from '../../config/api';
@@ -31,6 +32,7 @@ export default function AdminLogin() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState(null);
+  const [showForgot, setShowForgot] = useState(false);
   const navigate = useNavigate();
   const location = useLocation();
 
@@ -175,10 +177,18 @@ export default function AdminLogin() {
                   Enter Admin Console
                 </button>
               </motion.div>
+              <button
+                type="button"
+                className="login-forgot"
+                onClick={() => setShowForgot(true)}
+              >
+                Forgot password?
+              </button>
             </form>
           </motion.div>
         </div>
       </div>
+      <ForgotPasswordModal open={showForgot} onClose={() => setShowForgot(false)} />
     </div>
   );
 }
