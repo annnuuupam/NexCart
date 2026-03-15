@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Header } from "../../../components/layout/Header";
 import { Footer } from "../../../components/layout/Footer";
+import API_BASE_URL from '../../../config/api';
 
 export default function SupportLayout({ title, subtitle, children }) {
   const [username, setUsername] = useState("Guest");
@@ -9,7 +10,7 @@ export default function SupportLayout({ title, subtitle, children }) {
   useEffect(() => {
     const fetchHeaderData = async () => {
       try {
-        const profileRes = await fetch("http://localhost:9090/api/users/profile", {
+        const profileRes = await fetch(`${API_BASE_URL}/api/users/profile`, {
           credentials: "include",
           cache: "no-store",
         });
@@ -19,7 +20,7 @@ export default function SupportLayout({ title, subtitle, children }) {
           setUsername(profile?.username || profile?.name || "Guest");
         }
 
-        const cartRes = await fetch("http://localhost:9090/api/cart/items", {
+        const cartRes = await fetch(`${API_BASE_URL}/api/cart/items`, {
           credentials: "include",
           cache: "no-store",
         });

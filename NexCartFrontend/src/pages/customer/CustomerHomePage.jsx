@@ -4,9 +4,10 @@ import { ProductList } from "../../components/product/ProductList";
 import { ProductCardSkeleton } from "../../components/ui/Skeletons";
 import { Footer } from "../../components/layout/Footer";
 import { Header } from "../../components/layout/Header";
-import { useToast } from "../../components/ui/ToastProvider";
+import { useToast } from "../../components/ui/toastContext";
 
 import "../../styles/styles.css";
+import API_BASE_URL from '../../config/api';
 
 const PAGE_SIZE = 12;
 
@@ -85,7 +86,7 @@ export default function CustomerHomePage() {
 
   const fetchCategories = async () => {
     try {
-      const response = await fetch("http://localhost:9090/api/categories", {
+      const response = await fetch(`${API_BASE_URL}/api/categories`, {
         credentials: "include",
         cache: "no-store",
       });
@@ -196,7 +197,7 @@ export default function CustomerHomePage() {
       if (selectedCategory !== "all") params.set("category", selectedCategory);
       if (searchQuery.trim()) params.set("q", searchQuery.trim());
 
-      const response = await fetch(`http://localhost:9090/api/products?${params.toString()}`, { credentials: "include" });
+      const response = await fetch(`${API_BASE_URL}/api/products?${params.toString()}`, { credentials: "include" });
 
       if (response.status === 401 || response.status === 403) {
         window.location.href = "/";
@@ -240,7 +241,7 @@ export default function CustomerHomePage() {
 
   const fetchHighlights = async () => {
     try {
-      const response = await fetch("http://localhost:9090/api/store/highlights", {
+      const response = await fetch(`${API_BASE_URL}/api/store/highlights`, {
         credentials: "include",
         cache: "no-store",
       });
@@ -264,7 +265,7 @@ export default function CustomerHomePage() {
   const fetchCartCount = async () => {
     setIsCartLoading(true);
     try {
-      const response = await fetch("http://localhost:9090/api/cart/items", {
+      const response = await fetch(`${API_BASE_URL}/api/cart/items`, {
         credentials: "include",
         cache: "no-store",
       });
@@ -305,7 +306,7 @@ export default function CustomerHomePage() {
         ...(username && username !== "Guest" ? { username } : {}),
       };
 
-      const response = await fetch("http://localhost:9090/api/cart/add", {
+      const response = await fetch(`${API_BASE_URL}/api/cart/add`, {
         credentials: "include",
         method: "POST",
         body: JSON.stringify(payload),

@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import SupportLayout from "./SupportLayout";
-import { useToast } from "../../../components/ui/ToastProvider";
+import { useToast } from "../../../components/ui/toastContext";
+import API_BASE_URL from '../../../config/api';
 
 export default function ContactUsPage() {
   const [contact, setContact] = useState({
@@ -16,7 +17,7 @@ export default function ContactUsPage() {
   useEffect(() => {
     const fetchContact = async () => {
       try {
-        const response = await fetch("http://localhost:9090/api/support/contact", {
+        const response = await fetch(`${API_BASE_URL}/api/support/contact`, {
           credentials: "include",
           cache: "no-store",
         });
@@ -35,7 +36,7 @@ export default function ContactUsPage() {
     event.preventDefault();
     setSubmitting(true);
     try {
-      const response = await fetch("http://localhost:9090/api/support/tickets", {
+      const response = await fetch(`${API_BASE_URL}/api/support/tickets`, {
         method: "POST",
         credentials: "include",
         headers: { "Content-Type": "application/json" },

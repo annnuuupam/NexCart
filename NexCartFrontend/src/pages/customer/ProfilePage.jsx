@@ -1,8 +1,9 @@
 import React, { useEffect, useMemo, useState } from "react";
 import { Header } from "../../components/layout/Header";
 import { Footer } from "../../components/layout/Footer";
-import { useToast } from "../../components/ui/ToastProvider";
+import { useToast } from "../../components/ui/toastContext";
 import "../../styles/styles.css";
+import API_BASE_URL from '../../config/api';
 
 const valueOrFallback = (value, fallback = "Not available") => {
   if (value === null || value === undefined || value === "") return fallback;
@@ -69,7 +70,7 @@ export default function ProfilePage() {
   
 
   const loadProfile = async () => {
-    const endpoints = ["http://localhost:9090/api/users/profile", "http://localhost:9090/api/users/me", "http://localhost:9090/api/auth/me"];
+    const endpoints = [`${API_BASE_URL}/api/users/profile`, `${API_BASE_URL}/api/users/me`, `${API_BASE_URL}/api/auth/me`];
 
     for (const endpoint of endpoints) {
       try {
@@ -112,7 +113,7 @@ export default function ProfilePage() {
 
     const fetchCartCount = async () => {
       try {
-        const response = await fetch(`http://localhost:9090/api/cart/items/count?username=${encodeURIComponent(username)}`, { credentials: "include" });
+        const response = await fetch(`${API_BASE_URL}/api/cart/items/count?username=${encodeURIComponent(username)}`, { credentials: "include" });
         const count = await response.json();
         setCartCount(Number(count) || 0);
       } catch (error) {
@@ -191,7 +192,7 @@ export default function ProfilePage() {
 
     setSaving(true);
     try {
-      const response = await fetch("http://localhost:9090/api/users/profile", {
+      const response = await fetch(`${API_BASE_URL}/api/users/profile`, {
         method: "PUT",
         credentials: "include",
         headers: { "Content-Type": "application/json" },
@@ -239,7 +240,7 @@ export default function ProfilePage() {
 
     setPasswordSaving(true);
     try {
-      const response = await fetch("http://localhost:9090/api/users/password", {
+      const response = await fetch(`${API_BASE_URL}/api/users/password`, {
         method: "PUT",
         credentials: "include",
         headers: { "Content-Type": "application/json" },

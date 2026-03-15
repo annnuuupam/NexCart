@@ -23,6 +23,7 @@ import CustomModal from "../../components/ui/CustomModal";
 import AdminSelect from "../../admin/components/AdminSelect";
 
 import "../../styles/AdminDashboard.css";
+import API_BASE_URL from '../../config/api';
 
 const PIE_COLORS = ["#0ea5e9", "#14b8a6", "#22c55e", "#f59e0b", "#f97316", "#8b5cf6", "#ec4899", "#ef4444"];
 
@@ -214,7 +215,7 @@ const AdminDashboard = () => {
     setOverviewLoading(true);
     setOverviewError("");
     try {
-      const apiResponse = await guardedFetch("http://localhost:9090/admin/dashboard/overview", { method: "GET" });
+      const apiResponse = await guardedFetch(`${API_BASE_URL}/admin/dashboard/overview`, { method: "GET" });
       if (!apiResponse.ok) throw new Error(await apiResponse.text());
       setOverviewData(await apiResponse.json());
     } catch (error) {
@@ -235,10 +236,10 @@ const AdminDashboard = () => {
 
     try {
       const [monthlyRes, dailyRes, yearlyRes, overallRes] = await Promise.all([
-        guardedFetch(`http://localhost:9090/admin/business/monthly?month=${month}&year=${year}`, { method: "GET" }),
-        guardedFetch(`http://localhost:9090/admin/business/daily?date=${date}`, { method: "GET" }),
-        guardedFetch(`http://localhost:9090/admin/business/yearly?year=${year}`, { method: "GET" }),
-        guardedFetch("http://localhost:9090/admin/business/overall", { method: "GET" }),
+        guardedFetch(`${API_BASE_URL}/admin/business/monthly?month=${month}&year=${year}`, { method: "GET" }),
+        guardedFetch(`${API_BASE_URL}/admin/business/daily?date=${date}`, { method: "GET" }),
+        guardedFetch(`${API_BASE_URL}/admin/business/yearly?year=${year}`, { method: "GET" }),
+        guardedFetch(`${API_BASE_URL}/admin/business/overall`, { method: "GET" }),
       ]);
 
       const payloads = await Promise.all([readResponsePayload(monthlyRes), readResponsePayload(dailyRes), readResponsePayload(yearlyRes), readResponsePayload(overallRes)]);
@@ -259,7 +260,7 @@ const AdminDashboard = () => {
 
   const handleLogout = async () => {
     try {
-      await guardedFetch("http://localhost:9090/api/auth/logout", { method: "POST" });
+      await guardedFetch(`${API_BASE_URL}/api/auth/logout`, { method: "POST" });
     } catch (error) {
       console.error("Error during logout:", error);
     } finally {
@@ -269,7 +270,7 @@ const AdminDashboard = () => {
 
   const handleAddProductSubmit = async (productData) => {
     try {
-      const apiResponse = await guardedFetch("http://localhost:9090/admin/products/add", {
+      const apiResponse = await guardedFetch(`${API_BASE_URL}/admin/products/add`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(productData),
@@ -300,7 +301,7 @@ const AdminDashboard = () => {
 
   const handleDeleteProductSubmit = async ({ productId }) => {
     try {
-      const apiResponse = await guardedFetch("http://localhost:9090/admin/products/delete", {
+      const apiResponse = await guardedFetch(`${API_BASE_URL}/admin/products/delete`, {
         method: "DELETE",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ productId }),
@@ -321,7 +322,7 @@ const AdminDashboard = () => {
 
   const handleViewUserSubmit = async ({ userId }) => {
     try {
-      const apiResponse = await guardedFetch("http://localhost:9090/admin/user/getbyid", {
+      const apiResponse = await guardedFetch(`${API_BASE_URL}/admin/user/getbyid`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ userId }),
@@ -337,7 +338,7 @@ const AdminDashboard = () => {
 
   const handleMonthlyBusiness = async (data) => {
     try {
-      const apiResponse = await guardedFetch(`http://localhost:9090/admin/business/monthly?month=${data?.month}&year=${data?.year}`, { method: "GET" });
+      const apiResponse = await guardedFetch(`${API_BASE_URL}/admin/business/monthly?month=${data?.month}&year=${data?.year}`, { method: "GET" });
       if (apiResponse.ok) setResponse({ monthlyBusiness: await apiResponse.json() });
       else setResponse({ message: `Error: ${await apiResponse.text()}` });
       setModalType("monthlyBusiness");
@@ -349,7 +350,7 @@ const AdminDashboard = () => {
 
   const handleDailyBusiness = async (data) => {
     try {
-      const apiResponse = await guardedFetch(`http://localhost:9090/admin/business/daily?date=${data?.date}`, { method: "GET" });
+      const apiResponse = await guardedFetch(`${API_BASE_URL}/admin/business/daily?date=${data?.date}`, { method: "GET" });
       if (apiResponse.ok) setResponse({ dailyBusiness: await apiResponse.json() });
       else setResponse({ message: `Error: ${await apiResponse.text()}` });
       setModalType("dailyBusiness");
@@ -361,7 +362,7 @@ const AdminDashboard = () => {
 
   const handleYearlyBusiness = async (data) => {
     try {
-      const apiResponse = await guardedFetch(`http://localhost:9090/admin/business/yearly?year=${data?.year}`, { method: "GET" });
+      const apiResponse = await guardedFetch(`${API_BASE_URL}/admin/business/yearly?year=${data?.year}`, { method: "GET" });
       if (apiResponse.ok) setResponse({ yearlyBusiness: await apiResponse.json() });
       else setResponse({ message: `Error: ${await apiResponse.text()}` });
       setModalType("yearlyBusiness");
@@ -373,7 +374,7 @@ const AdminDashboard = () => {
 
   const handleOverallBusiness = async () => {
     try {
-      const apiResponse = await guardedFetch("http://localhost:9090/admin/business/overall", { method: "GET" });
+      const apiResponse = await guardedFetch(`${API_BASE_URL}/admin/business/overall`, { method: "GET" });
       if (apiResponse.ok) setResponse({ overallBusiness: await apiResponse.json() });
       else setResponse({ message: `Error: ${await apiResponse.text()}` });
       setModalType("overallBusiness");

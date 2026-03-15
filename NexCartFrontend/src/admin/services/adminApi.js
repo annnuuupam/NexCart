@@ -1,4 +1,5 @@
-const BASE = "http://localhost:9090";
+import API_BASE_URL from '../../config/api';
+const BASE = API_BASE_URL;
 
 const request = async (path, options = {}) => {
   const response = await fetch(`${BASE}${path}`, {

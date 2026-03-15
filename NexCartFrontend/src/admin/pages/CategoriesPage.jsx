@@ -3,7 +3,7 @@ import { Plus, Pencil, Trash2, Search, Image as ImageIcon } from "lucide-react";
 import DataTable from "../components/DataTable";
 import AdminSelect from "../components/AdminSelect";
 import { adminApi } from "../services/adminApi";
-import { useToast } from "../../components/ui/ToastProvider";
+import { useToast } from "../../components/ui/toastContext";
 
 const normalizeCategory = (row) => ({
   categoryId: row?.categoryId ?? row?.category_id ?? "",

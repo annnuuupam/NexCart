@@ -3,6 +3,7 @@ import { ShieldCheck, Truck, RefreshCcw, BadgeCheck, Package, Headphones } from 
 import { Header } from "../../components/layout/Header";
 import { Footer } from "../../components/layout/Footer";
 import "../../styles/styles.css";
+import API_BASE_URL from '../../config/api';
 
 const formatCompact = (value) => {
   const num = Number(value || 0);
@@ -27,7 +28,7 @@ export default function AboutPage() {
   useEffect(() => {
     const fetchHeaderData = async () => {
       try {
-        const profileRes = await fetch("http://localhost:9090/api/users/profile", {
+        const profileRes = await fetch(`${API_BASE_URL}/api/users/profile`, {
           credentials: "include",
           cache: "no-store",
         });
@@ -38,7 +39,7 @@ export default function AboutPage() {
           setUsername(name);
         }
 
-        const cartRes = await fetch("http://localhost:9090/api/cart/items", {
+        const cartRes = await fetch(`${API_BASE_URL}/api/cart/items`, {
           credentials: "include",
           cache: "no-store",
         });
@@ -58,7 +59,7 @@ export default function AboutPage() {
 
     const fetchAboutStats = async () => {
       try {
-        const response = await fetch("http://localhost:9090/api/store/about", {
+        const response = await fetch(`${API_BASE_URL}/api/store/about`, {
           credentials: "include",
           cache: "no-store",
         });

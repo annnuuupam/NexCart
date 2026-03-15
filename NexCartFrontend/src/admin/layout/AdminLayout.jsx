@@ -2,6 +2,7 @@
 import { Outlet, useLocation, useNavigate } from "react-router-dom";
 import Sidebar from "../components/Sidebar";
 import Navbar from "../components/Navbar";
+import API_BASE_URL from '../../config/api';
 
 const THEME_KEY = "nexcart-theme";
 
@@ -42,7 +43,7 @@ const AdminLayout = () => {
 
   const handleLogout = async () => {
     try {
-      await fetch("http://localhost:9090/api/auth/logout", {
+      await fetch(`${API_BASE_URL}/api/auth/logout`, {
         method: "POST",
         credentials: "include",
       });

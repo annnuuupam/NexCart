@@ -1,6 +1,7 @@
 ﻿import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import SupportLayout from "./SupportLayout";
+import API_BASE_URL from '../../../config/api';
 
 const toLabel = (value) =>
   String(value || "")
@@ -21,7 +22,7 @@ export default function CustomerServicePage() {
   useEffect(() => {
     const fetchTickets = async () => {
       try {
-        const response = await fetch("http://localhost:9090/api/support/tickets/my", {
+        const response = await fetch(`${API_BASE_URL}/api/support/tickets/my`, {
           credentials: "include",
           cache: "no-store",
         });

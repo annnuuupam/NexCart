@@ -5,6 +5,7 @@ import { DotLottieReact } from "@lottiefiles/dotlottie-react";
 import { ThemeToggle } from "../../components/layout/ThemeToggle";
 import logo from "../../assets/images/logo.png";
 import "../../styles/LoginPage.css";
+import API_BASE_URL from '../../config/api';
 
 const leftVariants = {
   hidden: { opacity: 0, x: -40 },
@@ -49,7 +50,7 @@ export default function RegistrationPage() {
     setError(null);
 
     try {
-      const response = await fetch("http://localhost:9090/api/users/register", {
+      const response = await fetch(`${API_BASE_URL}/api/users/register`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

@@ -2,9 +2,10 @@ import React, { useEffect, useMemo, useState } from "react";
 import "../../styles/CartPage.css";
 import { Header } from "../../components/layout/Header";
 import { Footer } from "../../components/layout/Footer";
-import { useToast } from "../../components/ui/ToastProvider";
+import { useToast } from "../../components/ui/toastContext";
 import { CardSkeleton } from "../../components/ui/Skeletons";
 import { useNavigate } from "react-router-dom";
+import API_BASE_URL from '../../config/api';
 
 const formatPrice = (value) => `Rs. ${Number(value || 0).toFixed(2)}`;
 
@@ -71,7 +72,7 @@ const CartPage = () => {
     const fetchCartItems = async () => {
       setIsLoadingCart(true);
       try {
-        const response = await fetch("http://localhost:9090/api/cart/items", {
+        const response = await fetch(`${API_BASE_URL}/api/cart/items`, {
           credentials: "include",
         });
         if (!response.ok) throw new Error("Failed to fetch cart items");
@@ -104,7 +105,7 @@ const CartPage = () => {
 
     const fetchSettings = async () => {
       try {
-        const response = await fetch("http://localhost:9090/api/settings", { credentials: "include" });
+        const response = await fetch(`${API_BASE_URL}/api/settings`, { credentials: "include" });
         if (!response.ok) return;
         const data = await response.json();
         setSettings((prev) => ({
@@ -122,7 +123,7 @@ const CartPage = () => {
     const fetchAvailableCoupons = async () => {
       setCouponListLoading(true);
       try {
-        const response = await fetch("http://localhost:9090/api/store/coupons", { credentials: "include" });
+        const response = await fetch(`${API_BASE_URL}/api/store/coupons`, { credentials: "include" });
         if (!response.ok) {
           setAvailableCoupons([]);
           return;
@@ -164,9 +165,9 @@ const CartPage = () => {
 
   const resolveUserContext = async () => {
     const endpoints = [
-      "http://localhost:9090/api/users/profile",
-      "http://localhost:9090/api/users/me",
-      "http://localhost:9090/api/auth/me",
+      `${API_BASE_URL}/api/users/profile`,
+      `${API_BASE_URL}/api/users/me`,
+      `${API_BASE_URL}/api/auth/me`,
     ];
 
     for (const endpoint of endpoints) {
@@ -218,7 +219,7 @@ const CartPage = () => {
         country: profileDraft.country?.trim(),
       };
 
-      const response = await fetch("http://localhost:9090/api/users/profile", {
+      const response = await fetch(`${API_BASE_URL}/api/users/profile`, {
         method: "PUT",
         credentials: "include",
         headers: { "Content-Type": "application/json" },
@@ -243,7 +244,7 @@ const CartPage = () => {
 
   const handleRemoveItem = async (productId) => {
     try {
-      const response = await fetch("http://localhost:9090/api/cart/delete", {
+      const response = await fetch(`${API_BASE_URL}/api/cart/delete`, {
         method: "DELETE",
         headers: { "Content-Type": "application/json" },
         credentials: "include",
@@ -272,7 +273,7 @@ const CartPage = () => {
         return;
       }
 
-      const response = await fetch("http://localhost:9090/api/cart/update", {
+      const response = await fetch(`${API_BASE_URL}/api/cart/update`, {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
         credentials: "include",
@@ -355,7 +356,7 @@ const CartPage = () => {
 
     setCouponLoading(true);
     try {
-      const response = await fetch("http://localhost:9090/api/coupons/validate", {
+      const response = await fetch(`${API_BASE_URL}/api/coupons/validate`, {
         method: "POST",
         credentials: "include",
         headers: { "Content-Type": "application/json" },
@@ -414,7 +415,7 @@ const CartPage = () => {
       };
 
       if (paymentMethod === "COD") {
-        const response = await fetch("http://localhost:9090/api/payment/cod", {
+        const response = await fetch(`${API_BASE_URL}/api/payment/cod`, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           credentials: "include",
@@ -443,7 +444,7 @@ const CartPage = () => {
         return;
       }
 
-      const response = await fetch("http://localhost:9090/api/payment/create", {
+      const response = await fetch(`${API_BASE_URL}/api/payment/create`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         credentials: "include",
@@ -484,7 +485,7 @@ const CartPage = () => {
               razorpay_signature: paymentResponse.razorpay_signature,
             };
 
-            const verifyResponse = await fetch("http://localhost:9090/api/payment/verify", {
+            const verifyResponse = await fetch(`${API_BASE_URL}/api/payment/verify`, {
               method: "POST",
               headers: { "Content-Type": "application/json" },
               credentials: "include",

@@ -2,8 +2,9 @@ import React, { useMemo, useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { Header } from "../../components/layout/Header";
 import { Footer } from "../../components/layout/Footer";
-import { useToast } from "../../components/ui/ToastProvider";
+import { useToast } from "../../components/ui/toastContext";
 import "../../styles/styles.css";
+import API_BASE_URL from '../../config/api';
 
 const formatPrice = (value) => `Rs. ${Number(value || 0).toLocaleString("en-IN", { maximumFractionDigits: 2 })}`;
 
@@ -139,7 +140,7 @@ export default function OrdersPage() {
   const fetchOrders = async () => {
     setLoading(true);
     try {
-      const response = await fetch("http://localhost:9090/api/orders", { credentials: "include" });
+      const response = await fetch(`${API_BASE_URL}/api/orders`, { credentials: "include" });
       if (!response.ok) throw new Error("Failed to fetch orders");
       const data = await response.json();
       setOrders(data.products || []);
@@ -155,7 +156,7 @@ export default function OrdersPage() {
   const fetchCartCount = async () => {
     setIsCartLoading(true);
     try {
-      const response = await fetch("http://localhost:9090/api/cart/items", {
+      const response = await fetch(`${API_BASE_URL}/api/cart/items`, {
         credentials: "include",
         cache: "no-store",
       });
@@ -258,7 +259,7 @@ export default function OrdersPage() {
 
     setReturnLoading(true);
     try {
-      const response = await fetch(`http://localhost:9090/api/orders/${encodeURIComponent(returnDialog.orderId)}/return-request`, {
+      const response = await fetch(`${API_BASE_URL}/api/orders/${encodeURIComponent(returnDialog.orderId)}/return-request`, {
         method: "POST",
         credentials: "include",
         headers: { "Content-Type": "application/json" },

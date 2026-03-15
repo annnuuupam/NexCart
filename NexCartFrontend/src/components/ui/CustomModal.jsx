@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import "../../styles/modalStyles.css";
+import API_BASE_URL from '../../config/api';
 
 const toInt = (value) => {
   const parsed = parseInt(value, 10);
@@ -328,7 +329,7 @@ const ModifyUserFormComponent = ({ onClose, initialData }) => {
   const [error, setError] = useState("");
 
   const fetchUserById = async (numericUserId) => {
-    const response = await fetch("http://localhost:9090/admin/user/getbyid", {
+    const response = await fetch(`${API_BASE_URL}/admin/user/getbyid`, {
       method: "POST",
       credentials: "include",
       headers: { "Content-Type": "application/json" },
@@ -387,7 +388,7 @@ const ModifyUserFormComponent = ({ onClose, initialData }) => {
     };
 
     try {
-      const response = await fetch("http://localhost:9090/admin/user/modify", {
+      const response = await fetch(`${API_BASE_URL}/admin/user/modify`, {
         method: "PUT",
         credentials: "include",
         headers: { "Content-Type": "application/json" },

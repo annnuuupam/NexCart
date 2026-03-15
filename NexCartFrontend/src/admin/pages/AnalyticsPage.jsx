@@ -17,7 +17,7 @@ import {
 
 import { adminApi } from "../services/adminApi";
 import { formatCurrency, formatNumber } from "../utils/format";
-import { useToast } from "../../components/ui/ToastProvider";
+import { useToast } from "../../components/ui/toastContext";
 
 const COLORS = ["#2563eb", "#0ea5e9", "#14b8a6", "#22c55e", "#f59e0b", "#8b5cf6"];
 

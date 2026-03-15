@@ -3,9 +3,10 @@ import { useNavigate, useParams } from "react-router-dom";
 import { ShieldCheck, Truck, RotateCcw, Star, Heart, ShoppingCart } from "lucide-react";
 import { Header } from "../../components/layout/Header";
 import { Footer } from "../../components/layout/Footer";
-import { useToast } from "../../components/ui/ToastProvider";
+import { useToast } from "../../components/ui/toastContext";
 import "../../styles/styles.css";
 import { ProductCardSkeleton } from "../../components/ui/Skeletons";
+import API_BASE_URL from '../../config/api';
 
 const WISHLIST_KEY = "nexcart-wishlist";
 
@@ -42,13 +43,13 @@ const ProductDetailsPage = () => {
 
   const fetchProfileAndCart = async () => {
     try {
-      const profileRes = await fetch("http://localhost:9090/api/users/profile", { credentials: "include" });
+      const profileRes = await fetch(`${API_BASE_URL}/api/users/profile`, { credentials: "include" });
       if (profileRes.ok) {
         const profile = await profileRes.json();
         setUsername(profile.username || "Guest");
       }
 
-      const cartRes = await fetch("http://localhost:9090/api/cart/items", { credentials: "include" });
+      const cartRes = await fetch(`${API_BASE_URL}/api/cart/items`, { credentials: "include" });
       if (cartRes.ok) {
         const cartData = await cartRes.json();
         setCartCount((cartData?.cart?.products || []).reduce((sum, item) => sum + Number(item.quantity || 0), 0));
@@ -60,7 +61,7 @@ const ProductDetailsPage = () => {
 
   const fetchProduct = async () => {
     try {
-      const response = await fetch(`http://localhost:9090/api/products/${productId}`, { credentials: "include" });
+      const response = await fetch(`${API_BASE_URL}/api/products/${productId}`, { credentials: "include" });
       if (response.status === 401 || response.status === 403) {
         navigate("/");
         return;
@@ -83,7 +84,7 @@ const ProductDetailsPage = () => {
     if (!product) return;
 
     try {
-      const response = await fetch("http://localhost:9090/api/cart/add", {
+      const response = await fetch(`${API_BASE_URL}/api/cart/add`, {
         method: "POST",
         credentials: "include",
         headers: { "Content-Type": "application/json" },
@@ -128,7 +129,7 @@ const ProductDetailsPage = () => {
   const submitReview = async (event) => {
     event.preventDefault();
     try {
-      const response = await fetch("http://localhost:9090/api/reviews", {
+      const response = await fetch(`${API_BASE_URL}/api/reviews`, {
         method: "POST",
         credentials: "include",
         headers: { "Content-Type": "application/json" },

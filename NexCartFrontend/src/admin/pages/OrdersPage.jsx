@@ -4,7 +4,7 @@ import DataTable from "../components/DataTable";
 import AdminSelect from "../components/AdminSelect";
 import { adminApi } from "../services/adminApi";
 import { formatCurrency, formatDate } from "../utils/format";
-import { useToast } from "../../components/ui/ToastProvider";
+import { useToast } from "../../components/ui/toastContext";
 
 const statuses = [
   "ALL",

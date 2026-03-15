@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import SupportLayout from "./SupportLayout";
-import { useToast } from "../../../components/ui/ToastProvider";
+import { useToast } from "../../../components/ui/toastContext";
+import API_BASE_URL from '../../../config/api';
 
 export default function HelpCenterPage() {
   const [topics, setTopics] = useState([]);
@@ -11,7 +12,7 @@ export default function HelpCenterPage() {
   useEffect(() => {
     const fetchHelp = async () => {
       try {
-        const response = await fetch("http://localhost:9090/api/support/help-center", {
+        const response = await fetch(`${API_BASE_URL}/api/support/help-center`, {
           credentials: "include",
           cache: "no-store",
         });
@@ -29,7 +30,7 @@ export default function HelpCenterPage() {
   const submitGeneralTicket = async (event) => {
     event.preventDefault();
     setSubmitting(true);    try {
-      const response = await fetch("http://localhost:9090/api/support/tickets", {
+      const response = await fetch(`${API_BASE_URL}/api/support/tickets`, {
         method: "POST",
         credentials: "include",
         headers: { "Content-Type": "application/json" },
