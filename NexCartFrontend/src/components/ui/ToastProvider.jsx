@@ -1,12 +1,5 @@
-import React, { createContext, useCallback, useContext, useMemo, useState } from "react";
-
-const ToastContext = createContext({
-  showToast: () => {},
-  success: () => {},
-  error: () => {},
-  info: () => {},
-  warning: () => {},
-});
+import React, { useCallback, useMemo, useState } from "react";
+import { ToastContext } from "./toastContext";
 
 const toneStyles = {
   success: "border-emerald-200 bg-emerald-50 text-emerald-800",
@@ -67,6 +60,3 @@ export function ToastProvider({ children }) {
   );
 }
 
-export function useToast() {
-  return useContext(ToastContext);
-}
