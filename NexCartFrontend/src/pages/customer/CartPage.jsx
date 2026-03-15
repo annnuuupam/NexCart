@@ -2,7 +2,7 @@ import React, { useEffect, useMemo, useState } from "react";
 import "../../styles/CartPage.css";
 import { Header } from "../../components/layout/Header";
 import { Footer } from "../../components/layout/Footer";
-import { useToast } from "../../components/ui/toastContext";
+import { useToast } from "../../components/ui/ToastContext";
 import { CardSkeleton } from "../../components/ui/Skeletons";
 import { useNavigate } from "react-router-dom";
 import API_BASE_URL from '../../config/api';

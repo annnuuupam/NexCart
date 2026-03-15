@@ -5,7 +5,7 @@ import DataTable from "../components/DataTable";
 import AdminSelect from "../components/AdminSelect";
 import { adminApi } from "../services/adminApi";
 import { formatCurrency, formatNumber } from "../utils/format";
-import { useToast } from "../../components/ui/toastContext";
+import { useToast } from "../../components/ui/ToastContext";
 import { TableRowSkeleton } from "../../components/ui/Skeletons";
 
 const emptyForm = {

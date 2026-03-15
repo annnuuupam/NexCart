@@ -1,7 +1,7 @@
 import React, { useEffect, useMemo, useState } from "react";
 import { Header } from "../../components/layout/Header";
 import { Footer } from "../../components/layout/Footer";
-import { useToast } from "../../components/ui/toastContext";
+import { useToast } from "../../components/ui/ToastContext";
 import "../../styles/styles.css";
 import API_BASE_URL from '../../config/api';
 

@@ -17,7 +17,7 @@ import StatCard from "../components/StatCard";
 import DataTable from "../components/DataTable";
 import { adminApi } from "../services/adminApi";
 import { formatCurrency, formatNumber, formatDate } from "../utils/format";
-import { useToast } from "../../components/ui/toastContext";
+import { useToast } from "../../components/ui/ToastContext";
 import { CardSkeleton } from "../../components/ui/Skeletons";
 
 const formatCompact = (value) => {

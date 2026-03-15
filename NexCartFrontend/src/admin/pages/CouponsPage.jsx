@@ -3,7 +3,7 @@ import { Plus, Trash2, Search, RefreshCw, Power } from "lucide-react";
 import DataTable from "../components/DataTable";
 import AdminSelect from "../components/AdminSelect";
 import { adminApi } from "../services/adminApi";
-import { useToast } from "../../components/ui/toastContext";
+import { useToast } from "../../components/ui/ToastContext";
 
 const formatDate = (value) => {
   if (!value) return "-";

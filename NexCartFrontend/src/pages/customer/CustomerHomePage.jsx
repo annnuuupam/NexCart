@@ -4,7 +4,7 @@ import { ProductList } from "../../components/product/ProductList";
 import { ProductCardSkeleton } from "../../components/ui/Skeletons";
 import { Footer } from "../../components/layout/Footer";
 import { Header } from "../../components/layout/Header";
-import { useToast } from "../../components/ui/toastContext";
+import { useToast } from "../../components/ui/ToastContext";
 
 import "../../styles/styles.css";
 import API_BASE_URL from '../../config/api';

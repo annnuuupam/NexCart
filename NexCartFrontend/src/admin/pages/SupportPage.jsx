@@ -3,7 +3,7 @@ import DataTable from "../components/DataTable";
 import AdminSelect from "../components/AdminSelect";
 import { adminApi } from "../services/adminApi";
 import { formatDate } from "../utils/format";
-import { useToast } from "../../components/ui/toastContext";
+import { useToast } from "../../components/ui/ToastContext";
 
 const statusOptions = ["OPEN", "IN_PROGRESS", "RESOLVED", "CLOSED"];
 

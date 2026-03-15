@@ -3,7 +3,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import { ShieldCheck, Truck, RotateCcw, Star, Heart, ShoppingCart } from "lucide-react";
 import { Header } from "../../components/layout/Header";
 import { Footer } from "../../components/layout/Footer";
-import { useToast } from "../../components/ui/toastContext";
+import { useToast } from "../../components/ui/ToastContext";
 import "../../styles/styles.css";
 import { ProductCardSkeleton } from "../../components/ui/Skeletons";
 import API_BASE_URL from '../../config/api';

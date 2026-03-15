@@ -1,7 +1,7 @@
 import React, { useEffect, useMemo, useState } from "react";
 import { Building2, CreditCard, Truck, ShieldCheck, Save, RefreshCw, CheckCircle2, AlertCircle, Percent } from "lucide-react";
 import { adminApi } from "../services/adminApi";
-import { useToast } from "../../components/ui/toastContext";
+import { useToast } from "../../components/ui/ToastContext";
 
 const defaultStore = {
   storeName: "",

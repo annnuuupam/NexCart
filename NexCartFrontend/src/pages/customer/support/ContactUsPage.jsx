@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import SupportLayout from "./SupportLayout";
-import { useToast } from "../../../components/ui/toastContext";
+import { useToast } from "../../../components/ui/ToastContext";
 import API_BASE_URL from '../../../config/api';
 
 export default function ContactUsPage() {
