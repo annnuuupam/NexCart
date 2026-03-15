@@ -179,7 +179,57 @@ flowchart TD
   B --> G["Support Tickets"]
   B --> H["Store Settings"]
 ```
+---
 
+# 8. Workflow
+
+1. User logs in and receives a JWT cookie.  
+2. Frontend fetches products and categories.  
+3. User adds items to cart; stock is validated.  
+4. Checkout calculates totals using system settings.  
+5. Payment order is created (Razorpay) or COD is placed.  
+6. Payment verification confirms order and updates inventory.  
+7. Orders page shows status, invoice, and return/refund options.  
+
+## Workflow Diagram
+
+```mermaid
+flowchart TD
+  A["Login"] --> B["Browse Products"]
+  B --> C["Add to Cart"]
+  C --> D["Apply Coupon"]
+  D --> E["Checkout"]
+  E --> F{"Payment Method"}
+  F -->|Razorpay| G["Create Order"]
+  F -->|COD| H["Place COD Order"]
+  G --> I["Verify Payment"]
+  I --> J["Save Order + Items"]
+  H --> J
+  J --> K["Update Stock + Clear Cart"]
+  K --> L["Order Tracking + Returns"]
+```
+
+## Payment Verification Sequence
+
+```mermaid
+sequenceDiagram
+  participant FE as React UI
+  participant BE as Spring Boot API
+  participant RP as Razorpay
+  participant DB as MySQL
+
+  FE->>BE: POST /api/payment/create
+  BE->>RP: Create Razorpay order
+  RP-->>BE: order_id
+  BE-->>FE: order_id + totals
+  FE->>RP: User completes payment
+  FE->>BE: POST /api/payment/verify
+  BE->>RP: Verify signature
+  RP-->>BE: Signature OK
+  BE->>DB: Save order + items
+  BE->>DB: Update stock + clear cart
+  BE-->>FE: Payment success
+```
 ## Contributing
 
 Pull requests are welcome. Please open an issue first to discuss major changes.
