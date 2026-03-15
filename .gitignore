@@ -1,0 +1,18 @@
+# Spring Boot
+target/
+*.log
+
+# Node / React
+node_modules/
+build/
+
+# Environment variables
+.env
+
+# IDE files
+.vscode/
+.idea/
+
+# OS files
+.DS_Store
+Thumbs.db
