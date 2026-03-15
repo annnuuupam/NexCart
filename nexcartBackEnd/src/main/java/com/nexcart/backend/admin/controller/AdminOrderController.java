@@ -35,12 +35,12 @@ public class AdminOrderController {
             String status = String.valueOf(request.get("status"));
             String trackingNumber = request.get("trackingNumber") == null ? null : String.valueOf(request.get("trackingNumber"));
             Order updated = adminOrderService.updateOrderStatus(orderId, status, trackingNumber);
-            return ResponseEntity.ok(Map.of(
-                    "orderId", updated.getOrderId(),
-                    "status", updated.getOrderStatus().name(),
-                    "updatedAt", updated.getUpdatedAt(),
-                    "trackingNumber", updated.getTrackingNumber()
-            ));
+            Map<String, Object> response = new java.util.HashMap<>();
+            response.put("orderId", updated.getOrderId());
+            response.put("status", updated.getOrderStatus() != null ? updated.getOrderStatus().name() : null);
+            response.put("updatedAt", updated.getUpdatedAt());
+            response.put("trackingNumber", updated.getTrackingNumber());
+            return ResponseEntity.ok(response);
         } catch (IllegalArgumentException e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
         } catch (Exception e) {

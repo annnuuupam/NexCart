@@ -1,6 +1,6 @@
 import React, { useEffect, useMemo, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { ShieldCheck, Truck, RotateCcw, Star, Heart, ShoppingCart } from "lucide-react";
+import { ShieldCheck, Truck, RotateCcw, Star, Heart, ShoppingCart, ArrowLeft } from "lucide-react";
 import { Header } from "../../components/layout/Header";
 import { Footer } from "../../components/layout/Footer";
 import { useToast } from "../../components/ui/ToastContext";
@@ -175,7 +175,14 @@ const ProductDetailsPage = () => {
     <div className="customer-homepage">
       <Header cartCount={cartCount} username={username} />
       <main className="main-content product-page-main">
-        <button type="button" className="back-button" onClick={() => navigate("/customerhome")}>Back to products</button>
+        <button
+          type="button"
+          className="inline-flex w-fit items-center gap-2 rounded-full border-2 border-indigo-200 bg-indigo-50/50 px-6 py-2.5 text-sm font-bold text-indigo-700 transition-all hover:bg-indigo-100 hover:text-indigo-800 dark:border-indigo-500/30 dark:bg-indigo-500/10 dark:text-indigo-400 dark:hover:bg-indigo-500/20 mb-6 mt-4 ml-6"
+          onClick={() => navigate("/customerhome")}
+        >
+          <ArrowLeft size={16} className="text-indigo-500 dark:text-indigo-400" />
+          Back to products
+        </button>
 
         <section className="pdp-grid">
           <div className="pdp-gallery-card">

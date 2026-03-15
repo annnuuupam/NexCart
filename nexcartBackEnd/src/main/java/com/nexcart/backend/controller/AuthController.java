@@ -88,16 +88,16 @@ public class AuthController {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(Map.of("error", "User not authenticated"));
         }
 
-        return ResponseEntity.ok(Map.of(
-                "userId", user.getUserId(),
-                "username", user.getUsername(),
-                "email", user.getEmail(),
-                "phone", user.getPhone() == null ? "" : user.getPhone(),
-                "role", user.getRole().name(),
-                "status", user.getStatus(),
-                "blocked", user.getBlocked(),
-                "lastLoginAt", user.getLastLoginAt()
-        ));
+        Map<String, Object> responseUser = new HashMap<>();
+        responseUser.put("userId", user.getUserId());
+        responseUser.put("username", user.getUsername());
+        responseUser.put("email", user.getEmail());
+        responseUser.put("phone", user.getPhone() == null ? "" : user.getPhone());
+        responseUser.put("role", user.getRole().name());
+        responseUser.put("status", user.getStatus());
+        responseUser.put("blocked", user.getBlocked());
+        responseUser.put("lastLoginAt", user.getLastLoginAt());
+        return ResponseEntity.ok(responseUser);
     }
 
     @PostMapping("/forgot-password")

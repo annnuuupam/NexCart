@@ -5,6 +5,7 @@ import { Footer } from "../../components/layout/Footer";
 import { useToast } from "../../components/ui/ToastContext";
 import { CardSkeleton } from "../../components/ui/Skeletons";
 import { useNavigate } from "react-router-dom";
+import { ArrowLeft } from "lucide-react";
 import API_BASE_URL from '../../config/api';
 
 const formatPrice = (value) => `Rs. ${Number(value || 0).toFixed(2)}`;
@@ -555,7 +556,14 @@ const CartPage = () => {
         ) : (
           <div className="cart-container">
             <div className="cart-page">
-              <button type="button" className="back-button" onClick={() => navigate("/customerhome")}>Continue shopping</button>
+              <button
+                type="button"
+                className="inline-flex w-fit items-center gap-2 rounded-full border-2 border-indigo-200 bg-indigo-50/50 px-6 py-2.5 text-sm font-bold text-indigo-700 transition-all hover:bg-indigo-100 hover:text-indigo-800 dark:border-indigo-500/30 dark:bg-indigo-500/10 dark:text-indigo-400 dark:hover:bg-indigo-500/20 mb-6"
+                onClick={() => navigate("/customerhome")}
+              >
+                <ArrowLeft size={16} className="text-indigo-500 dark:text-indigo-400" />
+                Continue shopping
+              </button>
 
               <div className="cart-header">
                 <h2>Shopping Cart</h2>
