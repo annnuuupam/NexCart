@@ -1,371 +1,185 @@
-# NexCart – Full Stack E-Commerce Platform
+# NexCart - Full Stack E-Commerce Platform
 
-NexCart is a full-stack e-commerce platform designed to provide a complete online shopping experience.  
-It includes a **customer storefront**, **secure checkout**, and an **admin dashboard** for managing products, orders, users, and support operations.
+## Project Title
+NexCart
 
-The **frontend** is built with **React (Vite)** and the **backend** uses **Spring Boot with JPA/Hibernate**, connected to a **MySQL database**.
+## Project Overview
+NexCart is a full-stack e-commerce platform that delivers a complete customer shopping journey and a dedicated admin operations console. The frontend is a React (Vite) single-page app and the backend is a Spring Boot REST API backed by MySQL. Authentication uses JWT stored in HttpOnly cookies, and core flows include catalog browsing, cart management, checkout, payments, order tracking, returns, and customer support.
 
-The system supports:
+## Problem Statement
+Growing retail teams often juggle separate tools for catalog management, secure checkout, order lifecycle, and post-purchase support. That fragmentation leads to operational bottlenecks and inconsistent customer experiences.
 
-- JWT authentication using HTTP-only cookies
-- Razorpay payment integration
-- Coupon validation
-- Order tracking
-- Return and refund workflows
-- Admin analytics dashboard
+## Solution Description
+NexCart consolidates customer and admin workflows into a single platform. The customer app focuses on browsing, cart, checkout, and support. The admin console provides catalog management, order operations, customer management, coupon control, analytics, and system settings. A Spring Boot API enforces role-based access, secures sessions via JWT cookies, and coordinates payments via Razorpay or COD.
 
----
+## Complete Feature List
+Customer features
+- Account registration, login, logout, and profile management
+- Product listing with search and category filtering
+- Product detail page with images and reviews
+- Cart management with stock validation
+- Coupon discovery and validation
+- Checkout with shipping, tax, and payment method selection
+- Razorpay checkout and COD flow
+- Order history with tracking and return requests
+- Support center content and ticketing
+- Password reset with captcha and rate limiting
 
-# Tech Stack
+Admin features
+- Business dashboard overview and analytics
+- Product and category CRUD with image management
+- Order status and return management
+- Customer search, block/unblock, and profile edits
+- Coupon lifecycle management
+- Support ticket queue and reset audit logs
+- System settings for store, shipping, tax, and payment options
+- Password reset email template editing
 
-## Frontend
-- React 19
-- React Router 7
-- Vite
-- Tailwind CSS
-- Axios
-- Recharts
-- Framer Motion
-- Lucide Icons
+For a full breakdown, see `FEATURES.md`.
 
-## Backend
-- Spring Boot 3.4
-- Spring Web
-- Spring Data JPA
-- JWT Authentication (JJWT)
-- BCrypt Password Hashing
+## Tech Stack
+Frontend
+- React 19, React Router 7, Vite 7
+- Tailwind CSS 4, custom CSS
+- Axios, Fetch
+- Recharts, Framer Motion, Lottie
+
+Backend
+- Spring Boot 3.4 (Java 17)
+- Spring Web, Spring Data JPA
+- JWT (jjwt), BCrypt
 - Razorpay Java SDK
+- JavaMail (password reset emails)
 
-## Database
+Database
 - MySQL
 
-## Tools
-- Maven
-- Node.js
-- npm
+Tools
+- Maven, Node.js, npm
 
----
-
-# Project Structure
-
-```
-NexCart/
-│
-├── NexCartFrontend/           # React Frontend (Customer + Admin UI)
-│   └── src/
-│       ├── pages/             # Customer and Admin pages
-│       ├── components/        # Reusable UI components
-│       ├── admin/             # Admin layout, services and features
-│       └── routes/            # Application routing
-│
-└── nexcartBackEnd/            # Spring Boot Backend
-    └── src/main/
-        ├── java/              # Controllers, Services, Entities
-        └── resources/
-            └── db/            # SQL schema, seed data, migrations
-```
-
----
-
-# System Architecture
-
+## System Architecture Overview
 ```mermaid
 flowchart LR
-  UI["React SPA (Vite)"] -->|REST API| API["Spring Boot Controllers"]
+  UI["React SPA (Vite)"] -->|REST + Cookies| API["Spring Boot Controllers"]
   API --> SVC["Service Layer"]
-  SVC --> JPA["JPA Repositories"]
-  JPA --> DB["MySQL Database"]
-  API --> PAY["Razorpay Payment Gateway"]
+  SVC --> REPO["JPA Repositories"]
+  REPO --> DB[("MySQL")]
+  API --> RP["Razorpay API"]
+  API --> MAIL["SMTP Provider"]
 ```
 
----
-
-# Authentication Flow
-
-```mermaid
-sequenceDiagram
-  participant U as User
-  participant FE as React UI
-  participant BE as Spring Boot API
-  participant DB as MySQL
-
-  U->>FE: Enter login credentials
-  FE->>BE: POST /api/auth/login
-  BE->>DB: Validate user credentials
-  DB-->>BE: User record
-  BE-->>FE: Set HTTP-only JWT cookie
-  FE->>BE: Request protected API
-  BE->>BE: Validate JWT token
-  BE-->>FE: Return protected resource
+## Folder Structure
+```
+NexCart/
++-- NexCartFrontend/          # React customer + admin UI
++-- nexcartBackEnd/           # Spring Boot REST API
++-- dashboard_import/         # Separate admin dashboard template
++-- README.md                 # Main project documentation
++-- ARCHITECTURE.md           # System architecture
++-- API_DOCUMENTATION.md      # API reference
++-- DATABASE_SCHEMA.md        # Database schema and ERD
++-- FEATURES.md               # Feature inventory
++-- WORKFLOW.md               # Workflows and sequence diagrams
++-- DEPLOYMENT.md             # Deployment guide
 ```
 
----
+See `FOLDER_STRUCTURE.md` for a complete breakdown.
 
-# Checkout Workflow
+## Installation Instructions
+Prerequisites
+- Java 17
+- Maven 3.9+
+- Node.js 18+
+- MySQL 8+
 
-```mermaid
-sequenceDiagram
-  participant U as User
-  participant FE as React UI
-  participant BE as Spring Boot API
-  participant RP as Razorpay
-  participant DB as MySQL
-
-  U->>FE: Add product to cart
-  FE->>BE: POST /api/cart/add
-  BE->>DB: Validate stock + update cart
-
-  U->>FE: Checkout
-  FE->>BE: POST /api/payment/create
-  BE->>RP: Create payment order
-
-  RP-->>BE: order_id
-  BE-->>FE: order_id + total amount
-
-  FE->>RP: Complete payment
-  FE->>BE: POST /api/payment/verify
-
-  BE->>DB: Save order details
-  BE->>DB: Reduce product stock
-  BE->>DB: Clear cart
-
-  BE-->>FE: Payment successful
-```
-
----
-
-# Features
-
-## Customer Features
-- User registration and login with JWT authentication
-- Product listing with search, filters, and pagination
-- Product detail page with reviews
-- Shopping cart with stock validation
-- Secure checkout process
-- Razorpay payment gateway integration
-- Cash on Delivery (COD) option
-- Order tracking
-- Invoice view and download
-- Return and refund request system
-
-## Admin Features
-- Admin dashboard with business analytics
-- Product and category management
-- Order and return management
-- User management
-- Coupon and promotion management
-- Customer support ticket system
-- Store configuration and settings
-
----
-
-# Installation Guide
-
-## Backend Setup (Spring Boot)
-
-1. Navigate to backend folder
-
-```
+Backend setup
+1. Configure database and secrets in `C:\Users\anupa\OneDrive\Desktop\NexCart\nexcartBackEnd\src\main\resources\application.properties`.
+2. Run the backend:
+```bash
 cd nexcartBackEnd
-```
-
-2. Configure database and secrets in
-
-```
-src/main/resources/application.properties
-```
-
-3. Run backend server
-
-```
 ./mvnw spring-boot:run
 ```
+Backend runs at `http://localhost:9090`.
 
-Backend runs at
-
+Frontend setup
+1. Configure API base URL in `C:\Users\anupa\OneDrive\Desktop\NexCart\NexCartFrontend\.env.local`:
 ```
-http://localhost:9090
+VITE_API_URL=http://localhost:9090
 ```
-
----
-
-## Frontend Setup (React)
-
-1. Navigate to frontend folder
-
-```
+2. Run the frontend:
+```bash
 cd NexCartFrontend
-```
-
-2. Install dependencies
-
-```
 npm install
-```
-
-3. Start development server
-
-```
 npm run dev
 ```
+Frontend runs at `http://localhost:5174`.
 
-Frontend runs at
+## Running the Application
+1. Start MySQL and ensure the `nexcart` database is available.
+2. Start the backend on port 9090.
+3. Start the frontend on port 5174.
+4. Open `http://localhost:5174` for customer login.
+5. Open `http://localhost:5174/admin` for admin login.
 
+Admin bootstrap credentials
+- Username and password are defined in `C:\Users\anupa\OneDrive\Desktop\NexCart\nexcartBackEnd\src\main\resources\application.properties` under `admin.bootstrap.*`.
+
+## Environment Variables
+Frontend
+- `VITE_API_URL` = backend base URL
+
+Backend (recommended as environment variables in production)
+- `SPRING_DATASOURCE_URL`
+- `SPRING_DATASOURCE_USERNAME`
+- `SPRING_DATASOURCE_PASSWORD`
+- `JWT_SECRET`
+- `RAZORPAY_KEY_ID`
+- `RAZORPAY_KEY_SECRET`
+- `SPRING_MAIL_HOST`, `SPRING_MAIL_PORT`, `SPRING_MAIL_USERNAME`, `SPRING_MAIL_PASSWORD`
+
+See `DEPLOYMENT.md` for production guidance.
+
+## Build Instructions
+Frontend
+```bash
+cd NexCartFrontend
+npm run build
 ```
-http://localhost:5174
+Output: `NexCartFrontend\dist`
+
+Backend
+```bash
+cd nexcartBackEnd
+./mvnw -DskipTests package
 ```
+Output: `nexcartBackEnd\target\*.jar`
 
----
+## Deployment Instructions
+- Backend can be deployed as a Spring Boot jar or via Docker (see `nexcartBackEnd\Dockerfile`).
+- Frontend can be deployed to Vercel, Netlify, or any static host.
 
-# Usage
+Full deployment instructions are in `DEPLOYMENT.md`.
 
-1. Open the application
+## Screenshots
+Place product screenshots in the repository and reference them here. Example assets currently in the repo:
+- `NexCartFrontend\public\background.png`
+- `NexCartFrontend\public\background1.png`
+- `NexCartFrontend\public\shipped.jpg`
 
-```
-http://localhost:5174
-```
+## Future Enhancements
+- Refresh token rotation and session management dashboard
+- Background jobs for emails and order notifications
+- Redis caching for product and settings
+- Advanced search and faceted filtering
+- CI pipeline with automated tests and linting
 
-2. Register or login as a customer.
-
-3. Admin users can access the admin panel
-
-```
-/admin
-```
-
-Admin bootstrap credentials are available in
-
-```
-nexcartBackEnd/src/main/resources/application.properties
-```
-
----
-
-# API Overview
-
-All APIs are served from
-
-```
-http://localhost:9090
-```
-
-## Customer APIs
-
-```
-POST /api/auth/login
-GET /api/products
-POST /api/cart/add
-POST /api/payment/create
-POST /api/payment/verify
-```
-
-## Admin APIs
-
-```
-GET  /admin/dashboard/overview
-POST /admin/products/add
-PUT  /admin/orders/status
-GET  /admin/support/tickets
-```
-
----
-
-# Database Schema
-
-```mermaid
-erDiagram
-  USERS ||--o{ ORDERS : places
-  USERS ||--o{ CART_ITEMS : has
-  CATEGORIES ||--o{ PRODUCTS : contains
-  PRODUCTS ||--o{ PRODUCTIMAGES : has
-  ORDERS ||--o{ ORDER_ITEMS : includes
-  PRODUCTS ||--o{ ORDER_ITEMS : ordered_as
-  ORDERS ||--o{ PAYMENTS : paid_by
-  ORDERS ||--o{ RETURNS : may_have
-```
-
----
-
-# Admin Dashboard Overview
-
-```mermaid
-flowchart TD
-  A["Admin Login"] --> B["Dashboard KPIs"]
-  B --> C["Products & Categories"]
-  B --> D["Orders & Returns"]
-  B --> E["Users & Access Control"]
-  B --> F["Coupons & Promotions"]
-  B --> G["Support Tickets"]
-  B --> H["Store Settings"]
-```
-
----
-
-# Application Workflow
-
-1. User logs in and receives a JWT authentication cookie  
-2. Frontend fetches products and categories  
-3. User adds items to cart  
-4. System validates stock availability  
-5. Checkout calculates tax, shipping, and coupons  
-6. User selects Razorpay or COD payment  
-7. Payment verification confirms order  
-8. System updates inventory and clears cart  
-9. User can track orders and request returns  
-
----
-
-# Workflow Diagram
-
-```mermaid
-flowchart TD
-  A["Login"] --> B["Browse Products"]
-  B --> C["Add to Cart"]
-  C --> D["Apply Coupon"]
-  D --> E["Checkout"]
-  E --> F{"Payment Method"}
-  F -->|Razorpay| G["Create Payment Order"]
-  F -->|COD| H["Place COD Order"]
-  G --> I["Verify Payment"]
-  I --> J["Save Order + Items"]
-  H --> J
-  J --> K["Update Stock + Clear Cart"]
-  K --> L["Order Tracking + Returns"]
-```
-
----
-
-# Payment Verification Flow
-
-```mermaid
-sequenceDiagram
-  participant FE as React UI
-  participant BE as Spring Boot API
-  participant RP as Razorpay
-  participant DB as MySQL
-
-  FE->>BE: POST /api/payment/create
-  BE->>RP: Create Razorpay order
-  RP-->>BE: order_id
-  BE-->>FE: order details
-
-  FE->>RP: User completes payment
-  FE->>BE: POST /api/payment/verify
-
-  BE->>RP: Verify payment signature
-  RP-->>BE: Signature verified
-
-  BE->>DB: Save order
-  BE->>DB: Update inventory
-  BE->>DB: Clear cart
-
-  BE-->>FE: Payment successful
-```
-
----
-
-# Contributing
-
-Pull requests are welcome.
-
-Please open an issue first to discuss major changes before submitting a pull request.
+## Additional Docs
+- `ARCHITECTURE.md`
+- `API_DOCUMENTATION.md`
+- `DATABASE_SCHEMA.md`
+- `FEATURES.md`
+- `WORKFLOW.md`
+- `SECURITY.md`
+- `DEPLOYMENT.md`
+- `CONTRIBUTING.md`
+- `FOLDER_STRUCTURE.md`
