@@ -2,6 +2,7 @@
 
 ## Root
 - `C:\Users\anupa\OneDrive\Desktop\NexCart\README.md` Main project overview
+- `C:\Users\anupa\OneDrive\Desktop\NexCart\DOCUMENTATION_INDEX.md` Documentation landing page
 - `C:\Users\anupa\OneDrive\Desktop\NexCart\ARCHITECTURE.md` System architecture details
 - `C:\Users\anupa\OneDrive\Desktop\NexCart\API_DOCUMENTATION.md` REST API reference
 - `C:\Users\anupa\OneDrive\Desktop\NexCart\DATABASE_SCHEMA.md` Database schema and ER diagrams

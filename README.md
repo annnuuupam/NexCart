@@ -75,6 +75,7 @@ NexCart/
 +-- nexcartBackEnd/           # Spring Boot REST API
 +-- dashboard_import/         # Separate admin dashboard template
 +-- README.md                 # Main project documentation
++-- DOCUMENTATION_INDEX.md    # Documentation landing page
 +-- ARCHITECTURE.md           # System architecture
 +-- API_DOCUMENTATION.md      # API reference
 +-- DATABASE_SCHEMA.md        # Database schema and ERD
@@ -174,6 +175,7 @@ Place product screenshots in the repository and reference them here. Example ass
 - CI pipeline with automated tests and linting
 
 ## Additional Docs
+- `DOCUMENTATION_INDEX.md`
 - `ARCHITECTURE.md`
 - `API_DOCUMENTATION.md`
 - `DATABASE_SCHEMA.md`

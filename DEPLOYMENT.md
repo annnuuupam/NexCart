@@ -74,6 +74,18 @@ npm run build
 2. Deploy `NexCartFrontend\dist` to Vercel, Netlify, or Nginx.
 3. Set `VITE_API_URL` for your backend URL.
 
+## Reference Production Topology
+This diagram reflects a common deployment aligned with the current config and repository notes: frontend on Vercel, backend on Render, and a managed MySQL instance.
+
+```mermaid
+flowchart LR
+  U["User Browser"] --> FE["Vercel - NexCartFrontend"]
+  FE -->|REST + Cookies| BE["Render - Spring Boot API"]
+  BE --> DB["Managed MySQL"]
+  BE --> RP["Razorpay API"]
+  BE --> SMTP["SMTP Provider"]
+```
+
 ## Server Setup Steps
 - Create a production database and run `nexcart_schema.sql` and seed scripts
 - Set `JWT_SECRET` to a 64+ character value

@@ -165,6 +165,7 @@ Deployment details in `DEPLOYMENT.md`.
 - Production should enable HTTPS and secure cookies
 
 ## 14. Documentation Index
+- DOCUMENTATION_INDEX.md
 - README.md
 - ARCHITECTURE.md
 - API_DOCUMENTATION.md
