@@ -131,6 +131,9 @@ export default function OrdersPage() {
   const [isCartLoading, setIsCartLoading] = useState(true);
   const [returnDialog, setReturnDialog] = useState({ open: false, orderId: "", productId: null, productName: "", reason: "", requestType: "RETURN" });
   const [returnLoading, setReturnLoading] = useState(false);
+  const [statusFilter, setStatusFilter] = useState("ALL");
+  const [timeFilter, setTimeFilter] = useState("ALL");
+  const [sortFilter, setSortFilter] = useState("NEWEST");
 
   useEffect(() => {
     fetchOrders();
@@ -220,12 +223,54 @@ export default function OrdersPage() {
     });
   }, [orders]);
 
+  const filteredOrders = useMemo(() => {
+    const now = new Date();
+    const currentYear = now.getFullYear();
+
+    return groupedOrders
+      .filter((order) => {
+        const statusLabel = normalizeStatus(order.orderStatus || order.status || "");
+        if (statusFilter !== "ALL" && statusLabel.toUpperCase() !== statusFilter) {
+          return false;
+        }
+
+        if (!order.createdAt) return true;
+        const createdAt = new Date(order.createdAt);
+        if (Number.isNaN(createdAt.getTime())) return true;
+
+        if (timeFilter === "LAST_30") {
+          const cutoff = new Date(now);
+          cutoff.setDate(cutoff.getDate() - 30);
+          return createdAt >= cutoff;
+        }
+        if (timeFilter === "LAST_90") {
+          const cutoff = new Date(now);
+          cutoff.setDate(cutoff.getDate() - 90);
+          return createdAt >= cutoff;
+        }
+        if (timeFilter === "THIS_YEAR") {
+          return createdAt.getFullYear() === currentYear;
+        }
+
+        return true;
+      })
+      .sort((a, b) => {
+        const aTime = a.createdAt ? new Date(a.createdAt).getTime() : 0;
+        const bTime = b.createdAt ? new Date(b.createdAt).getTime() : 0;
+
+        if (sortFilter === "OLDEST") return aTime - bTime;
+        if (sortFilter === "TOTAL_HIGH") return Number(b.totalAmount || 0) - Number(a.totalAmount || 0);
+        if (sortFilter === "TOTAL_LOW") return Number(a.totalAmount || 0) - Number(b.totalAmount || 0);
+        return bTime - aTime;
+      });
+  }, [groupedOrders, statusFilter, timeFilter, sortFilter]);
+
   const summary = useMemo(() => {
-    const totalOrders = groupedOrders.length;
-    const totalAmount = groupedOrders.reduce((acc, item) => acc + Number(item.totalAmount || 0), 0);
-    const totalItems = groupedOrders.reduce((acc, item) => acc + Number(item.totalItems || 0), 0);
+    const totalOrders = filteredOrders.length;
+    const totalAmount = filteredOrders.reduce((acc, item) => acc + Number(item.totalAmount || 0), 0);
+    const totalItems = filteredOrders.reduce((acc, item) => acc + Number(item.totalItems || 0), 0);
     return { totalOrders, totalAmount, totalItems };
-  }, [groupedOrders]);
+  }, [filteredOrders]);
 
   const openReturnDialog = (orderId, productId, productName) => {
     setReturnDialog({ open: true, orderId, productId, productName, reason: "", requestType: "RETURN" });
@@ -306,6 +351,73 @@ export default function OrdersPage() {
           </div>
         </section>
 
+        <section className="orders-filters" aria-label="Filter orders">
+          <div className="orders-filter-group">
+            <label className="orders-filter-label" htmlFor="orders-status-filter">Status</label>
+            <select
+              id="orders-status-filter"
+              className="orders-filter-select"
+              value={statusFilter}
+              onChange={(event) => setStatusFilter(event.target.value)}
+            >
+              <option value="ALL">All statuses</option>
+              <option value="PENDING">Pending</option>
+              <option value="CONFIRMED">Confirmed</option>
+              <option value="PROCESSING">Processing</option>
+              <option value="SHIPPED">Shipped</option>
+              <option value="OUT FOR DELIVERY">Out For Delivery</option>
+              <option value="DELIVERED">Delivered</option>
+              <option value="CANCELLED">Cancelled</option>
+              <option value="FAILED">Failed</option>
+              <option value="RETURN REQUESTED">Return Requested</option>
+              <option value="RETURN APPROVED">Return Approved</option>
+              <option value="REFUNDED">Refunded</option>
+            </select>
+          </div>
+          <div className="orders-filter-group">
+            <label className="orders-filter-label" htmlFor="orders-time-filter">Time</label>
+            <select
+              id="orders-time-filter"
+              className="orders-filter-select"
+              value={timeFilter}
+              onChange={(event) => setTimeFilter(event.target.value)}
+            >
+              <option value="ALL">All time</option>
+              <option value="LAST_30">Last 30 days</option>
+              <option value="LAST_90">Last 90 days</option>
+              <option value="THIS_YEAR">This year</option>
+            </select>
+          </div>
+          <div className="orders-filter-group">
+            <label className="orders-filter-label" htmlFor="orders-sort-filter">Sort by</label>
+            <select
+              id="orders-sort-filter"
+              className="orders-filter-select"
+              value={sortFilter}
+              onChange={(event) => setSortFilter(event.target.value)}
+            >
+              <option value="NEWEST">Newest first</option>
+              <option value="OLDEST">Oldest first</option>
+              <option value="TOTAL_HIGH">Order total: high to low</option>
+              <option value="TOTAL_LOW">Order total: low to high</option>
+            </select>
+          </div>
+          <div className="orders-filter-actions">
+            <button
+              type="button"
+              className="orders-filter-clear"
+              onClick={() => {
+                setStatusFilter("ALL");
+                setTimeFilter("ALL");
+                setSortFilter("NEWEST");
+              }}
+              disabled={statusFilter === "ALL" && timeFilter === "ALL" && sortFilter === "NEWEST"}
+            >
+              Clear
+            </button>
+          </div>
+        </section>
+
         {loading && (
           <section className="orders-skeleton-list" aria-label="Loading orders">
             {loadingSkeletons.map((key) => (
@@ -339,9 +451,16 @@ export default function OrdersPage() {
           </section>
         )}
 
-        {!loading && !error && groupedOrders.length > 0 && (
+        {!loading && !error && groupedOrders.length > 0 && filteredOrders.length === 0 && (
+          <section className="orders-empty">
+            <h2>No orders in this filter</h2>
+            <p>Try adjusting the filters to see more results.</p>
+          </section>
+        )}
+
+        {!loading && !error && filteredOrders.length > 0 && (
           <section className="orders-list-upgraded">
-            {groupedOrders.map((order) => {
+            {filteredOrders.map((order) => {
               const activeStep = getStepIndex(order.orderStatus);
               return (
                 <article key={order.orderId} className="order-card-upgraded order-card-market">
@@ -368,13 +487,25 @@ export default function OrdersPage() {
                   <p><span>Tracking</span><strong>{order.trackingNumber || "-"}</strong></p>
                   </div>
 
-                  <div className="order-timeline">
-                    {ORDER_STEPS.map((step, index) => (
-                      <div key={step} className={`order-timeline-step ${index <= activeStep ? "active" : ""}`}>
-                        <span>{normalizeStatus(step)}</span>
-                      </div>
-                    ))}
-                  </div>
+                  <ol className="order-timeline" aria-label="Order status">
+                    {ORDER_STEPS.map((step, index) => {
+                      const isComplete = index < activeStep;
+                      const isCurrent = index === activeStep;
+                      const isUpcoming = index > activeStep;
+
+                      return (
+                        <li
+                          key={step}
+                          className={`order-timeline-step ${isComplete ? "is-complete" : ""} ${isCurrent ? "is-current" : ""} ${isUpcoming ? "is-upcoming" : ""}`}
+                          aria-current={isCurrent ? "step" : undefined}
+                          aria-disabled={isUpcoming ? true : undefined}
+                        >
+                          <span className="order-timeline-node" aria-hidden="true" />
+                          <span className="order-timeline-label">{normalizeStatus(step)}</span>
+                        </li>
+                      );
+                    })}
+                  </ol>
 
                   <p className="order-desc"><strong>Shipping Address:</strong> {order.shippingAddress || "Not available"}</p>
 

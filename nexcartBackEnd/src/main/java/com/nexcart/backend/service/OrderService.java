@@ -20,6 +20,7 @@ import com.nexcart.backend.repository.ProductRepository;
 import com.nexcart.backend.repository.ReturnRequestRepository;
 import com.nexcart.backend.repository.SupportTicketRepository;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -51,6 +52,7 @@ public class OrderService {
         this.supportTicketRepository = supportTicketRepository;
     }
 
+    @Transactional(readOnly = true)
     public Map<String, Object> getOrdersForUser(User user) {
         List<OrderItem> orderItems = orderItemRepository.findSuccessfulOrderItemsByUserId(user.getUserId());
         List<ReturnRequest> returnRequests = returnRequestRepository.findByUserId(user.getUserId());
