@@ -195,11 +195,11 @@ const CustomersPage = () => {
 
   return (
     <section className="space-y-4">
-      <div className="grid gap-3 rounded-2xl border border-slate-200 bg-white p-4 shadow-sm md:grid-cols-5">
+      <div className="grid gap-3 rounded-2xl border border-slate-200 bg-white p-4 shadow-sm sm:grid-cols-2 lg:grid-cols-5">
         <input
           value={search}
           onChange={(event) => setSearch(event.target.value)}
-          className="md:col-span-2 w-full rounded-lg border border-slate-200 px-3 py-2"
+          className="sm:col-span-2 lg:col-span-2 w-full rounded-lg border border-slate-200 px-3 py-2"
           placeholder="Search by name, email, or phone"
         />
 
@@ -247,7 +247,7 @@ const CustomersPage = () => {
       )}
 
       {showPager ? (
-        <div className="flex items-center justify-between rounded-xl border border-slate-200 bg-white px-4 py-3 text-sm text-slate-600">
+        <div className="flex flex-col gap-3 rounded-xl border border-slate-200 bg-white px-4 py-3 text-sm text-slate-600 sm:flex-row sm:items-center sm:justify-between">
           <p>
             Page {pagination.page} of {pagination.totalPages}
           </p>
@@ -293,7 +293,7 @@ const CustomersPage = () => {
             <div className="mt-6">
               <h4 className="text-lg font-semibold text-slate-900">Order History</h4>
               <div className="mt-2 overflow-x-auto rounded-xl border border-slate-200">
-                <table className="min-w-full text-sm">
+                <table className="min-w-[640px] text-sm">
                   <thead className="bg-slate-50 text-left text-slate-600">
                     <tr>
                       <th className="px-3 py-2">Order ID</th>

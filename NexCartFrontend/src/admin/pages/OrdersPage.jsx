@@ -269,12 +269,12 @@ const OrdersPage = () => {
         </div>
       </div>
 
-      <div className="grid gap-3 rounded-2xl border border-slate-200 bg-white p-4 shadow-sm md:grid-cols-6">
+      <div className="grid gap-3 rounded-2xl border border-slate-200 bg-white p-4 shadow-sm sm:grid-cols-2 lg:grid-cols-6">
         <input
           value={search}
           onChange={(event) => setSearch(event.target.value)}
           placeholder="Search order id, customer, product"
-          className="md:col-span-2 w-full rounded-lg border border-slate-200 px-3 py-2"
+          className="sm:col-span-2 lg:col-span-2 w-full rounded-lg border border-slate-200 px-3 py-2"
         />
         <AdminSelect
           value={statusFilter}
@@ -305,7 +305,7 @@ const OrdersPage = () => {
             { value: "TOTAL_LOW", label: "Total low to high" },
           ]}
         />
-        <button onClick={() => loadOrders()} className="inline-flex items-center justify-center gap-2 rounded-lg border border-slate-200 px-3 py-2 text-sm font-semibold hover:bg-slate-50">
+        <button onClick={() => loadOrders()} className="inline-flex w-full items-center justify-center gap-2 rounded-lg border border-slate-200 px-3 py-2 text-sm font-semibold hover:bg-slate-50 sm:col-span-2 lg:col-span-1">
           <RefreshCw className={`h-4 w-4 ${loading ? "animate-spin" : ""}`} />
           Refresh Orders
         </button>
@@ -372,7 +372,7 @@ const OrdersPage = () => {
             <div className="mt-6">
               <h4 className="text-sm font-semibold text-slate-700">Line Items</h4>
               <div className="mt-2 overflow-x-auto rounded-xl border border-slate-200">
-                <table className="min-w-full text-xs">
+                <table className="min-w-[640px] text-xs">
                   <thead className="bg-slate-50 text-left text-slate-600">
                     <tr>
                       <th className="px-3 py-2">Product</th>

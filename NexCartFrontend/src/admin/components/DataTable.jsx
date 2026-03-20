@@ -3,7 +3,7 @@ import React from "react";
 const DataTable = ({ columns, data, emptyText = "No data available" }) => {
   return (
     <div className="overflow-x-auto overflow-y-visible rounded-2xl border border-slate-200 bg-white shadow-sm">
-      <table className="min-w-full text-sm">
+      <table className="min-w-[720px] sm:min-w-full text-sm">
         <thead className="bg-slate-50 text-left text-slate-600">
           <tr>
             {columns.map((column) => (

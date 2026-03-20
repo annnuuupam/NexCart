@@ -358,8 +358,8 @@ const ProductsPage = () => {
         </div>
       ) : null}
 
-      <div className="flex flex-wrap items-center justify-between gap-3">
-        <div className="flex items-center gap-3 rounded-xl border border-slate-200 bg-white px-3 py-2 shadow-sm">
+      <div className="flex flex-col gap-3 sm:flex-row sm:flex-wrap sm:items-center sm:justify-between">
+        <div className="flex w-full items-center gap-3 rounded-xl border border-slate-200 bg-white px-3 py-2 shadow-sm sm:w-auto">
           <Search className="h-4 w-4 text-slate-400" />
           <input
             value={searchTerm}
@@ -369,11 +369,11 @@ const ProductsPage = () => {
               updateSearchParams({ q: value.trim(), stock: lowStockOnly ? "low" : "", focus: focusedProductId });
             }}
             placeholder="Search products..."
-            className="w-52 bg-transparent text-sm outline-none"
+            className="w-full bg-transparent text-sm outline-none sm:w-56"
           />
         </div>
 
-        <div className="flex flex-wrap items-center gap-2">
+        <div className="flex w-full flex-wrap items-center gap-2 sm:w-auto">
           <AdminSelect
             value={categoryFilter}
             onChange={(value) => {
@@ -381,7 +381,7 @@ const ProductsPage = () => {
               setFocusedProductId(null);
             }}
             options={categoryOptions.map((option) => ({ value: option, label: option }))}
-            className="min-w-[160px]"
+            className="w-full sm:w-48"
           />
           <button
             type="button"
@@ -390,7 +390,7 @@ const ProductsPage = () => {
               setLowStockOnly(next);
               updateSearchParams({ q: searchTerm.trim(), stock: next ? "low" : "", focus: focusedProductId });
             }}
-            className={`rounded-xl px-3 py-2 text-sm font-semibold border ${lowStockOnly ? "border-amber-300 bg-amber-100 text-amber-700" : "border-slate-200 bg-white text-slate-700"}`}
+            className={`w-full sm:w-auto rounded-xl px-3 py-2 text-sm font-semibold border ${lowStockOnly ? "border-amber-300 bg-amber-100 text-amber-700" : "border-slate-200 bg-white text-slate-700"}`}
           >
             {lowStockOnly ? "Low Stock: ON" : "Low Stock: OFF"}
           </button>
@@ -404,7 +404,7 @@ const ProductsPage = () => {
                 setCategoryFilter("All");
                 setSearchParams(new URLSearchParams(), { replace: true });
               }}
-              className="rounded-xl border border-slate-200 px-3 py-2 text-sm font-semibold text-slate-600"
+              className="w-full sm:w-auto rounded-xl border border-slate-200 px-3 py-2 text-sm font-semibold text-slate-600"
             >
               Clear
             </button>
