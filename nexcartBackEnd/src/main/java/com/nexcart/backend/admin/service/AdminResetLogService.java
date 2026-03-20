@@ -1,7 +1,6 @@
 package com.nexcart.backend.admin.service;
 
 import java.time.LocalDateTime;
-import java.time.LocalDateTime;
 import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -62,8 +61,7 @@ public class AdminResetLogService {
     private String safe(Object value) {
         if (value == null) return "";
         String text = String.valueOf(value).replace("\"", "\"\"");
-        if (text.contains(",") || text.contains("
-")) {
+        if (text.contains(",") || text.contains("\n")) {
             return "\"" + text + "\"";
         }
         return text;

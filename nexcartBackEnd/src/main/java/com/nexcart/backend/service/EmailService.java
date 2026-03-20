@@ -62,8 +62,7 @@ public class EmailService {
         String subject = "NexCart password reset";
         String htmlBody = buildHtml(resetLink);
         String textBody = "You requested a password reset. Use the link below to set a new password:\n\n" + resetLink +
-                "
-\nIf you did not request this, you can ignore this email.";
+                "\n\nIf you did not request this, you can ignore this email.";
 
         try {
             MimeMessage mimeMessage = mailSender.createMimeMessage();
