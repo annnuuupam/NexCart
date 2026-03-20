@@ -185,3 +185,5 @@ Place product screenshots in the repository and reference them here. Example ass
 - `DEPLOYMENT.md`
 - `CONTRIBUTING.md`
 - `FOLDER_STRUCTURE.md`
+
+Deployment note: this commit triggers a fresh Vercel build.
