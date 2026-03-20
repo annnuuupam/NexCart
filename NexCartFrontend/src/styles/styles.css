@@ -3703,6 +3703,125 @@ html[data-theme="dark"] .product-meta {
   border-radius: 16px;
 }
 
+.header-actions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.header-icon-btn {
+  position: relative;
+  display: grid;
+  place-items: center;
+  height: 38px;
+  width: 38px;
+  border-radius: 999px;
+  border: 1px solid #e2e8f0;
+  background: #ffffff;
+  color: #0f172a;
+  transition: background 0.2s ease, color 0.2s ease;
+}
+
+.header-icon-btn:hover {
+  background: #f8fafc;
+}
+
+.header-notifications {
+  position: relative;
+}
+
+.header-notification-dot {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  height: 8px;
+  width: 8px;
+  border-radius: 999px;
+  background: #ef4444;
+  border: 2px solid #fff;
+}
+
+.header-notification-panel {
+  position: absolute;
+  right: 0;
+  top: calc(100% + 10px);
+  width: 320px;
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 16px;
+  box-shadow: 0 20px 40px rgba(15, 23, 42, 0.12);
+  z-index: 1200;
+  overflow: hidden;
+}
+
+.header-notification-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 16px;
+  font-weight: 600;
+  border-bottom: 1px solid #f1f5f9;
+}
+
+.header-notification-header button {
+  border: none;
+  background: none;
+  color: #2563eb;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.header-notification-list {
+  max-height: 280px;
+  overflow-y: auto;
+}
+
+.header-notification-item {
+  width: 100%;
+  text-align: left;
+  border: none;
+  background: transparent;
+  padding: 12px 16px;
+  border-bottom: 1px solid #f1f5f9;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  cursor: pointer;
+}
+
+.header-notification-item:hover {
+  background: #f8fafc;
+}
+
+.header-notification-item.is-read {
+  opacity: 0.7;
+}
+
+.header-notification-title {
+  font-size: 13px;
+  font-weight: 600;
+  color: #0f172a;
+}
+
+.header-notification-msg {
+  font-size: 12px;
+  color: #64748b;
+}
+
+.header-notification-time {
+  font-size: 11px;
+  color: #94a3b8;
+  font-weight: 600;
+}
+
+.header-notification-empty {
+  padding: 18px;
+  text-align: center;
+  font-size: 12px;
+  color: #64748b;
+}
+
 .search-submit {
   border-radius: 999px;
   padding: 10px 18px;

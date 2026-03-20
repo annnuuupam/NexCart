@@ -34,7 +34,9 @@ public class AuthenticationFilter implements Filter {
         "http://localhost:5175",
         "http://localhost:5176",
         "https://nex-cart-git-main-annnuuupams-projects.vercel.app",
-        "https://nex-cart-alpha.vercel.app"
+        "https://nex-cart-alpha.vercel.app",
+                                "https://nex-cart-6dxfirgrk-annnuuupams-projects.vercel.app",
+        "https://nex-cart-6dxfirgrk-annnuuupams-projects.vercel.app"
     };
 
     private static final String[] UNAUTHENTICATED_PATHS = {
@@ -125,7 +127,7 @@ public class AuthenticationFilter implements Filter {
         boolean allowed = origin != null && Arrays.stream(ALLOWED_ORIGINS).anyMatch(o -> o.equalsIgnoreCase(origin));
         response.setHeader("Access-Control-Allow-Origin", allowed ? origin : ALLOWED_ORIGINS[0]);
         response.setHeader("Vary", "Origin");
-        response.setHeader("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS");
+        response.setHeader("Access-Control-Allow-Methods", "GET, POST, PUT, PATCH, DELETE, OPTIONS");
         response.setHeader("Access-Control-Allow-Headers", "Content-Type, Authorization, X-Requested-With");
         response.setHeader("Access-Control-Allow-Credentials", "true");
     }

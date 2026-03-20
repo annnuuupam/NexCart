@@ -7,5 +7,6 @@
   { label: "Coupons", path: "/admindashboard/coupons" },
   { label: "Analytics", path: "/admindashboard/analytics" },
   { label: "Support", path: "/admindashboard/support" },
+  { label: "Notifications", path: "/admindashboard/notifications" },
   { label: "Settings", path: "/admindashboard/settings" },
 ];

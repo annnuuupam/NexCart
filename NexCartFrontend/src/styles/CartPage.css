@@ -49,28 +49,6 @@
   animation: cardFloatIn 0.4s ease both;
 }
 
-/* ===== Back button ===== */
-.back-button {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  margin-bottom: 18px;
-  font-size: 0.88rem;
-  font-weight: 700;
-  color: var(--primary);
-  border: 1.5px solid color-mix(in srgb, var(--primary) 30%, transparent);
-  border-radius: 999px;
-  padding: 6px 14px;
-  background: color-mix(in srgb, var(--primary) 8%, transparent);
-  cursor: pointer;
-  transition: background 0.2s, transform 0.2s;
-}
-
-.back-button:hover {
-  background: color-mix(in srgb, var(--primary) 16%, transparent);
-  transform: translateX(-2px);
-}
-
 /* ===== Cart header ===== */
 .cart-header {
   margin-bottom: 20px;
@@ -319,13 +297,6 @@
 .checkout-profile-save:hover {
   transform: translateY(-1px);
   box-shadow: 0 6px 20px rgba(15, 118, 110, 0.4);
-}
-
-.checkout-profile-status {
-  margin-top: 8px;
-  font-size: 0.82rem;
-  color: var(--primary);
-  font-weight: 600;
 }
 
 /* ===== Summary rows ===== */
@@ -788,10 +759,6 @@ html[data-theme="dark"] .checkout-button {
   color: #fff;
 }
 /* ===== Cart palette alignment ===== */
-.cart-badge {
-  background: var(--accent);
-}
-
 .item-stock {
   color: var(--primary);
 }

@@ -5,6 +5,7 @@ import com.nexcart.backend.entity.Product;
 import com.nexcart.backend.repository.CategoryRepository;
 import com.nexcart.backend.repository.ProductImageRepository;
 import com.nexcart.backend.repository.ProductRepository;
+import com.nexcart.backend.service.NotificationService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -20,11 +21,13 @@ public class AdminProductService {
     private final ProductRepository productRepository;
     private final ProductImageRepository productImageRepository;
     private final CategoryRepository categoryRepository;
+    private final NotificationService notificationService;
 
-    public AdminProductService(ProductRepository productRepository, ProductImageRepository productImageRepository, CategoryRepository categoryRepository) {
+    public AdminProductService(ProductRepository productRepository, ProductImageRepository productImageRepository, CategoryRepository categoryRepository, NotificationService notificationService) {
         this.productRepository = productRepository;
         this.productImageRepository = productImageRepository;
         this.categoryRepository = categoryRepository;
+        this.notificationService = notificationService;
     }
 
     @Transactional
@@ -52,6 +55,7 @@ public class AdminProductService {
             productImageRepository.save(productImage);
         }
 
+        maybeNotifyLowStock(savedProduct);
         return savedProduct;
     }
 
@@ -91,6 +95,7 @@ public class AdminProductService {
             }
         }
 
+        maybeNotifyLowStock(saved);
         return saved;
     }
 
@@ -111,6 +116,23 @@ public class AdminProductService {
             if (!trimmed.isEmpty()) result.add(trimmed);
         }
         return result;
+    }
+
+    private void maybeNotifyLowStock(Product product) {
+        if (product == null || product.getStock() == null) return;
+        if (product.getStock() > 5) return;
+
+        String link = "/admindashboard/products?productId=" + product.getProductId();
+        if (notificationService.hasUnreadAdminNotification("STOCK", link)) {
+            return;
+        }
+
+        notificationService.createAdminNotification(
+                "Low stock alert",
+                "Product \"" + product.getName() + "\" is running low on stock (" + product.getStock() + " remaining).",
+                "STOCK",
+                link
+        );
     }
 }
 

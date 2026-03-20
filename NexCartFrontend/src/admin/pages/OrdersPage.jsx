@@ -21,8 +21,6 @@ const statuses = [
   "REFUNDED",
   "FAILED",
 ];
-const requestStatuses = ["ALL", "REQUESTED", "APPROVED", "REJECTED", "REFUNDED"];
-const requestTypes = ["ALL", "RETURN", "REFUND"];
 
 const statusTone = (value = "") => {
   const key = String(value).toUpperCase();
@@ -57,9 +55,9 @@ const OrdersPage = () => {
   const [lastUpdated, setLastUpdated] = useState(null);
 
   const [search, setSearch] = useState("");
-  const [typeFilter, setTypeFilter] = useState("ALL");
-  const [requestStatusFilter, setRequestStatusFilter] = useState("ALL");
   const [statusFilter, setStatusFilter] = useState("ALL");
+  const [timeFilter, setTimeFilter] = useState("ALL");
+  const [sortFilter, setSortFilter] = useState("NEWEST");
 
   const loadOrders = async ({ silent = false } = {}) => {
     if (!silent) setLoading(true);
@@ -88,20 +86,35 @@ const OrdersPage = () => {
 
   const filteredOrders = useMemo(() => {
     const q = search.trim().toLowerCase();
-    return orders.filter((row) => {
+    const now = new Date();
+    const currentYear = now.getFullYear();
+
+    const filtered = orders.filter((row) => {
       const currentStatus = String(row.orderStatus || row.status || "").toUpperCase();
       const matchesOrderStatus = statusFilter === "ALL" ? true : currentStatus === statusFilter;
       if (!matchesOrderStatus) return false;
 
-      const returnRequests = Array.isArray(row.returnRequests) ? row.returnRequests : [];
-      const matchesType = typeFilter === "ALL"
-        ? true
-        : returnRequests.some((req) => String(req.requestType || "").toUpperCase() === typeFilter);
-      const matchesStatus = requestStatusFilter === "ALL"
-        ? true
-        : returnRequests.some((req) => String(req.status || "").toUpperCase() === requestStatusFilter);
-
-      if (!matchesType || !matchesStatus) return false;
+      if (timeFilter !== "ALL" && row.createdAt) {
+        const createdAt = new Date(row.createdAt);
+        if (!Number.isNaN(createdAt.getTime())) {
+          if (timeFilter === "LAST_7") {
+            const cutoff = new Date(now);
+            cutoff.setDate(cutoff.getDate() - 7);
+            if (createdAt < cutoff) return false;
+          }
+          if (timeFilter === "LAST_30") {
+            const cutoff = new Date(now);
+            cutoff.setDate(cutoff.getDate() - 30);
+            if (createdAt < cutoff) return false;
+          }
+          if (timeFilter === "LAST_90") {
+            const cutoff = new Date(now);
+            cutoff.setDate(cutoff.getDate() - 90);
+            if (createdAt < cutoff) return false;
+          }
+          if (timeFilter === "THIS_YEAR" && createdAt.getFullYear() !== currentYear) return false;
+        }
+      }
 
       if (!q) return true;
       return (
@@ -110,7 +123,16 @@ const OrdersPage = () => {
         String((row.products || []).join(" ")).toLowerCase().includes(q)
       );
     });
-  }, [orders, search, typeFilter, requestStatusFilter, statusFilter]);
+
+    return filtered.sort((a, b) => {
+      const aTime = a.createdAt ? new Date(a.createdAt).getTime() : 0;
+      const bTime = b.createdAt ? new Date(b.createdAt).getTime() : 0;
+      if (sortFilter === "OLDEST") return aTime - bTime;
+      if (sortFilter === "TOTAL_HIGH") return Number(b.totalAmount || 0) - Number(a.totalAmount || 0);
+      if (sortFilter === "TOTAL_LOW") return Number(a.totalAmount || 0) - Number(b.totalAmount || 0);
+      return bTime - aTime;
+    });
+  }, [orders, search, statusFilter, timeFilter, sortFilter]);
 
   const orderStats = useMemo(() => {
     const total = orders.length;
@@ -261,16 +283,27 @@ const OrdersPage = () => {
           options={statuses.map((status) => ({ value: status, label: formatStatusLabel(status) }))}
         />
         <AdminSelect
-          value={typeFilter}
-          onChange={(next) => setTypeFilter(next)}
-          placeholder="Return Type"
-          options={requestTypes.map((type) => ({ value: type, label: type === "ALL" ? "All Returns" : formatStatusLabel(type) }))}
+          value={timeFilter}
+          onChange={(next) => setTimeFilter(next)}
+          placeholder="Time Range"
+          options={[
+            { value: "ALL", label: "All time" },
+            { value: "LAST_7", label: "Last 7 days" },
+            { value: "LAST_30", label: "Last 30 days" },
+            { value: "LAST_90", label: "Last 90 days" },
+            { value: "THIS_YEAR", label: "This year" },
+          ]}
         />
         <AdminSelect
-          value={requestStatusFilter}
-          onChange={(next) => setRequestStatusFilter(next)}
-          placeholder="Return Status"
-          options={requestStatuses.map((status) => ({ value: status, label: status === "ALL" ? "All Return Status" : formatStatusLabel(status) }))}
+          value={sortFilter}
+          onChange={(next) => setSortFilter(next)}
+          placeholder="Sort By"
+          options={[
+            { value: "NEWEST", label: "Newest first" },
+            { value: "OLDEST", label: "Oldest first" },
+            { value: "TOTAL_HIGH", label: "Total high to low" },
+            { value: "TOTAL_LOW", label: "Total low to high" },
+          ]}
         />
         <button onClick={() => loadOrders()} className="inline-flex items-center justify-center gap-2 rounded-lg border border-slate-200 px-3 py-2 text-sm font-semibold hover:bg-slate-50">
           <RefreshCw className={`h-4 w-4 ${loading ? "animate-spin" : ""}`} />

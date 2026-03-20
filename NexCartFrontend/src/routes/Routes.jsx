@@ -31,6 +31,7 @@ import CouponsPage from "../admin/pages/CouponsPage";
 import AnalyticsPage from "../admin/pages/AnalyticsPage";
 import SupportPage from "../admin/pages/SupportPage";
 import SettingsPage from "../admin/pages/SettingsPage";
+import NotificationsPage from "../admin/pages/NotificationsPage";
 
 const AppRoutes = () => {
   return (
@@ -67,6 +68,7 @@ const AppRoutes = () => {
         <Route path="coupons" element={<CouponsPage />} />
         <Route path="analytics" element={<AnalyticsPage />} />
         <Route path="support" element={<SupportPage />} />
+        <Route path="notifications" element={<NotificationsPage />} />
         <Route path="settings" element={<SettingsPage />} />
       </Route>
 

@@ -50,6 +50,7 @@ public class PaymentService {
     private final CouponRepository couponRepository;
     private final ProductRepository productRepository;
     private final SystemSettingsService systemSettingsService;
+    private final NotificationService notificationService;
 
     public PaymentService(OrderRepository orderRepository,
                           OrderItemRepository orderItemRepository,
@@ -57,7 +58,8 @@ public class PaymentService {
                           PaymentRepository paymentRepository,
                           CouponRepository couponRepository,
                           ProductRepository productRepository,
-                          SystemSettingsService systemSettingsService) {
+                          SystemSettingsService systemSettingsService,
+                          NotificationService notificationService) {
         this.orderRepository = orderRepository;
         this.orderItemRepository = orderItemRepository;
         this.cartRepository = cartRepository;
@@ -65,6 +67,7 @@ public class PaymentService {
         this.couponRepository = couponRepository;
         this.productRepository = productRepository;
         this.systemSettingsService = systemSettingsService;
+        this.notificationService = notificationService;
     }
 
     @Transactional
@@ -102,6 +105,19 @@ public class PaymentService {
         order.setCreatedAt(now);
         order.setUpdatedAt(now);
         orderRepository.save(order);
+        notificationService.createAdminNotification(
+                "New order " + razorpayOrderId + " placed",
+                "A new order has been created with total Rs. " + totals.total,
+                "ORDER",
+                "/admindashboard/orders"
+        );
+        notificationService.createUserNotification(
+                userId,
+                "Order " + razorpayOrderId + " placed",
+                "Your order has been placed successfully.",
+                "ORDER",
+                "/orders"
+        );
 
         Payment payment = paymentRepository.findByOrderId(razorpayOrderId).orElseGet(Payment::new);
         payment.setOrderId(razorpayOrderId);
@@ -143,6 +159,19 @@ public class PaymentService {
         order.setCreatedAt(now);
         order.setUpdatedAt(now);
         orderRepository.save(order);
+        notificationService.createAdminNotification(
+                "New order " + orderId + " placed",
+                "A new COD order has been placed with total Rs. " + totals.total,
+                "ORDER",
+                "/admindashboard/orders"
+        );
+        notificationService.createUserNotification(
+                userId,
+                "Order " + orderId + " placed",
+                "Your order has been placed successfully.",
+                "ORDER",
+                "/orders"
+        );
 
         Payment payment = new Payment();
         payment.setOrderId(orderId);
@@ -171,6 +200,7 @@ public class PaymentService {
             product.setStock(availableStock - quantity);
             product.setProductStatus(product.getStock() > 0 ? ProductStatus.AVAILABLE : ProductStatus.OUT_OF_STOCK);
             productRepository.save(product);
+            maybeNotifyLowStock(product);
 
             OrderItem orderItem = new OrderItem();
             orderItem.setOrder(order);
@@ -253,6 +283,7 @@ public class PaymentService {
                 product.setStock(availableStock - quantity);
                 product.setProductStatus(product.getStock() > 0 ? ProductStatus.AVAILABLE : ProductStatus.OUT_OF_STOCK);
                 productRepository.save(product);
+                maybeNotifyLowStock(product);
             }
 
             if (order != null) {
@@ -339,6 +370,23 @@ public class PaymentService {
 
         BigDecimal total = taxable.add(tax).max(BigDecimal.ZERO);
         return new Totals(subtotal, shipping, tax, total);
+    }
+
+    private void maybeNotifyLowStock(Product product) {
+        if (product == null || product.getStock() == null) return;
+        if (product.getStock() > 5) return;
+
+        String link = "/admindashboard/products?productId=" + product.getProductId();
+        if (notificationService.hasUnreadAdminNotification("STOCK", link)) {
+            return;
+        }
+
+        notificationService.createAdminNotification(
+                "Low stock alert",
+                "Product \"" + product.getName() + "\" is running low on stock (" + product.getStock() + " remaining).",
+                "STOCK",
+                link
+        );
     }
 
     private record Totals(BigDecimal subtotal, BigDecimal shipping, BigDecimal tax, BigDecimal total) {}

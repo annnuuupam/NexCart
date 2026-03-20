@@ -62,7 +62,8 @@ public class AdminResetLogService {
     private String safe(Object value) {
         if (value == null) return "";
         String text = String.valueOf(value).replace("\"", "\"\"");
-        if (text.contains(",") || text.contains("\n")) {
+        if (text.contains(",") || text.contains("
+")) {
             return "\"" + text + "\"";
         }
         return text;

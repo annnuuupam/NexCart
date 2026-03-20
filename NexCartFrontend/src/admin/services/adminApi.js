@@ -50,6 +50,16 @@ const requestWithFallback = async (paths, options = {}) => {
 
 export const adminApi = {
   getOverview: (days = 14) => request(`/admin/dashboard/overview?days=${encodeURIComponent(days)}`),
+  getNotifications: ({ q = "", page = 1, size = 10 } = {}) => {
+    const params = new URLSearchParams();
+    if (q) params.set("q", q);
+    params.set("page", String(page));
+    params.set("size", String(size));
+    const path = params.toString() ? `/admin/notifications?${params.toString()}` : "/admin/notifications";
+    return request(path);
+  },
+  markAllNotificationsRead: () => request("/admin/notifications/mark-all-read", { method: "POST" }),
+  markNotificationRead: (id) => request(`/admin/notifications/${id}/read`, { method: "PATCH" }),
   getOrders: () => request("/admin/orders"),
   getOrdersByUser: (userId) => request(`/admin/users/${userId}/orders`),
   updateOrderStatus: (orderId, status, trackingNumber = "") =>

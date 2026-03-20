@@ -37,19 +37,22 @@ public class OrderService {
     private final OrderRepository orderRepository;
     private final ReturnRequestRepository returnRequestRepository;
     private final SupportTicketRepository supportTicketRepository;
+    private final NotificationService notificationService;
 
     public OrderService(OrderItemRepository orderItemRepository,
                         ProductRepository productRepository,
                         ProductImageRepository productImageRepository,
                         OrderRepository orderRepository,
                         ReturnRequestRepository returnRequestRepository,
-                        SupportTicketRepository supportTicketRepository) {
+                        SupportTicketRepository supportTicketRepository,
+                        NotificationService notificationService) {
         this.orderItemRepository = orderItemRepository;
         this.productRepository = productRepository;
         this.productImageRepository = productImageRepository;
         this.orderRepository = orderRepository;
         this.returnRequestRepository = returnRequestRepository;
         this.supportTicketRepository = supportTicketRepository;
+        this.notificationService = notificationService;
     }
 
     @Transactional(readOnly = true)
@@ -174,6 +177,19 @@ public class OrderService {
         orderRepository.save(order);
 
         ensureReturnSupportTicket(user, orderId, finalReason, requestType);
+        notificationService.createAdminNotification(
+                "Return request for order " + orderId,
+                "A return/refund request has been submitted by the customer.",
+                "RETURN",
+                "/admindashboard/orders"
+        );
+        notificationService.createUserNotification(
+                user.getUserId(),
+                "Return request submitted",
+                "We received your return/refund request for order " + orderId + ".",
+                "RETURN",
+                "/orders"
+        );
 
         return Map.of(
                 "message", "Request submitted",

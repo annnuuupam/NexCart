@@ -19,7 +19,8 @@ public class CorsConfig {
                                 "http://localhost:5175",
                                 "http://localhost:5176",
                                 "https://nex-cart-git-main-annnuuupams-projects.vercel.app",
-                                "https://nex-cart-alpha.vercel.app"
+                                "https://nex-cart-alpha.vercel.app",
+                                "https://nex-cart-6dxfirgrk-annnuuupams-projects.vercel.app"
                         )
                         .allowedMethods("*")
                         .allowedHeaders("*")

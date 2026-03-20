@@ -8,6 +8,7 @@ import {
   Users,
   TicketPercent,
   BarChart3,
+  Bell,
   Settings,
   LogOut,
   Store,
@@ -25,6 +26,7 @@ const iconMap = {
   Coupons: TicketPercent,
   Analytics: BarChart3,
   Support: LifeBuoy,
+  Notifications: Bell,
   Settings,
 };
 

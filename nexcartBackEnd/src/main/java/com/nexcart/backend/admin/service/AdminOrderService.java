@@ -15,6 +15,7 @@ import com.nexcart.backend.repository.OrderRepository;
 import com.nexcart.backend.repository.ProductRepository;
 import com.nexcart.backend.repository.ReturnRequestRepository;
 import com.nexcart.backend.repository.SupportTicketRepository;
+import com.nexcart.backend.service.NotificationService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -33,17 +34,20 @@ public class AdminOrderService {
     private final ProductRepository productRepository;
     private final ReturnRequestRepository returnRequestRepository;
     private final SupportTicketRepository supportTicketRepository;
+    private final NotificationService notificationService;
 
     public AdminOrderService(OrderRepository orderRepository,
                              OrderItemRepository orderItemRepository,
                              ProductRepository productRepository,
                              ReturnRequestRepository returnRequestRepository,
-                             SupportTicketRepository supportTicketRepository) {
+                             SupportTicketRepository supportTicketRepository,
+                             NotificationService notificationService) {
         this.orderRepository = orderRepository;
         this.orderItemRepository = orderItemRepository;
         this.productRepository = productRepository;
         this.returnRequestRepository = returnRequestRepository;
         this.supportTicketRepository = supportTicketRepository;
+        this.notificationService = notificationService;
     }
 
     public List<Map<String, Object>> getAllOrders() {
@@ -73,7 +77,21 @@ public class AdminOrderService {
             order.setTrackingNumber(trackingNumber.trim());
         }
 
-        return orderRepository.save(order);
+        Order saved = orderRepository.save(order);
+        notificationService.createAdminNotification(
+                "Order " + saved.getOrderId() + " status updated",
+                "Order status changed to " + saved.getOrderStatus().name(),
+                "ORDER",
+                "/admindashboard/orders"
+        );
+        notificationService.createUserNotification(
+                saved.getUserId(),
+                "Order " + saved.getOrderId() + " updated",
+                "Your order status is now " + saved.getOrderStatus().name() + ".",
+                "ORDER",
+                "/orders"
+        );
+        return saved;
     }
 
     @Transactional
@@ -141,6 +159,21 @@ public class AdminOrderService {
 
                     supportTicketRepository.save(ticket);
                 });
+        notificationService.createAdminNotification(
+                "Return update for order " + orderId,
+                "Return status updated to " + nextStatus.name(),
+                "RETURN",
+                "/admindashboard/orders"
+        );
+        if (order != null) {
+            notificationService.createUserNotification(
+                    order.getUserId(),
+                    "Return update for order " + orderId,
+                    "Your return status is now " + nextStatus.name() + ".",
+                    "RETURN",
+                    "/orders"
+            );
+        }
 
         Map<String, Object> response = new HashMap<>();
         response.put("orderId", orderId);

@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-import "../../styles/ThemeToggle.css";
 
 const THEME_KEY = "nexcart-theme";
 

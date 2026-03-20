@@ -4,7 +4,7 @@ import Sidebar from "../components/Sidebar";
 import Navbar from "../components/Navbar";
 import API_BASE_URL from '../../config/api';
 
-const THEME_KEY = "nexcart-theme";
+const THEME_KEY = "nexcart-admin-theme";
 
 const titleMap = {
   "/admindashboard": "Dashboard",
@@ -15,6 +15,7 @@ const titleMap = {
   "/admindashboard/coupons": "Coupons & Discounts",
   "/admindashboard/analytics": "Analytics",
   "/admindashboard/support": "Support Tickets",
+  "/admindashboard/notifications": "Notifications",
   "/admindashboard/settings": "Settings",
 };
 

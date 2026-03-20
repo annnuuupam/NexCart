@@ -1,31 +1,76 @@
 import React, { useState, useRef, useEffect } from "react";
 import { Bell, Menu, Moon, Sun } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 import { useToast } from "../../components/ui/ToastContext";
 import API_BASE_URL from "../../config/api";
 import useravatar from "../../assets/images/useravatar.png";
 
 const Navbar = ({ title, onMenuToggle, theme, onThemeToggle }) => {
+  const navigate = useNavigate();
   const [isNotificationsOpen, setIsNotificationsOpen] = useState(false);
   const [avatarUrl, setAvatarUrl] = useState(useravatar);
   const bellRef = useRef(null);
-  const { addToast } = useToast();
+  const wsClientRef = useRef(null);
+  const toast = useToast();
 
-  const [notifications, setNotifications] = useState([
-    { id: 1, title: "New order #1024 placed", desc: "John Doe purchased 2 items totaling $140.00.", time: "2 minutes ago", read: false, color: "bg-indigo-500" },
-    { id: 2, title: "Low stock alert", desc: "Product 'Wireless Headphones' is running low on stock (2 remaining).", time: "1 hour ago", read: false, color: "bg-rose-500" },
-    { id: 3, title: "System maintenance", desc: "Scheduled maintenance will occur tonight at 2:00 AM UTC.", time: "5 hours ago", read: true, color: "bg-slate-300 dark:bg-slate-600" }
-  ]);
+  const [notifications, setNotifications] = useState([]);
+  const [unreadCount, setUnreadCount] = useState(0);
+  const [isNotificationsLoading, setIsNotificationsLoading] = useState(false);
 
-  const unreadCount = notifications.filter(n => !n.read).length;
+  const notificationColors = {
+    ORDER: "bg-indigo-500",
+    STOCK: "bg-rose-500",
+    RETURN: "bg-amber-500",
+    SYSTEM: "bg-slate-400"
+  };
+
+  const formatTimeAgo = (value) => {
+    if (!value) return "";
+    const date = new Date(value);
+    if (Number.isNaN(date.getTime())) return "";
+    const diffSeconds = Math.floor((Date.now() - date.getTime()) / 1000);
+    if (diffSeconds < 60) return "Just now";
+    const minutes = Math.floor(diffSeconds / 60);
+    if (minutes < 60) return `${minutes} minute${minutes === 1 ? "" : "s"} ago`;
+    const hours = Math.floor(minutes / 60);
+    if (hours < 24) return `${hours} hour${hours === 1 ? "" : "s"} ago`;
+    const days = Math.floor(hours / 24);
+    return `${days} day${days === 1 ? "" : "s"} ago`;
+  };
+
+  const fetchNotifications = async () => {
+    setIsNotificationsLoading(true);
+    try {
+      const res = await fetch(`${API_BASE_URL}/admin/notifications?limit=10`, { credentials: "include" });
+      if (!res.ok) return;
+      const data = await res.json();
+      setNotifications(Array.isArray(data.items) ? data.items : []);
+      setUnreadCount(Number(data.unreadCount || 0));
+    } catch (e) {
+    } finally {
+      setIsNotificationsLoading(false);
+    }
+  };
 
   const handleMarkAllRead = () => {
-    setNotifications(notifications.map(n => ({ ...n, read: true })));
-    addToast("All notifications marked as read.", "success");
+    fetch(`${API_BASE_URL}/admin/notifications/mark-all-read`, {
+      method: "POST",
+      credentials: "include"
+    })
+      .then((res) => {
+        if (!res.ok) throw new Error("Failed");
+        setNotifications((prev) => prev.map((n) => ({ ...n, read: true })));
+        setUnreadCount(0);
+        toast.success("All notifications marked as read.");
+      })
+      .catch(() => {
+        toast.error("Failed to mark notifications as read.");
+      });
   };
 
   const handleViewAll = () => {
     setIsNotificationsOpen(false);
-    addToast("Opening Notification Center...", "info");
+    navigate("/admindashboard/notifications");
   };
 
   useEffect(() => {
@@ -34,11 +79,67 @@ const Navbar = ({ title, onMenuToggle, theme, onThemeToggle }) => {
         const res = await fetch(`${API_BASE_URL}/api/users/profile`, { credentials: "include" });
         if (res.ok) {
           const data = await res.json();
-          if (data.avatarUrl) setAvatarUrl(data.avatarUrl);
+          if (data.avatarUrl && String(data.avatarUrl).trim()) setAvatarUrl(String(data.avatarUrl).trim());
         }
       } catch (e) {}
     }
     fetchAvatar();
+  }, []);
+
+  useEffect(() => {
+    fetchNotifications();
+    const interval = setInterval(fetchNotifications, 60000);
+    return () => clearInterval(interval);
+  }, []);
+
+  useEffect(() => {
+    let cancelled = false;
+    const connect = async () => {
+      try {
+        const [{ Client }, sockjs] = await Promise.all([
+          import("@stomp/stompjs"),
+          import("sockjs-client"),
+        ]);
+
+        if (cancelled) return;
+        const SockJS = sockjs.default;
+        const client = new Client({
+          webSocketFactory: () => new SockJS(`${API_BASE_URL}/ws`),
+          reconnectDelay: 5000,
+        });
+
+        client.onConnect = () => {
+          client.subscribe("/topic/admin-notifications", (message) => {
+            try {
+              const payload = JSON.parse(message.body);
+              if (!payload?.id) return;
+              setNotifications((prev) => {
+                if (prev.some((item) => item.id === payload.id)) return prev;
+                const next = [payload, ...prev];
+                return next.slice(0, 10);
+              });
+              if (!payload.read) {
+                setUnreadCount((count) => count + 1);
+              }
+            } catch (e) {}
+          });
+        };
+
+        client.activate();
+        wsClientRef.current = client;
+      } catch (e) {
+        // ignore websocket errors
+      }
+    };
+
+    connect();
+
+    return () => {
+      cancelled = true;
+      try {
+        wsClientRef.current?.deactivate();
+      } catch (e) {}
+    };
   }, []);
 
   useEffect(() => {
@@ -73,7 +174,7 @@ const Navbar = ({ title, onMenuToggle, theme, onThemeToggle }) => {
           <button
             type="button"
             onClick={onThemeToggle}
-            className="relative grid h-[42px] w-[42px] place-items-center rounded-full border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-600 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-700/50 hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors shadow-sm"
+            className="admin-icon-btn"
             title={theme === "dark" ? "Switch to light" : "Switch to dark"}
           >
             {theme === "dark" ? <Sun className="h-5 w-5" strokeWidth={2} /> : <Moon className="h-5 w-5" strokeWidth={2} />}
@@ -81,8 +182,14 @@ const Navbar = ({ title, onMenuToggle, theme, onThemeToggle }) => {
 
           <div className="relative" ref={bellRef}>
             <button 
-              onClick={() => setIsNotificationsOpen(!isNotificationsOpen)}
-              className="relative grid h-[42px] w-[42px] place-items-center rounded-full border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-600 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-700/50 hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-100 dark:focus:ring-indigo-900/20"
+              onClick={() => {
+                const nextOpen = !isNotificationsOpen;
+                setIsNotificationsOpen(nextOpen);
+                if (nextOpen) {
+                  fetchNotifications();
+                }
+              }}
+              className="admin-icon-btn focus:outline-none focus:ring-2 focus:ring-indigo-100 dark:focus:ring-indigo-900/20"
             >
               <Bell className="h-5 w-5" strokeWidth={2} />
               {unreadCount > 0 && (
@@ -99,17 +206,29 @@ const Navbar = ({ title, onMenuToggle, theme, onThemeToggle }) => {
                   )}
                 </div>
                 <div className="max-h-[300px] overflow-y-auto">
-                  {notifications.length > 0 ? notifications.map((n) => (
+                  {isNotificationsLoading ? (
+                    <div className="px-4 py-6 text-center text-sm text-slate-500">Loading notifications...</div>
+                  ) : notifications.length > 0 ? notifications.map((n) => (
                     <div key={n.id} onClick={() => {
                         if (!n.read) {
-                           setNotifications(notifications.map(x => x.id === n.id ? { ...x, read: true } : x));
+                           fetch(`${API_BASE_URL}/admin/notifications/${n.id}/read`, {
+                             method: "PATCH",
+                             credentials: "include"
+                           }).then(() => {
+                             setNotifications((prev) => prev.map(x => x.id === n.id ? { ...x, read: true } : x));
+                             setUnreadCount((count) => Math.max(0, count - 1));
+                           });
+                        }
+                        if (n.link) {
+                          setIsNotificationsOpen(false);
+                          navigate(n.link);
                         }
                     }} className={`flex gap-3 px-4 py-3 border-b border-slate-50 dark:border-slate-700/50 hover:bg-slate-50 dark:hover:bg-slate-800/80 transition-colors cursor-pointer ${n.read ? 'opacity-70' : ''}`}>
-                      <div className={`mt-0.5 h-2 w-2 shrink-0 rounded-full ${n.read ? 'bg-slate-300 dark:bg-slate-600' : n.color}`} />
+                      <div className={`mt-0.5 h-2 w-2 shrink-0 rounded-full ${n.read ? 'bg-slate-300 dark:bg-slate-600' : (notificationColors[n.type] || 'bg-slate-300')}`} />
                       <div>
                         <p className={`text-[13px] ${n.read ? 'font-medium text-slate-600 dark:text-slate-300' : 'font-semibold text-slate-800 dark:text-slate-100'}`}>{n.title}</p>
-                        <p className="text-[12px] text-slate-500 dark:text-slate-400 mt-0.5">{n.desc}</p>
-                        <p className="text-[11px] font-medium text-slate-400 dark:text-slate-500 mt-1">{n.time}</p>
+                        <p className="text-[12px] text-slate-500 dark:text-slate-400 mt-0.5">{n.message}</p>
+                        <p className="text-[11px] font-medium text-slate-400 dark:text-slate-500 mt-1">{formatTimeAgo(n.createdAt)}</p>
                       </div>
                     </div>
                   )) : (
@@ -127,21 +246,12 @@ const Navbar = ({ title, onMenuToggle, theme, onThemeToggle }) => {
             <div
                className="flex h-[44px] items-center gap-2.5 rounded-full border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 pl-1.5 pr-4 shadow-sm"
             >
-              {avatarUrl && avatarUrl !== useravatar ? (
-                <img
-                  src={avatarUrl}
-                  alt="Admin"
-                  className="h-[34px] w-[34px] rounded-full object-cover ring-1 ring-slate-100 dark:ring-slate-700"
-                  onError={(e) => { e.target.src = useravatar; }}
-                />
-              ) : (
-                <div className="h-[34px] w-[34px] shrink-0 rounded-full overflow-hidden ring-[1.5px] ring-slate-100 dark:ring-slate-700 bg-indigo-50/30 dark:bg-slate-800 flex items-center justify-center relative">
-                  <svg viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg" className="absolute inset-0 h-full w-full">
-                    <circle cx="18" cy="14" r="5.5" fill="#fabc41" />
-                    <path d="M7 33C7 26.5 11.5 22.5 18 22.5C24.5 22.5 29 26.5 29 33" fill="#5f7782" />
-                  </svg>
-                </div>
-              )}
+              <img
+                src={(avatarUrl && String(avatarUrl).trim()) ? avatarUrl : useravatar}
+                alt="Admin"
+                className="admin-avatar-img h-[34px] w-[34px] rounded-full object-cover ring-1 ring-slate-100 dark:ring-slate-700"
+                onError={() => { setAvatarUrl(useravatar); }}
+              />
               <div className="hidden md:flex flex-col items-start -space-y-0.5">
                 <p className="text-[13px] font-bold text-slate-700 dark:text-slate-200 tracking-tight">Store Admin</p>
                 <p className="text-[11px] font-medium text-slate-500 dark:text-slate-400">admin@nexcart.com</p>
