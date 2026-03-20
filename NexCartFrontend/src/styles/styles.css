@@ -3057,6 +3057,20 @@ html[data-theme="dark"] .product-meta {
   .support-track-form {
     grid-template-columns: 1fr;
   }
+
+  .support-track-item {
+    grid-template-columns: 1fr;
+  }
+
+  .support-track-item img {
+    width: 100%;
+    height: auto;
+    max-height: 200px;
+  }
+
+  .support-hero {
+    padding: 16px;
+  }
 }
 
 /* ===== Orders marketplace upgrades ===== */
@@ -4775,4 +4789,94 @@ body.dark .search-scope {
 .product-list .product-btn-wishlist:hover {
   background: color-mix(in srgb, #f43f5e 15%, transparent) !important;
   transform: translateY(-1px) !important;
+}
+
+/* ===================================================
+   RESPONSIVE HARDENING (Full Audit Defaults)
+   =================================================== */
+@media (max-width: 640px) {
+  .main-content {
+    width: calc(100% - 20px);
+    margin: 18px auto 28px;
+  }
+
+  .header-actions {
+    flex-wrap: wrap;
+    justify-content: flex-start;
+    gap: 8px;
+  }
+
+  .header-left {
+    min-width: 0;
+    gap: 8px;
+  }
+
+  .header-search {
+    margin: 0;
+  }
+
+  .header-search input {
+    padding: 10px 12px;
+    font-size: 0.9rem;
+  }
+
+  .search-submit {
+    padding: 0 14px;
+    font-size: 0.88rem;
+  }
+
+  .category-list {
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: thin;
+  }
+
+  .category-item {
+    white-space: nowrap;
+  }
+
+  .header-notification-panel {
+    width: min(92vw, 320px);
+    right: 0;
+  }
+
+  .dropdown-menu {
+    width: min(90vw, 260px);
+    right: 0;
+  }
+
+  .profile-dropdown button {
+    min-width: 0 !important;
+    max-width: 160px;
+  }
+}
+
+@media (max-width: 480px) {
+  .header-content {
+    gap: 8px;
+  }
+
+  .search-submit {
+    padding: 0 12px;
+  }
+
+  .header-notification-panel {
+    width: min(94vw, 320px);
+  }
+
+  .dropdown-menu {
+    width: min(92vw, 260px);
+  }
+}
+
+@media (max-width: 360px) {
+  .search-submit {
+    padding: 0 10px;
+    font-size: 0.82rem;
+  }
+
+  .header-actions {
+    gap: 6px;
+  }
 }
