@@ -75,6 +75,7 @@ public class PaymentService {
                               String shippingAddress, String shippingCountry, String paymentMethod, List<OrderItem> cartItems) throws RazorpayException {
         Totals totals = calculateTotals(cartItems, shippingCountry, discountAmount);
 
+        ensureRazorpayConfigured();
         RazorpayClient razorpayClient = new RazorpayClient(razorpayKeyId, razorpayKeySecret);
 
         var orderRequest = new JSONObject();
@@ -228,6 +229,7 @@ public class PaymentService {
         if (razorpaySignature == null || razorpaySignature.isBlank()) return "ERROR: razorpaySignature is missing";
 
         try {
+            ensureRazorpayConfigured();
             JSONObject attributes = new JSONObject();
             attributes.put("razorpay_order_id", razorpayOrderId);
             attributes.put("razorpay_payment_id", razorpayPaymentId);
@@ -387,6 +389,12 @@ public class PaymentService {
                 "STOCK",
                 link
         );
+    }
+
+    private void ensureRazorpayConfigured() {
+        if (razorpayKeyId == null || razorpayKeyId.isBlank() || razorpayKeySecret == null || razorpayKeySecret.isBlank()) {
+            throw new IllegalStateException("Razorpay is not configured. Set RAZORPAY_KEY_ID and RAZORPAY_KEY_SECRET.");
+        }
     }
 
     private record Totals(BigDecimal subtotal, BigDecimal shipping, BigDecimal tax, BigDecimal total) {}

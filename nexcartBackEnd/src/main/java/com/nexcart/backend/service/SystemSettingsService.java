@@ -2,6 +2,7 @@ package com.nexcart.backend.service;
 
 import com.nexcart.backend.entity.SystemSetting;
 import com.nexcart.backend.repository.SystemSettingRepository;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -14,6 +15,8 @@ import java.util.concurrent.ConcurrentHashMap;
 public class SystemSettingsService {
 
     private final SystemSettingRepository repository;
+    @Value("${razorpay.key_id:}")
+    private String razorpayKeyId;
 
     private final Map<String, String> defaults = Map.ofEntries(
             Map.entry("free_shipping_threshold", "999"),
@@ -91,6 +94,9 @@ public class SystemSettingsService {
         payment.put("razorpay", getBoolean(settings, "razorpay_enabled"));
         payment.put("paypal", getBoolean(settings, "paypal_enabled"));
         payment.put("cod", getBoolean(settings, "cod_enabled"));
+        if (razorpayKeyId != null && !razorpayKeyId.isBlank()) {
+            payment.put("razorpayKeyId", razorpayKeyId);
+        }
 
         Map<String, Object> shipping = new HashMap<>();
         shipping.put("freeShippingMin", getBigDecimal(settings, "free_shipping_threshold"));

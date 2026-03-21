@@ -65,6 +65,7 @@ const CartPage = () => {
     store: { storeName: "NexCart" },
   });
   const [paymentMethod, setPaymentMethod] = useState("RAZORPAY");
+  const razorpayKeyId = settings?.payment?.razorpayKeyId || import.meta.env.VITE_RAZORPAY_KEY_ID || "";
 
   const toast = useToast();
   const navigate = useNavigate();
@@ -439,6 +440,11 @@ const CartPage = () => {
         return;
       }
 
+      if (!razorpayKeyId) {
+        toast.error("Razorpay key is not configured. Please contact support.");
+        return;
+      }
+
       const sdkLoaded = await ensureRazorpayLoaded();
       if (!sdkLoaded || !window.Razorpay) {
         toast.error("Unable to load the payment gateway. Please check your connection and try again.");
@@ -469,7 +475,7 @@ const CartPage = () => {
       if (!razorpayOrderId) throw new Error("Order ID was not returned by payment create API.");
 
       const options = {
-        key: "rzp_test_LqWBBDbgwot5lh",
+        key: razorpayKeyId,
         amount: backendAmount > 0 ? backendAmount : Math.round(grandTotal * 100),
         currency: "INR",
         name: "NexCart",
