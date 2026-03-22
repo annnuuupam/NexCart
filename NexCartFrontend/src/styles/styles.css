@@ -4867,8 +4867,12 @@ body.dark .search-scope {
   }
 
   .header-notification-panel {
-    width: min(92vw, 320px);
-    right: 0;
+    width: 92vw;
+    right: auto;
+    left: 50%;
+    transform: translateX(-50%);
+    position: fixed;
+    top: 70px;
   }
 
   .dropdown-menu {
