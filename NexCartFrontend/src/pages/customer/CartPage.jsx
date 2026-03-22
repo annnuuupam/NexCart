@@ -471,13 +471,10 @@ const CartPage = () => {
       } catch {
         razorpayOrderId = responseText?.replaceAll('"', "").trim();
       }
-
       if (!razorpayOrderId) throw new Error("Order ID was not returned by payment create API.");
 
       const options = {
         key: razorpayKeyId,
-        amount: backendAmount > 0 ? backendAmount : Math.round(grandTotal * 100),
-        currency: "INR",
         name: "NexCart",
         description: "Order Checkout",
         order_id: razorpayOrderId,
