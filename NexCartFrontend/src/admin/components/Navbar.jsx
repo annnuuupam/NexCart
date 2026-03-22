@@ -198,7 +198,7 @@ const Navbar = ({ title, onMenuToggle, theme, onThemeToggle }) => {
             </button>
 
             {isNotificationsOpen && (
-              <div className="absolute right-0 top-[calc(100%+8px)] w-80 overflow-hidden rounded-xl border border-slate-200 bg-white shadow-xl dark:border-slate-700 dark:bg-slate-800 animate-in slide-in-from-top-2">
+              <div className="absolute right-0 max-sm:fixed max-sm:left-[50%] max-sm:right-auto max-sm:-translate-x-1/2 max-sm:top-[70px] top-[calc(100%+8px)] w-[92vw] sm:w-80 z-50 overflow-hidden rounded-xl border border-slate-200 bg-white shadow-xl dark:border-slate-700 dark:bg-slate-800 animate-in slide-in-from-top-2">
                 <div className="flex items-center justify-between border-b border-slate-100 dark:border-slate-700/50 px-4 py-3">
                   <h3 className="font-semibold text-slate-800 dark:text-slate-100">Notifications</h3>
                   {unreadCount > 0 && (
