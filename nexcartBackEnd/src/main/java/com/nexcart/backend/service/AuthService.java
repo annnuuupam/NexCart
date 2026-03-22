@@ -127,14 +127,18 @@ public class AuthService {
     public String generateToken(User user) {
         String token;
         LocalDateTime now = LocalDateTime.now();
-        JWTToken existingToken = jwtTokenRepository.findByUserId(user.getUserId());
+        java.util.List<JWTToken> existingTokens = jwtTokenRepository.findByUserId(user.getUserId());
+        JWTToken validToken = existingTokens.stream()
+                .filter(t -> now.isBefore(t.getExpiresAt()))
+                .findFirst()
+                .orElse(null);
 
-        if (existingToken != null && now.isBefore(existingToken.getExpiresAt())) {
-            token = existingToken.getToken();
+        if (validToken != null) {
+            token = validToken.getToken();
         } else {
             token = generateNewToken(user);
-            if (existingToken != null) {
-                jwtTokenRepository.delete(existingToken);
+            if (!existingTokens.isEmpty()) {
+                jwtTokenRepository.deleteAll(existingTokens);
             }
             saveToken(user, token);
         }
