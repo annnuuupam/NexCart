@@ -27,8 +27,8 @@ public class UserService {
         if (user.getEmail() == null || user.getEmail().isBlank()) throw new RuntimeException("Email is required");
         if (user.getPassword() == null || user.getPassword().isBlank()) throw new RuntimeException("Password is required");
 
-        if (userRepository.findByUsername(user.getUsername()).isPresent()) throw new RuntimeException("Username is already taken");
-        if (userRepository.findByEmail(user.getEmail()).isPresent()) throw new RuntimeException("Email is already registered");
+        if (userRepository.findFirstByUsername(user.getUsername()).isPresent()) throw new RuntimeException("Username is already taken");
+        if (userRepository.findFirstByEmail(user.getEmail()).isPresent()) throw new RuntimeException("Email is already registered");
 
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         user.setRole(user.getRole() == null ? Role.CUSTOMER : user.getRole());
@@ -65,12 +65,12 @@ public class UserService {
         if (newPhone != null && !newPhone.isEmpty() && !newPhone.matches("^\\d{7,15}$")) throw new RuntimeException("Phone number must contain 7 to 15 digits");
 
         if (newUsername != null && !newUsername.equals(existingUser.getUsername())) {
-            userRepository.findByUsername(newUsername).ifPresent(found -> { throw new RuntimeException("Username is already taken"); });
+            userRepository.findFirstByUsername(newUsername).ifPresent(found -> { throw new RuntimeException("Username is already taken"); });
             existingUser.setUsername(newUsername);
         }
 
         if (newEmail != null && !newEmail.equals(existingUser.getEmail())) {
-            userRepository.findByEmail(newEmail).ifPresent(found -> { throw new RuntimeException("Email is already registered"); });
+            userRepository.findFirstByEmail(newEmail).ifPresent(found -> { throw new RuntimeException("Email is already registered"); });
             existingUser.setEmail(newEmail);
         }
 

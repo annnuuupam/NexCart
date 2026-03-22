@@ -12,9 +12,7 @@ import org.springframework.data.repository.query.Param;
 import com.nexcart.backend.entity.User;
 
 public interface UserRepository extends JpaRepository<User, Integer> {
-    Optional<User> findByEmail(String email);
     Optional<User> findFirstByEmail(String email);
-    Optional<User> findByUsername(String username);
     Optional<User> findFirstByUsername(String username);
     List<User> findByUsernameContainingIgnoreCaseOrEmailContainingIgnoreCaseOrPhoneContainingIgnoreCase(
             String username,

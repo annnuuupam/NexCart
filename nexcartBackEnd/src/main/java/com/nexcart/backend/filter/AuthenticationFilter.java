@@ -87,7 +87,7 @@ public class AuthenticationFilter implements Filter {
         }
 
         String username = authService.extractUsername(token);
-        Optional<User> userOptional = userRepository.findByUsername(username);
+        Optional<User> userOptional = userRepository.findFirstByUsername(username);
         if (userOptional.isEmpty()) {
             sendErrorResponse(httpResponse, HttpServletResponse.SC_UNAUTHORIZED, "Unauthorized: User not found");
             return;

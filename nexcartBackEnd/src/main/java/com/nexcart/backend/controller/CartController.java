@@ -82,7 +82,7 @@ public class CartController {
         }
 
         if (username != null && !username.isBlank()) {
-            return userRepository.findByUsername(username)
+            return userRepository.findFirstByUsername(username)
                     .orElseThrow(() -> new IllegalArgumentException("User not found with username: " + username));
         }
 
