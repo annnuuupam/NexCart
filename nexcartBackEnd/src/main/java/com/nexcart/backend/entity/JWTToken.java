@@ -22,7 +22,7 @@ public class JWTToken {
     @JoinColumn(name = "user_id", nullable = false) // Links the token to a specific user in the Users table.
     private User user; // Represents the user associated with the token.
 
-    @Column(nullable = false) // Ensures that the token cannot be null.
+    @Column(nullable = false, unique = true) // Ensures that the token cannot be null and is unique.
     private String token; // Stores the JWT token string.
 
     @Column(nullable = false) // Ensures that the expiration time cannot be null.

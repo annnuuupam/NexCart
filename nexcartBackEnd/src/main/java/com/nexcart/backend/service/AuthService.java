@@ -109,7 +109,7 @@ public class AuthService {
             throw new RuntimeException("New password must include uppercase, lowercase, and number");
         }
 
-        PasswordResetToken resetToken = passwordResetTokenRepository.findByToken(token)
+        PasswordResetToken resetToken = passwordResetTokenRepository.findFirstByToken(token)
                 .orElseThrow(() -> new RuntimeException("Invalid or expired reset token"));
 
         if (resetToken.getExpiresAt().isBefore(LocalDateTime.now())) {
@@ -171,7 +171,7 @@ public class AuthService {
                 .build()
                 .parseClaimsJws(token);
 
-            Optional<JWTToken> jwtToken = jwtTokenRepository.findByToken(token);
+            Optional<JWTToken> jwtToken = jwtTokenRepository.findFirstByToken(token);
             return jwtToken.isPresent() && jwtToken.get().getExpiresAt().isAfter(LocalDateTime.now());
         } catch (Exception e) {
             System.err.println("Token validation failed: " + e.getMessage());

@@ -16,7 +16,7 @@ import com.nexcart.backend.entity.JWTToken;
 public interface JWTTokenRepository extends JpaRepository<JWTToken, Integer> {
 
     // Find a token by its value
-    Optional<JWTToken> findByToken(String token);
+    Optional<JWTToken> findFirstByToken(String token);
 
     // Custom query to find tokens by user ID
     @Query("SELECT t FROM JWTToken t WHERE t.user.userId = :userId")
