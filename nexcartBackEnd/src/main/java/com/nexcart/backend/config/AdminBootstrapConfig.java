@@ -26,7 +26,7 @@ public class AdminBootstrapConfig {
                                       @Value("${admin.bootstrap.password:Admin@123}") String password) {
         return args -> {
             BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
-            User admin = userRepository.findByUsername(username).orElse(null);
+            User admin = userRepository.findFirstByUsername(username).orElse(null);
 
             if (admin == null) {
                 admin = new User();

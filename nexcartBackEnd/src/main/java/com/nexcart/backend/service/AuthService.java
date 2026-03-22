@@ -49,7 +49,7 @@ public class AuthService {
     }
 
     public User authenticate(String username, String password) {
-        User user = userRepository.findByUsername(username)
+        User user = userRepository.findFirstByUsername(username)
                 .orElseThrow(() -> new RuntimeException("Invalid username or password"));
 
         if (!passwordEncoder.matches(password, user.getPassword())) {
@@ -73,10 +73,10 @@ public class AuthService {
         }
         String value = identifier.trim();
         if (value.contains("@")) {
-            return userRepository.findByEmail(value);
+            return userRepository.findFirstByEmail(value);
         }
-        Optional<User> byUsername = userRepository.findByUsername(value);
-        return byUsername.isPresent() ? byUsername : userRepository.findByEmail(value);
+        Optional<User> byUsername = userRepository.findFirstByUsername(value);
+        return byUsername.isPresent() ? byUsername : userRepository.findFirstByEmail(value);
     }
 
     public String createPasswordResetToken(User user) {
