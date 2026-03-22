@@ -21,6 +21,7 @@ import java.util.Optional;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
 
 @WebFilter(urlPatterns = {"/api/*", "/admin/*"})
 public class AuthenticationFilter implements Filter {
@@ -29,15 +30,9 @@ public class AuthenticationFilter implements Filter {
     private final AuthService authService;
     private final UserRepository userRepository;
 
-    private static final String[] ALLOWED_ORIGINS = {
-        "http://localhost:5174",
-        "http://localhost:5175",
-        "http://localhost:5176",
-        "https://nex-cart-git-main-annnuuupams-projects.vercel.app",
-        "https://nex-cart-alpha.vercel.app",
-                                "https://nex-cart-6dxfirgrk-annnuuupams-projects.vercel.app",
-        "https://nex-cart-6dxfirgrk-annnuuupams-projects.vercel.app"
-    };
+    // Read from env var; multiple origins can be comma-separated
+    @Value("${app.frontend.base-url:https://nex-cart-alpha.vercel.app}")
+    private String frontendBaseUrl;
 
     private static final String[] UNAUTHENTICATED_PATHS = {
         "/api/users/register",
@@ -57,8 +52,6 @@ public class AuthenticationFilter implements Filter {
             throws IOException, ServletException {
         HttpServletRequest httpRequest = (HttpServletRequest) request;
         HttpServletResponse httpResponse = (HttpServletResponse) response;
-
-        setCORSHeaders(httpRequest, httpResponse);
 
         try {
             executeFilterLogic(httpRequest, httpResponse, chain);
@@ -84,11 +77,6 @@ public class AuthenticationFilter implements Filter {
 
         if (Arrays.asList(UNAUTHENTICATED_PATHS).contains(requestURI)) {
             chain.doFilter(httpRequest, httpResponse);
-            return;
-        }
-
-        if (httpRequest.getMethod().equalsIgnoreCase("OPTIONS")) {
-            httpResponse.setStatus(HttpServletResponse.SC_OK);
             return;
         }
 
@@ -122,15 +110,7 @@ public class AuthenticationFilter implements Filter {
         chain.doFilter(httpRequest, httpResponse);
     }
 
-    private void setCORSHeaders(HttpServletRequest request, HttpServletResponse response) {
-        String origin = request.getHeader("Origin");
-        boolean allowed = origin != null && Arrays.stream(ALLOWED_ORIGINS).anyMatch(o -> o.equalsIgnoreCase(origin));
-        response.setHeader("Access-Control-Allow-Origin", allowed ? origin : ALLOWED_ORIGINS[0]);
-        response.setHeader("Vary", "Origin");
-        response.setHeader("Access-Control-Allow-Methods", "GET, POST, PUT, PATCH, DELETE, OPTIONS");
-        response.setHeader("Access-Control-Allow-Headers", "Content-Type, Authorization, X-Requested-With");
-        response.setHeader("Access-Control-Allow-Credentials", "true");
-    }
+
 
     private void sendErrorResponse(HttpServletResponse response, int statusCode, String message) throws IOException {
         response.setStatus(statusCode);

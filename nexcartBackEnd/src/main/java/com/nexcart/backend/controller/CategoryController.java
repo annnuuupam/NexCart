@@ -4,7 +4,6 @@ import com.nexcart.backend.entity.Category;
 import com.nexcart.backend.repository.CategoryRepository;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -15,8 +14,6 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 @RestController
-@CrossOrigin(origins = {"http://localhost:5174", "http://localhost:5175", "http://localhost:5176", "https://nex-cart-git-main-annnuuupams-projects.vercel.app", "https://nex-cart-alpha.vercel.app",
-                                "https://nex-cart-6dxfirgrk-annnuuupams-projects.vercel.app"}, allowCredentials = "true")
 @RequestMapping("/api/categories")
 public class CategoryController {
 

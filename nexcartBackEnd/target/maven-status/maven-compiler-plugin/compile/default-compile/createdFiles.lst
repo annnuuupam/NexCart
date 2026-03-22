@@ -86,7 +86,6 @@ com\nexcart\backend\repository\PasswordResetTokenRepository.class
 com\nexcart\backend\admin\controller\AdminCouponController.class
 com\nexcart\backend\controller\OrderController.class
 com\nexcart\backend\service\ReviewService.class
-com\nexcart\backend\config\CorsConfig$1.class
 com\nexcart\backend\repository\JWTTokenRepository.class
 com\nexcart\backend\repository\SupportTicketRepository.class
 com\nexcart\backend\entity\SupportTicket.class
