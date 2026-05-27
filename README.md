@@ -1,5 +1,8 @@
 # NexCart - Full Stack E-Commerce Platform
 
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](./LICENSE)
+[![Author](https://img.shields.io/badge/Author-Anupam%20Kumar-blue)](https://github.com/annnuuupam)
+
 ## Project Title
 NexCart
 
