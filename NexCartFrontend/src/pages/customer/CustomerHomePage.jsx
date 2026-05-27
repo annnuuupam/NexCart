@@ -41,6 +41,7 @@ export default function CustomerHomePage() {
   const [cartError, setCartError] = useState(false);
   const [isCartLoading, setIsCartLoading] = useState(true);
   const [searchQuery, setSearchQuery] = useState("");
+  const [searchTrigger, setSearchTrigger] = useState(0);
   const [searchScope, setSearchScope] = useState("all");
   const [sortBy, setSortBy] = useState("relevance");
   const [selectedCategory, setSelectedCategory] = useState("all");
@@ -186,7 +187,7 @@ export default function CustomerHomePage() {
     }, 220);
 
     return () => clearTimeout(timer);
-  }, [serverPage, selectedCategory, searchQuery]);
+  }, [serverPage, selectedCategory, searchQuery, searchTrigger]);
 
   const fetchProducts = async (pageToLoad) => {
     setIsLoadingProducts(true);
@@ -394,8 +395,13 @@ export default function CustomerHomePage() {
         onClearSearch={() => {
           setSearchQuery("");
           setServerPage(0);
+          setSearchTrigger((prev) => prev + 1);
         }}
-        onSearchSubmit={(event) => event.preventDefault()}
+        onSearchSubmit={(event) => {
+          event.preventDefault();
+          setServerPage(0);
+          setSearchTrigger((prev) => prev + 1);
+        }}
       />
 
       <main className="main-content">
