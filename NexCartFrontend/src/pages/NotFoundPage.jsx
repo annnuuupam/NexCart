@@ -4,6 +4,7 @@ import { motion } from "framer-motion";
 import { SearchX, ArrowLeft, Home } from "lucide-react";
 import { ThemeToggle } from "../components/layout/ThemeToggle";
 import logo from "../assets/images/logo.png";
+import { useStoreName } from "../hooks/useStoreName";
 import "../styles/LoginPage.css";
 
 const fadeUp = {
@@ -17,13 +18,14 @@ const fadeUp = {
 
 export default function NotFoundPage() {
   const navigate = useNavigate();
+  const storeName = useStoreName();
 
   return (
     <div className="login-page">
       <nav className="login-navbar">
         <div className="login-brand" onClick={() => navigate("/")}>
-          <img src={logo} alt="NexCart" />
-          <span>NexCart</span>
+          <img src={logo} alt={storeName} />
+          <span>{storeName}</span>
         </div>
         <div className="login-navbar-actions">
           <ThemeToggle />

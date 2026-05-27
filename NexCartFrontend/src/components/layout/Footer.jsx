@@ -1,7 +1,9 @@
 import React from "react";
+import { useStoreName } from "../../hooks/useStoreName";
 
 export function Footer() {
   const currentYear = new Date().getFullYear();
+  const storeName = useStoreName();
 
   return (
     <footer className="footer footer-market">
@@ -11,7 +13,7 @@ export function Footer() {
 
       <div className="footer-content footer-content-market">
         <div className="footer-brand-block">
-          <h3 className="footer-title">NexCart Marketplace</h3>
+          <h3 className="footer-title">{storeName} Marketplace</h3>
           <p className="footer-tagline">Industry-grade shopping experience inspired by leading marketplaces.</p>
           <div className="footer-trust-pills">
             <span>Secure Payments</span>
@@ -30,7 +32,7 @@ export function Footer() {
           </div>
           <div>
             <h4>Company</h4>
-            <a href="/about">About NexCart</a>
+            <a href="/about">About {storeName}</a>
             <a href="/profile">Your Account</a>
             <a href="/admin">Admin Portal</a>
             <a href="/support/customer-service">Customer Service</a>
@@ -46,7 +48,7 @@ export function Footer() {
       </div>
 
       <div className="footer-bottom footer-bottom-market">
-        <p>Copyright {currentYear} NexCart. All rights reserved.</p>
+        <p>Copyright {currentYear} {storeName}. All rights reserved.</p>
         <p>Made for modern ecommerce experiences.</p>
       </div>
     </footer>

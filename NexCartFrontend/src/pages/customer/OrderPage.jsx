@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { Header } from "../../components/layout/Header";
 import { Footer } from "../../components/layout/Footer";
 import { useToast } from "../../components/ui/ToastContext";
+import { useStoreName } from "../../hooks/useStoreName";
 import "../../styles/styles.css";
 import API_BASE_URL from '../../config/api';
 
@@ -43,7 +44,7 @@ const getStepIndex = (statusRaw) => {
   return 0;
 };
 
-const invoiceHtml = (order) => {
+const invoiceHtml = (order, storeName) => {
   const rows = (order.items || [])
     .map(
       (item, index) => `
@@ -67,7 +68,7 @@ const invoiceHtml = (order) => {
       <div style="max-width:900px;margin:0 auto;background:#fff;border:1px solid #e2e8f0;border-radius:14px;overflow:hidden;">
         <div style="padding:22px 24px;background:linear-gradient(135deg,#0f766e,#0ea5a3);color:#fff;display:flex;justify-content:space-between;gap:16px;">
           <div>
-            <h2 style="margin:0 0 6px;font-size:24px;">NexCart Invoice</h2>
+            <h2 style="margin:0 0 6px;font-size:24px;">${storeName} Invoice</h2>
             <p style="margin:0;opacity:0.9;">Order ID: <b>${order.orderId}</b></p>
           </div>
           <div style="text-align:right;">
@@ -122,6 +123,7 @@ const invoiceHtml = (order) => {
 export default function OrdersPage() {
   const navigate = useNavigate();
   const toast = useToast();
+  const storeName = useStoreName();
   const [orders, setOrders] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -282,12 +284,12 @@ export default function OrdersPage() {
       toast.error("Popup blocked. Please allow popups to view the invoice.");
       return;
     }
-    win.document.write(invoiceHtml(order));
+    win.document.write(invoiceHtml(order, storeName));
     win.document.close();
   };
 
   const downloadInvoice = (order) => {
-    const blob = new Blob([invoiceHtml(order)], { type: "text/html;charset=utf-8" });
+    const blob = new Blob([invoiceHtml(order, storeName)], { type: "text/html;charset=utf-8" });
     const url = window.URL.createObjectURL(blob);
     const link = document.createElement("a");
     link.href = url;
@@ -484,7 +486,7 @@ export default function OrdersPage() {
                     <p><span>Discount</span><strong>{formatPrice(order.discountAmount)}</strong></p>
                     <p><span>Shipping</span><strong>{formatPrice(order.shippingAmount)}</strong></p>
                     <p><span>Payment</span><strong>{order.paymentMethod || "NA"}</strong></p>
-                  <p><span>Tracking</span><strong>{order.trackingNumber || "-"}</strong></p>
+                    <p><span>Tracking</span><strong>{order.trackingNumber || "-"}</strong></p>
                   </div>
 
                   <ol className="order-timeline" aria-label="Order status">
@@ -623,9 +625,3 @@ export default function OrdersPage() {
     </div>
   );
 }
-
-
-
-
-
-

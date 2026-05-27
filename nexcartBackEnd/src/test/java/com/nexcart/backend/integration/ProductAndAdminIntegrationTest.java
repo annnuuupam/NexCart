@@ -100,25 +100,92 @@ class ProductAndAdminIntegrationTest {
         String adminToken = authService.generateToken(admin);
 
         mockMvc.perform(put("/admin/users/{id}/block", customer.getUserId())
-                        .cookie(authCookie(adminToken)))
+                        .cookie(adminAuthCookie(adminToken)))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.blocked").value(true))
                 .andExpect(jsonPath("$.status").value("BLOCKED"));
 
         mockMvc.perform(put("/admin/users/{id}/unblock", customer.getUserId())
-                        .cookie(authCookie(adminToken)))
+                        .cookie(adminAuthCookie(adminToken)))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.blocked").value(false))
                 .andExpect(jsonPath("$.status").value("ACTIVE"));
 
         mockMvc.perform(delete("/admin/users/{id}", customer.getUserId())
-                        .cookie(authCookie(adminToken)))
+                        .cookie(adminAuthCookie(adminToken)))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.message").value("User deleted"));
 
         mockMvc.perform(get("/admin/users/{id}", customer.getUserId())
-                        .cookie(authCookie(adminToken)))
+                        .cookie(adminAuthCookie(adminToken)))
                 .andExpect(status().isNotFound());
+    }
+
+    @Test
+    void shouldSuccessfullyResetPassword() throws Exception {
+        User customer = createUser("reset_customer", Role.CUSTOMER);
+        customer.setPassword(new org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder().encode("OldPass@123"));
+        userRepository.save(customer);
+
+        // 1. Fetch Captcha Challenge
+        String captchaResponse = mockMvc.perform(get("/api/auth/captcha"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.captchaId").exists())
+                .andExpect(jsonPath("$.question").exists())
+                .andReturn().getResponse().getContentAsString();
+
+        String captchaId = com.jayway.jsonpath.JsonPath.read(captchaResponse, "$.captchaId");
+        String question = com.jayway.jsonpath.JsonPath.read(captchaResponse, "$.question");
+
+        // Parse arithmetic question (e.g. "What is 4 + 7 ?")
+        java.util.regex.Matcher matcher = java.util.regex.Pattern.compile("What is (\\d+) \\+ (\\d+) \\?").matcher(question);
+        if (!matcher.find()) {
+            throw new IllegalStateException("Failed to parse captcha question: " + question);
+        }
+        int a = Integer.parseInt(matcher.group(1));
+        int b = Integer.parseInt(matcher.group(2));
+        String answer = String.valueOf(a + b);
+
+        // 2. Request Forgot Password
+        String forgotBody = String.format(
+                "{\"identifier\":\"%s\",\"captchaId\":\"%s\",\"captchaAnswer\":\"%s\"}",
+                customer.getEmail(), captchaId, answer
+        );
+
+        String forgotResponse = mockMvc.perform(org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post("/api/auth/forgot-password")
+                        .contentType(org.springframework.http.MediaType.APPLICATION_JSON)
+                        .content(forgotBody)
+                        .header("Origin", "http://localhost:5174")) // Triggers localhost local bypass to return token
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.resetToken").exists())
+                .andReturn().getResponse().getContentAsString();
+
+        String resetToken = com.jayway.jsonpath.JsonPath.read(forgotResponse, "$.resetToken");
+
+        // 3. Reset Password
+        String resetBody = String.format(
+                "{\"token\":\"%s\",\"newPassword\":\"NewPass@123\",\"confirmPassword\":\"NewPass@123\"}",
+                resetToken
+        );
+
+        mockMvc.perform(org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post("/api/auth/reset-password")
+                        .contentType(org.springframework.http.MediaType.APPLICATION_JSON)
+                        .content(resetBody))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.message").value("Password reset successful"));
+
+        // 4. Verify Login with New Password
+        String loginBody = String.format(
+                "{\"username\":\"%s\",\"password\":\"NewPass@123\"}",
+                customer.getUsername()
+        );
+
+        mockMvc.perform(org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post("/api/auth/login")
+                        .contentType(org.springframework.http.MediaType.APPLICATION_JSON)
+                        .content(loginBody))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.message").value("Login successful"))
+                .andExpect(jsonPath("$.role").value("CUSTOMER"));
     }
 
     private User createUser(String username, Role role) {
@@ -136,6 +203,12 @@ class ProductAndAdminIntegrationTest {
 
     private Cookie authCookie(String token) {
         Cookie cookie = new Cookie("authToken", token);
+        cookie.setPath("/");
+        return cookie;
+    }
+
+    private Cookie adminAuthCookie(String token) {
+        Cookie cookie = new Cookie("adminAuthToken", token);
         cookie.setPath("/");
         return cookie;
     }

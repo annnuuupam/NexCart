@@ -5,6 +5,7 @@ import { DotLottieReact } from "@lottiefiles/dotlottie-react";
 import { ThemeToggle } from "../../components/layout/ThemeToggle";
 import ForgotPasswordModal from "../../components/auth/ForgotPasswordModal";
 import logo from "../../assets/images/logo.png";
+import { useStoreName } from "../../hooks/useStoreName";
 import "../../styles/LoginPage.css";
 import API_BASE_URL from '../../config/api';
 
@@ -35,6 +36,7 @@ export default function AdminLogin() {
   const [showForgot, setShowForgot] = useState(false);
   const navigate = useNavigate();
   const location = useLocation();
+  const storeName = useStoreName();
 
   React.useEffect(() => {
     const sessionMessage = location?.state?.message;
@@ -90,11 +92,11 @@ export default function AdminLogin() {
         >
           <img
             src={logo}
-            alt="NexCart"
+            alt={storeName}
             style={{ height: '38px', width: '38px', objectFit: 'cover', borderRadius: '10px' }}
           />
           <span style={{ fontSize: '1.5rem', fontWeight: 800, color: '#0f172a', letterSpacing: '-0.03em', userSelect: 'none' }}>
-            NexCart Admin
+            {storeName} Admin
           </span>
         </div>
         <div className="login-navbar-actions">
@@ -192,5 +194,3 @@ export default function AdminLogin() {
     </div>
   );
 }
-
-

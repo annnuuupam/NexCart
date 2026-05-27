@@ -1,50 +1,147 @@
 # NexCart Folder Structure
 
 ## Root
-- `C:\Users\anupa\OneDrive\Desktop\NexCart\README.md` Main project overview
-- `C:\Users\anupa\OneDrive\Desktop\NexCart\DOCUMENTATION_INDEX.md` Documentation landing page
-- `C:\Users\anupa\OneDrive\Desktop\NexCart\ARCHITECTURE.md` System architecture details
-- `C:\Users\anupa\OneDrive\Desktop\NexCart\API_DOCUMENTATION.md` REST API reference
-- `C:\Users\anupa\OneDrive\Desktop\NexCart\DATABASE_SCHEMA.md` Database schema and ER diagrams
-- `C:\Users\anupa\OneDrive\Desktop\NexCart\FEATURES.md` Feature inventory
-- `C:\Users\anupa\OneDrive\Desktop\NexCart\WORKFLOW.md` End-to-end workflows
-- `C:\Users\anupa\OneDrive\Desktop\NexCart\DEPLOYMENT.md` Deployment guide
-- `C:\Users\anupa\OneDrive\Desktop\NexCart\SECURITY.md` Security design
-- `C:\Users\anupa\OneDrive\Desktop\NexCart\CONTRIBUTING.md` Contribution guide
-- `C:\Users\anupa\OneDrive\Desktop\NexCart\NexCart_Documentation.md` Expanded project documentation
-- `C:\Users\anupa\OneDrive\Desktop\NexCart\PROJECT_REPORT.md` Project report and interview material
+| File | Purpose |
+|---|---|
+| `README.md` | Main project overview |
+| `DOCUMENTATION_INDEX.md` | Documentation landing page |
+| `ARCHITECTURE.md` | System architecture details and Mermaid diagrams |
+| `API_DOCUMENTATION.md` | REST API reference |
+| `DATABASE_SCHEMA.md` | Database schema, table definitions, and ER diagram |
+| `FEATURES.md` | Feature inventory |
+| `WORKFLOW.md` | End-to-end workflow sequence diagrams |
+| `SECURITY.md` | Security design and dual-cookie auth |
+| `DEPLOYMENT.md` | Deployment guide |
+| `CONTRIBUTING.md` | Contribution guide |
+| `NexCart_Documentation.md` | Expanded project documentation |
+| `PROJECT_REPORT.md` | Project report and interview preparation |
+| `FOLDER_STRUCTURE.md` | This file |
 
 ## Frontend: `NexCartFrontend/`
-- `package.json` Frontend dependencies and scripts
-- `.env`, `.env.example`, `.env.local` API base URL configuration
-- `index.html` Vite HTML entry
-- `src/` React source
-- `src/routes/Routes.jsx` App routing for customer and admin pages
-- `src/pages/` Customer and auth screens
-- `src/admin/` Admin layout, pages, and services
-- `src/components/` Shared UI components
-- `src/styles/` Application styles
-- `public/` Static assets used by the UI
-- `dist/` Production build output
+```
+NexCartFrontend/
+├── package.json                 # Dependencies and scripts
+├── .env / .env.local            # API base URL configuration (VITE_API_URL)
+├── index.html                   # Vite HTML entry point
+├── src/
+│   ├── main.jsx                 # React app mount
+│   ├── App.jsx                  # Root layout and theming
+│   ├── routes/
+│   │   └── Routes.jsx           # All customer and admin route definitions
+│   ├── hooks/
+│   │   └── useStoreName.js      # Custom hook: fetches store name from /api/settings
+│   ├── pages/
+│   │   ├── LoginPage.jsx
+│   │   ├── RegisterPage.jsx
+│   │   ├── ForgotPasswordPage.jsx
+│   │   ├── ResetPasswordPage.jsx
+│   │   └── customer/
+│   │       ├── CustomerHomePage.jsx
+│   │       ├── ProductDetailsPage.jsx
+│   │       ├── CartPage.jsx         # Checkout + Razorpay + COD + dynamic branding
+│   │       ├── OrderPage.jsx        # Order history + branded invoice generation
+│   │       ├── ProfilePage.jsx
+│   │       ├── AboutPage.jsx        # Dynamic store name branding
+│   │       ├── WishlistPage.jsx
+│   │       └── support/             # Help, returns policy, contact, tickets
+│   ├── admin/
+│   │   ├── layout/
+│   │   │   ├── AdminLayout.jsx
+│   │   │   ├── Sidebar.jsx          # Dynamic store name in sidebar header
+│   │   │   └── Navbar.jsx           # Dynamic admin profile via /api/auth/me
+│   │   ├── pages/
+│   │   │   ├── DashboardPage.jsx
+│   │   │   ├── AnalyticsPage.jsx    # Dynamic store name in chart headers
+│   │   │   ├── ProductsPage.jsx
+│   │   │   ├── CategoriesPage.jsx
+│   │   │   ├── OrdersPage.jsx
+│   │   │   ├── CustomersPage.jsx
+│   │   │   ├── CouponsPage.jsx
+│   │   │   ├── SupportPage.jsx
+│   │   │   ├── SettingsPage.jsx     # Admin store name and system settings editor
+│   │   │   └── NotificationsPage.jsx
+│   │   ├── services/
+│   │   │   └── adminApi.js          # Centralized admin API client (credentials: include)
+│   │   ├── components/
+│   │   │   └── ...                  # Admin-specific UI components
+│   │   └── data/                    # Static seed/config data
+│   ├── components/
+│   │   ├── layout/
+│   │   │   ├── Header.jsx
+│   │   │   ├── Footer.jsx           # Dynamic store name branding
+│   │   │   ├── Logo.jsx             # Dynamic store name branding
+│   │   │   └── ThemeToggle.jsx
+│   │   ├── cart/                    # Cart modal and cart item components
+│   │   └── ui/                     # Toasts, skeletons, notices
+│   ├── styles/                      # Application CSS
+│   └── config/
+│       └── api.js                   # VITE_API_URL export (API_BASE_URL)
+├── public/                          # Static assets
+└── dist/                            # Production build output
+```
 
 ## Backend: `nexcartBackEnd/`
-- `pom.xml` Maven configuration and dependencies
-- `Dockerfile` Backend container build
-- `src/main/java/com/nexcart/backend/` Application code
-- `controller/` Customer APIs
-- `admin/controller/` Admin APIs
-- `service/` Business logic and workflows
-- `repository/` Spring Data JPA repositories
-- `entity/` JPA entity models and enums
-- `filter/` AuthenticationFilter
-- `config/` Application configuration and admin bootstrap
-- `src/main/resources/` Properties, SQL scripts, email templates
-- `src/test/` Tests
+```
+nexcartBackEnd/
+├── pom.xml                          # Maven configuration and dependencies
+├── Dockerfile                       # Backend container build
+└── src/
+    ├── main/
+    │   ├── java/com/nexcart/backend/
+    │   │   ├── NexCartApplication.java
+    │   │   ├── controller/          # 13 customer-facing REST controllers
+    │   │   │   ├── AuthController.java
+    │   │   │   ├── UserController.java
+    │   │   │   ├── ProductController.java
+    │   │   │   ├── CategoryController.java
+    │   │   │   ├── CartController.java
+    │   │   │   ├── PaymentController.java
+    │   │   │   ├── OrderController.java
+    │   │   │   ├── CouponController.java
+    │   │   │   ├── ReviewController.java
+    │   │   │   ├── SupportController.java
+    │   │   │   ├── StoreController.java
+    │   │   │   ├── SystemSettingsController.java
+    │   │   │   └── UserNotificationController.java
+    │   │   ├── admin/
+    │   │   │   ├── controller/      # 11 admin REST controllers
+    │   │   │   │   ├── AdminDashboardController.java
+    │   │   │   │   ├── AdminBusinessController.java
+    │   │   │   │   ├── AdminProductController.java
+    │   │   │   │   ├── AdminCategoryController.java
+    │   │   │   │   ├── AdminOrderController.java
+    │   │   │   │   ├── AdminCouponController.java
+    │   │   │   │   ├── AdminUserController.java
+    │   │   │   │   ├── AdminUsersController.java
+    │   │   │   │   ├── AdminSupportController.java
+    │   │   │   │   ├── AdminSettingsController.java
+    │   │   │   │   └── AdminNotificationController.java
+    │   │   │   └── service/         # Admin-specific service implementations
+    │   │   ├── service/             # Business logic services
+    │   │   ├── repository/          # Spring Data JPA repositories
+    │   │   ├── entity/              # JPA entities (User, Product, Order, etc.)
+    │   │   ├── dto/                 # Request/Response DTOs
+    │   │   ├── filter/
+    │   │   │   └── AuthenticationFilter.java  # JWT + dual-cookie enforcement
+    │   │   └── config/              # CorsConfig, admin bootstrap
+    │   └── resources/
+    │       ├── application.properties
+    │       ├── db/
+    │       │   ├── nexcart_schema.sql
+    │       │   ├── nexcart_seed.sql
+    │       │   └── nexcart_settings_migration.sql
+    │       └── templates/           # Email templates
+    └── test/                        # Integration tests
+```
 
 ## Dashboard Template: `dashboard_import/`
-- `react-admin-dashboard-master/` Standalone admin dashboard template project
+- `react-admin-dashboard-master/` — Standalone admin dashboard template project (not integrated into main app)
 
 ## Build and Tooling
-- `target/` Maven build output
-- `dist/` Vite build output
-- `.vscode/` Editor settings
+| Path | Purpose |
+|---|---|
+| `nexcartBackEnd/target/` | Maven build output |
+| `NexCartFrontend/dist/` | Vite production build output |
+| `.vscode/` | Editor settings |
+| `.gitignore` | Git exclusions |
+| `vercel.json` | Vercel deployment configuration |

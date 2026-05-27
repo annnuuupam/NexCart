@@ -1,4 +1,5 @@
-﻿import React from "react";
+import React from "react";
+import { useStoreName } from "../../hooks/useStoreName";
 import { NavLink } from "react-router-dom";
 import {
   LayoutDashboard,
@@ -31,6 +32,7 @@ const iconMap = {
 };
 
 const Sidebar = ({ onLogout, mobile = false }) => {
+  const storeName = useStoreName();
   return (
     <aside
       className={
@@ -44,7 +46,7 @@ const Sidebar = ({ onLogout, mobile = false }) => {
           <Store className="h-5 w-5" />
         </div>
         <div>
-          <p className="text-xl font-bold text-slate-900">NexCart</p>
+          <p className="text-xl font-bold text-slate-900">{storeName}</p>
           <p className="text-sm text-slate-500">Admin Panel</p>
         </div>
       </div>

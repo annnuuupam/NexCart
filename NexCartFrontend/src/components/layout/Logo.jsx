@@ -1,17 +1,19 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
+import { useStoreName } from "../../hooks/useStoreName";
 
 import logo from "../../assets/images/logo.png";
 import "../../styles/styles.css";
 
 export default function Logo() {
   const navigate = useNavigate();
+  const storeName = useStoreName();
 
   return (
     <div className="logo-container" onClick={() => navigate("/customerhome")}>
       <img
         src={logo}
-        alt="NexCart Logo"
+        alt={`${storeName} Logo`}
         className="logo-image"
         onError={(e) => {
           e.target.onerror = null;
@@ -19,7 +21,7 @@ export default function Logo() {
           e.target.style.display = "none";
         }}
       />
-      <span className="logo-text">NexCart</span>
+      <span className="logo-text">{storeName}</span>
     </div>
   );
 }

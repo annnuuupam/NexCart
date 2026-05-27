@@ -9,6 +9,8 @@ const Navbar = ({ title, onMenuToggle, theme, onThemeToggle }) => {
   const navigate = useNavigate();
   const [isNotificationsOpen, setIsNotificationsOpen] = useState(false);
   const [avatarUrl, setAvatarUrl] = useState(useravatar);
+  const [adminEmail, setAdminEmail] = useState("admin@nexcart.com");
+  const [adminName, setAdminName] = useState("Store Admin");
   const bellRef = useRef(null);
   const wsClientRef = useRef(null);
   const toast = useToast();
@@ -80,6 +82,8 @@ const Navbar = ({ title, onMenuToggle, theme, onThemeToggle }) => {
         if (res.ok) {
           const data = await res.json();
           if (data.avatarUrl && String(data.avatarUrl).trim()) setAvatarUrl(String(data.avatarUrl).trim());
+          if (data.email) setAdminEmail(data.email);
+          if (data.username || data.name) setAdminName(data.username || data.name);
         }
       } catch (e) {}
     }
@@ -253,8 +257,8 @@ const Navbar = ({ title, onMenuToggle, theme, onThemeToggle }) => {
                 onError={() => { setAvatarUrl(useravatar); }}
               />
               <div className="hidden md:flex flex-col items-start -space-y-0.5">
-                <p className="text-[13px] font-bold text-slate-700 dark:text-slate-200 tracking-tight">Store Admin</p>
-                <p className="text-[11px] font-medium text-slate-500 dark:text-slate-400">admin@nexcart.com</p>
+                <p className="text-[13px] font-bold text-slate-700 dark:text-slate-200 tracking-tight">{adminName}</p>
+                <p className="text-[11px] font-medium text-slate-500 dark:text-slate-400">{adminEmail}</p>
               </div>
             </div>
           </div>

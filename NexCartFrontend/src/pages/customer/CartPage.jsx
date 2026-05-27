@@ -475,7 +475,7 @@ const CartPage = () => {
 
       const options = {
         key: razorpayKeyId,
-        name: "NexCart",
+        name: settings?.store?.storeName || "NexCart",
         description: "Order Checkout",
         order_id: razorpayOrderId,
         handler: async (paymentResponse) => {

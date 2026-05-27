@@ -2,6 +2,7 @@ import React, { useMemo, useEffect, useState } from "react";
 import { ShieldCheck, Truck, RefreshCcw, BadgeCheck, Package, Headphones } from "lucide-react";
 import { Header } from "../../components/layout/Header";
 import { Footer } from "../../components/layout/Footer";
+import { useStoreName } from "../../hooks/useStoreName";
 import "../../styles/styles.css";
 import API_BASE_URL from '../../config/api';
 
@@ -11,6 +12,7 @@ const formatCompact = (value) => {
 };
 
 export default function AboutPage() {
+  const storeName = useStoreName();
   const [username, setUsername] = useState("Guest");
   const [cartCount, setCartCount] = useState(0);
   const [aboutData, setAboutData] = useState({
@@ -101,10 +103,10 @@ export default function AboutPage() {
 
       <main className="main-content about-main">
         <section className="about-hero">
-          <p className="about-kicker">About NexCart</p>
+          <p className="about-kicker">About {storeName}</p>
           <h1>Built like a modern marketplace, focused on trust, speed, and value.</h1>
           <p>
-            NexCart combines curated selection, transparent pricing, and dependable fulfillment to deliver
+            {storeName} combines curated selection, transparent pricing, and dependable fulfillment to deliver
             an ecommerce experience inspired by industry leaders.
           </p>
         </section>
@@ -120,7 +122,7 @@ export default function AboutPage() {
 
         <section className="about-grid">
           <article className="about-card">
-            <h2>Why customers choose NexCart</h2>
+            <h2>Why customers choose {storeName}</h2>
             <div className="about-feature-list">
               <p><Truck size={16} /> {aboutData.fulfillmentSla}</p>
               <p><ShieldCheck size={16} /> Secure checkout and protected transactions</p>

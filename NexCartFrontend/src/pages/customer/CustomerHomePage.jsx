@@ -561,7 +561,10 @@ export default function CustomerHomePage() {
                   type="button"
                   className="market-pager-btn"
                   disabled={!pagination.hasPrevious}
-                  onClick={() => setServerPage((prev) => Math.max(prev - 1, 0))}
+                  onClick={() => {
+                    setServerPage((prev) => Math.max(prev - 1, 0));
+                    window.scrollTo({ top: 0, behavior: "smooth" });
+                  }}
                 >
                   Previous
                 </button>
@@ -569,7 +572,10 @@ export default function CustomerHomePage() {
                   type="button"
                   className="market-pager-btn"
                   disabled={!pagination.hasNext}
-                  onClick={() => setServerPage((prev) => prev + 1)}
+                  onClick={() => {
+                    setServerPage((prev) => prev + 1);
+                    window.scrollTo({ top: 0, behavior: "smooth" });
+                  }}
                 >
                   Next
                 </button>

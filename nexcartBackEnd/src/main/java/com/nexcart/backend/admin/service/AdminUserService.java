@@ -4,6 +4,9 @@ import com.nexcart.backend.entity.Role;
 import com.nexcart.backend.entity.User;
 import com.nexcart.backend.repository.JWTTokenRepository;
 import com.nexcart.backend.repository.OrderRepository;
+import com.nexcart.backend.entity.Order;
+import com.nexcart.backend.repository.PaymentRepository;
+import com.nexcart.backend.repository.PasswordResetTokenRepository;
 import com.nexcart.backend.repository.UserRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.data.domain.Page;
@@ -22,11 +25,19 @@ public class AdminUserService {
     private final UserRepository userRepository;
     private final JWTTokenRepository jwtTokenRepository;
     private final OrderRepository orderRepository;
+    private final PaymentRepository paymentRepository;
+    private final PasswordResetTokenRepository passwordResetTokenRepository;
 
-    public AdminUserService(UserRepository userRepository, JWTTokenRepository jwtTokenRepository, OrderRepository orderRepository) {
+    public AdminUserService(UserRepository userRepository,
+                            JWTTokenRepository jwtTokenRepository,
+                            OrderRepository orderRepository,
+                            PaymentRepository paymentRepository,
+                            PasswordResetTokenRepository passwordResetTokenRepository) {
         this.userRepository = userRepository;
         this.jwtTokenRepository = jwtTokenRepository;
         this.orderRepository = orderRepository;
+        this.paymentRepository = paymentRepository;
+        this.passwordResetTokenRepository = passwordResetTokenRepository;
     }
 
     @Transactional
@@ -95,7 +106,21 @@ public class AdminUserService {
     @Transactional
     public void deleteUser(Integer userId) {
         User user = userRepository.findById(userId).orElseThrow(() -> new IllegalArgumentException("User not found"));
+        
+        // 1. Delete password reset tokens first to prevent foreign key errors
+        passwordResetTokenRepository.deleteByUser_UserId(userId);
+        
+        // 2. Delete all orders and their associated payments
+        List<Order> orders = orderRepository.findByUserId(userId);
+        for (Order order : orders) {
+            paymentRepository.findByOrderId(order.getOrderId()).ifPresent(paymentRepository::delete);
+            orderRepository.delete(order);
+        }
+        
+        // 3. Delete JWT tokens
         jwtTokenRepository.deleteByUserId(userId);
+        
+        // 4. Delete the user
         userRepository.delete(user);
     }
 

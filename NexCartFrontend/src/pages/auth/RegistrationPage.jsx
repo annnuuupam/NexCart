@@ -4,6 +4,7 @@ import { motion } from "framer-motion";
 import { DotLottieReact } from "@lottiefiles/dotlottie-react";
 import { ThemeToggle } from "../../components/layout/ThemeToggle";
 import logo from "../../assets/images/logo.png";
+import { useStoreName } from "../../hooks/useStoreName";
 import "../../styles/LoginPage.css";
 import API_BASE_URL from '../../config/api';
 
@@ -34,6 +35,7 @@ export default function RegistrationPage() {
   const [error, setError] = useState(null);
   const navigate = useNavigate();
   const roleDropdownRef = useRef(null);
+  const storeName = useStoreName();
 
   useEffect(() => {
     const handleClickOutside = (event) => {
@@ -74,8 +76,8 @@ export default function RegistrationPage() {
     <div className="login-page">
       <nav className="login-navbar">
         <div className="login-brand" onClick={() => navigate("/")}>
-          <img src={logo} alt="NexCart" />
-          <span>NexCart</span>
+          <img src={logo} alt={storeName} />
+          <span>{storeName}</span>
         </div>
         <div className="login-navbar-actions">
           <Link to="/" className="login-navbar-link">
@@ -95,7 +97,7 @@ export default function RegistrationPage() {
               animate="visible"
               variants={leftVariants}
             >
-              Join NexCart.
+              Join {storeName}.
               <br />
               Start shopping today.
             </motion.h1>
@@ -147,7 +149,7 @@ export default function RegistrationPage() {
               Create account
             </motion.h2>
             <motion.p className="login-form-subtitle" custom={1} initial="hidden" animate="visible" variants={rightVariants}>
-              Register to continue with NexCart
+              Register to continue with {storeName}
             </motion.p>
 
             {error && (

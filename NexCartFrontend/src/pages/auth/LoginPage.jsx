@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import { useStoreName } from "../../hooks/useStoreName";
 import { motion } from "framer-motion";
 import { DotLottieReact } from "@lottiefiles/dotlottie-react";
 import { ThemeToggle } from "../../components/layout/ThemeToggle";
@@ -34,6 +35,7 @@ export default function LoginPage() {
   const [error, setError] = useState(null);
   const [showForgot, setShowForgot] = useState(false);
   const [loading, setLoading] = useState(false);
+  const storeName = useStoreName();
 
   const navigate = useNavigate();
 
@@ -74,8 +76,8 @@ export default function LoginPage() {
     <div className="login-page">
       <nav className="login-navbar">
         <div className="login-brand" onClick={() => navigate("/")}>
-          <img src={logo} alt="NexCart" />
-          <span>NexCart</span>
+          <img src={logo} alt={storeName} />
+          <span>{storeName}</span>
         </div>
         <div className="login-navbar-actions">
           <Link to="/register" className="login-navbar-link">
@@ -147,7 +149,7 @@ export default function LoginPage() {
               Welcome back
             </motion.h2>
             <motion.p className="login-form-subtitle" custom={1} initial="hidden" animate="visible" variants={rightVariants}>
-              Sign in to continue to NexCart
+              Sign in to continue to {storeName}
             </motion.p>
 
             {error && (

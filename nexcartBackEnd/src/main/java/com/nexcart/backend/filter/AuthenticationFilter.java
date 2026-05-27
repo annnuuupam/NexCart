@@ -80,7 +80,17 @@ public class AuthenticationFilter implements Filter {
             return;
         }
 
-        String token = getAuthTokenFromCookies(httpRequest);
+        String token = null;
+        if (requestURI.startsWith("/admin/")) {
+            token = getAuthTokenFromCookies(httpRequest, "adminAuthToken");
+        } else {
+            token = getAuthTokenFromCookies(httpRequest, "authToken");
+            if (token == null) {
+                // Shared endpoint fallback for admin dashboard accessing customer APIs
+                token = getAuthTokenFromCookies(httpRequest, "adminAuthToken");
+            }
+        }
+
         if (token == null || !authService.validateToken(token)) {
             sendErrorResponse(httpResponse, HttpServletResponse.SC_UNAUTHORIZED, "Unauthorized: Invalid or missing token");
             return;
@@ -118,11 +128,11 @@ public class AuthenticationFilter implements Filter {
         response.getWriter().write("{\"error\":\"" + message.replace("\"", "\\\"") + "\"}");
     }
 
-    private String getAuthTokenFromCookies(HttpServletRequest request) {
+    private String getAuthTokenFromCookies(HttpServletRequest request, String cookieName) {
         Cookie[] cookies = request.getCookies();
         if (cookies != null) {
             return Arrays.stream(cookies)
-                    .filter(cookie -> "authToken".equals(cookie.getName()))
+                    .filter(cookie -> cookieName.equals(cookie.getName()))
                     .map(Cookie::getValue)
                     .findFirst()
                     .orElse(null);

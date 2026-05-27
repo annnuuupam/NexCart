@@ -42,13 +42,14 @@ public class AuthController {
         this.captchaService = captchaService;
     }
 
+
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody LoginRequest loginRequest, HttpServletRequest request, HttpServletResponse response) {
         try {
             User user = authService.authenticate(loginRequest.getUsername(), loginRequest.getPassword());
             String token = authService.generateToken(user);
 
-            ResponseCookie cookie = buildAuthCookie(request, token, 3600);
+            ResponseCookie cookie = buildAuthCookie(request, token, 3600, user.getRole() == com.nexcart.backend.entity.Role.ADMIN ? "adminAuthToken" : "authToken");
             response.addHeader("Set-Cookie", cookie.toString());
 
             Map<String, Object> responseBody = new HashMap<>();
@@ -70,8 +71,10 @@ public class AuthController {
                 authService.logout(user);
             }
 
-            ResponseCookie cookie = buildAuthCookie(request, "", 0);
-            response.addHeader("Set-Cookie", cookie.toString());
+            ResponseCookie clearCustomerCookie = buildAuthCookie(request, "", 0, "authToken");
+            ResponseCookie clearAdminCookie = buildAuthCookie(request, "", 0, "adminAuthToken");
+            response.addHeader("Set-Cookie", clearCustomerCookie.toString());
+            response.addHeader("Set-Cookie", clearAdminCookie.toString());
 
             return ResponseEntity.ok(Map.of("message", "Logout successful"));
         } catch (RuntimeException e) {
@@ -164,13 +167,13 @@ public class AuthController {
         }
     }
 
-    private ResponseCookie buildAuthCookie(HttpServletRequest request, String token, int maxAgeSeconds) {
+    private ResponseCookie buildAuthCookie(HttpServletRequest request, String token, int maxAgeSeconds, String cookieName) {
         String origin = request.getHeader("Origin");
         boolean isLocal = origin != null && origin.contains("localhost");
         boolean secure = !isLocal;
         String sameSite = secure ? "None" : "Lax";
 
-        return ResponseCookie.from("authToken", token)
+        return ResponseCookie.from(cookieName, token)
                 .httpOnly(true)
                 .secure(secure)
                 .path("/")

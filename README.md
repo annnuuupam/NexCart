@@ -4,13 +4,13 @@
 NexCart
 
 ## Project Overview
-NexCart is a full-stack e-commerce platform that delivers a complete customer shopping journey and a dedicated admin operations console. The frontend is a React (Vite) single-page app and the backend is a Spring Boot REST API backed by MySQL. Authentication uses JWT stored in HttpOnly cookies, and core flows include catalog browsing, cart management, checkout, payments, order tracking, returns, and customer support.
+NexCart is a full-stack e-commerce platform that delivers a complete customer shopping journey and a dedicated admin operations console. The frontend is a React (Vite) single-page app and the backend is a Spring Boot REST API backed by MySQL. Authentication uses a **dual-cookie JWT system** — `authToken` for Customer sessions and `adminAuthToken` for Admin sessions — enabling concurrent logins without conflicts. Core flows include catalog browsing, cart management, checkout, payments, order tracking, returns, and customer support. The Admin can also rename the store from the Settings page, and the change propagates across the entire UI via the `useStoreName.js` hook.
 
 ## Problem Statement
 Growing retail teams often juggle separate tools for catalog management, secure checkout, order lifecycle, and post-purchase support. That fragmentation leads to operational bottlenecks and inconsistent customer experiences.
 
 ## Solution Description
-NexCart consolidates customer and admin workflows into a single platform. The customer app focuses on browsing, cart, checkout, and support. The admin console provides catalog management, order operations, customer management, coupon control, analytics, and system settings. A Spring Boot API enforces role-based access, secures sessions via JWT cookies, and coordinates payments via Razorpay or COD.
+NexCart consolidates customer and admin workflows into a single platform. The customer app focuses on browsing, cart, checkout, and support. The admin console provides catalog management, order operations, customer management, coupon control, analytics, and system settings. A Spring Boot API enforces role-based access, secures sessions via dual-cookie JWT, and coordinates payments via Razorpay or COD.
 
 ## Complete Feature List
 Customer features
@@ -19,9 +19,10 @@ Customer features
 - Product detail page with images and reviews
 - Cart management with stock validation
 - Coupon discovery and validation
-- Checkout with shipping, tax, and payment method selection
+- Checkout with shipping, tax, and payment method selection (from system settings)
 - Razorpay checkout and COD flow
-- Order history with tracking and return requests
+- Order history with tracking and downloadable invoices
+- Return and refund requests
 - Support center content and ticketing
 - Password reset with captcha and rate limiting
 
@@ -32,8 +33,10 @@ Admin features
 - Customer search, block/unblock, and profile edits
 - Coupon lifecycle management
 - Support ticket queue and reset audit logs
-- System settings for store, shipping, tax, and payment options
+- **Store name control** — rename the store from the Admin Settings page; all UI components update automatically
+- System settings for shipping, tax, and payment options
 - Password reset email template editing
+- Notification management
 
 For a full breakdown, see `FEATURES.md`.
 
@@ -60,31 +63,62 @@ Tools
 ## System Architecture Overview
 ```mermaid
 flowchart LR
-  UI["React SPA (Vite)"] -->|REST + Cookies| API["Spring Boot Controllers"]
-  API --> SVC["Service Layer"]
-  SVC --> REPO["JPA Repositories"]
-  REPO --> DB[("MySQL")]
-  API --> RP["Razorpay API"]
-  API --> MAIL["SMTP Provider"]
+  subgraph FE["Frontend (React + Vite)"]
+    CUST["Customer UI"]
+    ADMIN["Admin UI"]
+  end
+  FILTER["AuthenticationFilter"]
+  API["Spring Boot Controllers"]
+  SVC["Service Layer"]
+  REPO["JPA Repositories"]
+  DB[("MySQL")]
+  RP["Razorpay"]
+  SMTP["SMTP"]
+
+  CUST -->|authToken| FILTER
+  ADMIN -->|adminAuthToken| FILTER
+  FILTER --> API
+  API --> SVC
+  SVC --> REPO
+  REPO --> DB
+  API --> RP
+  API --> SMTP
 ```
+
+## Dual-Cookie Authentication
+```mermaid
+flowchart TD
+  Login["POST /api/auth/login"] --> Role{"User Role?"}
+  Role -->|ADMIN| AC["Set HttpOnly adminAuthToken"]
+  Role -->|CUSTOMER| CC["Set HttpOnly authToken"]
+  Filter["AuthenticationFilter"] --> Path{"Path prefix?"}
+  Path -->|/admin/*| Admin["Read adminAuthToken\nRequire Role.ADMIN"]
+  Path -->|/api/*| Customer["Read authToken\nFallback to adminAuthToken"]
+```
+
+## Dynamic Store Branding
+Admin can rename the store from the Settings page. The `useStoreName.js` hook reads the name from `GET /api/settings` and distributes it to all branding-sensitive components: Logo, Footer, About page, Order invoices, Admin Sidebar, Admin Navbar, and Analytics page.
 
 ## Folder Structure
 ```
 NexCart/
 +-- NexCartFrontend/          # React customer + admin UI
 +-- nexcartBackEnd/           # Spring Boot REST API
-+-- dashboard_import/         # Separate admin dashboard template
++-- dashboard_import/         # Separate admin dashboard template (not integrated)
 +-- README.md                 # Main project documentation
 +-- DOCUMENTATION_INDEX.md    # Documentation landing page
-+-- ARCHITECTURE.md           # System architecture
-+-- API_DOCUMENTATION.md      # API reference
-+-- DATABASE_SCHEMA.md        # Database schema and ERD
++-- ARCHITECTURE.md           # System architecture + Mermaid diagrams
++-- API_DOCUMENTATION.md      # REST API reference
++-- DATABASE_SCHEMA.md        # Database schema and ER diagram
 +-- FEATURES.md               # Feature inventory
 +-- WORKFLOW.md               # Workflows and sequence diagrams
++-- SECURITY.md               # Security design and dual-cookie auth
 +-- DEPLOYMENT.md             # Deployment guide
++-- FOLDER_STRUCTURE.md       # Full directory tree
++-- PROJECT_REPORT.md         # Project report and interview prep
 ```
 
-See `FOLDER_STRUCTURE.md` for a complete breakdown.
+See `FOLDER_STRUCTURE.md` for a full directory tree.
 
 ## Installation Instructions
 Prerequisites
@@ -94,7 +128,7 @@ Prerequisites
 - MySQL 8+
 
 Backend setup
-1. Configure database and secrets in `C:\Users\anupa\OneDrive\Desktop\NexCart\nexcartBackEnd\src\main\resources\application.properties`.
+1. Configure database and secrets in `nexcartBackEnd\src\main\resources\application.properties`.
 2. Run the backend:
 ```bash
 cd nexcartBackEnd
@@ -103,7 +137,7 @@ cd nexcartBackEnd
 Backend runs at `http://localhost:9090`.
 
 Frontend setup
-1. Configure API base URL in `C:\Users\anupa\OneDrive\Desktop\NexCart\NexCartFrontend\.env.local`:
+1. Configure API base URL in `NexCartFrontend\.env.local`:
 ```
 VITE_API_URL=http://localhost:9090
 ```
@@ -123,7 +157,7 @@ Frontend runs at `http://localhost:5174`.
 5. Open `http://localhost:5174/admin` for admin login.
 
 Admin bootstrap credentials
-- Username and password are defined in `C:\Users\anupa\OneDrive\Desktop\NexCart\nexcartBackEnd\src\main\resources\application.properties` under `admin.bootstrap.*`.
+- Username and password are defined in `application.properties` under `admin.bootstrap.*`.
 
 ## Environment Variables
 Frontend
@@ -137,6 +171,7 @@ Backend (recommended as environment variables in production)
 - `RAZORPAY_KEY_ID`
 - `RAZORPAY_KEY_SECRET`
 - `SPRING_MAIL_HOST`, `SPRING_MAIL_PORT`, `SPRING_MAIL_USERNAME`, `SPRING_MAIL_PASSWORD`
+- `APP_FRONTEND_BASE_URL`, `APP_FRONTEND_RESET_PATH`
 
 See `DEPLOYMENT.md` for production guidance.
 
@@ -161,18 +196,13 @@ Output: `nexcartBackEnd\target\*.jar`
 
 Full deployment instructions are in `DEPLOYMENT.md`.
 
-## Screenshots
-Place product screenshots in the repository and reference them here. Example assets currently in the repo:
-- `NexCartFrontend\public\background.png`
-- `NexCartFrontend\public\background1.png`
-- `NexCartFrontend\public\shipped.jpg`
-
 ## Future Enhancements
 - Refresh token rotation and session management dashboard
 - Background jobs for emails and order notifications
-- Redis caching for product and settings
+- Redis caching for products and settings (replaces sessionStorage)
 - Advanced search and faceted filtering
 - CI pipeline with automated tests and linting
+- WebSocket notifications for real-time order status
 
 ## Additional Docs
 - `DOCUMENTATION_INDEX.md`
@@ -185,5 +215,4 @@ Place product screenshots in the repository and reference them here. Example ass
 - `DEPLOYMENT.md`
 - `CONTRIBUTING.md`
 - `FOLDER_STRUCTURE.md`
-
-Deployment note: this commit triggers a fresh Vercel build.
+- `PROJECT_REPORT.md`

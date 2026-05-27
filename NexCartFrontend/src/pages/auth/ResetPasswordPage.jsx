@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import logo from "../../assets/images/logo.png";
+import { useStoreName } from "../../hooks/useStoreName";
 import "../../styles/LoginPage.css";
 import API_BASE_URL from "../../config/api";
 
@@ -10,6 +11,7 @@ const useQuery = () => new URLSearchParams(useLocation().search);
 export default function ResetPasswordPage() {
   const query = useQuery();
   const navigate = useNavigate();
+  const storeName = useStoreName();
   const tokenFromUrl = query.get("token") || "";
   const [token, setToken] = useState(tokenFromUrl);
   const [newPassword, setNewPassword] = useState("");
@@ -61,8 +63,8 @@ export default function ResetPasswordPage() {
       {/* Navbar */}
       <nav className="login-navbar">
         <div className="login-brand" onClick={() => navigate("/")}>
-          <img src={logo} alt="NexCart" />
-          <span>NexCart</span>
+          <img src={logo} alt={storeName} />
+          <span>{storeName}</span>
         </div>
         <div className="login-navbar-actions">
           <Link to="/" className="login-navbar-link">
@@ -91,7 +93,7 @@ export default function ResetPasswordPage() {
               animate={{ opacity: 1, x: 0 }}
               transition={{ delay: 0.34, duration: 0.5, ease: [0.22, 0.61, 0.36, 1] }}
             >
-              Choose a strong new password to secure your NexCart account. The link expires after 1 hour.
+              Choose a strong new password to secure your {storeName} account. The link expires after 1 hour.
             </motion.p>
             <motion.div
               className="login-badges"

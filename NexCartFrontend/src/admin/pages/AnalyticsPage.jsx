@@ -18,6 +18,7 @@ import {
 import { adminApi } from "../services/adminApi";
 import { formatCurrency, formatNumber } from "../utils/format";
 import { useToast } from "../../components/ui/ToastContext";
+import { useStoreName } from "../../hooks/useStoreName";
 
 const COLORS = ["#2563eb", "#0ea5e9", "#14b8a6", "#22c55e", "#f59e0b", "#8b5cf6"];
 
@@ -28,6 +29,7 @@ const monthKey = (value) => {
 
 const AnalyticsPage = () => {
   const toast = useToast();
+  const storeName = useStoreName();
   const [overview, setOverview] = useState({
     analytics: { monthlyRevenue: [], dailyRevenue: [], categorySales: {} },
     metrics: {},
@@ -123,7 +125,7 @@ const AnalyticsPage = () => {
         <div className="flex flex-wrap items-start justify-between gap-4">
           <div>
             <p className="text-xs font-semibold uppercase tracking-[0.2em] text-slate-400">Analytics Center</p>
-            <h2 className="mt-2 text-2xl font-bold text-slate-900">Performance pulse for NexCart</h2>
+            <h2 className="mt-2 text-2xl font-bold text-slate-900">Performance pulse for {storeName}</h2>
             <p className="mt-2 max-w-2xl text-sm text-slate-500">
               Real-time revenue, customer momentum, and category demand signals powered by your live store data.
             </p>

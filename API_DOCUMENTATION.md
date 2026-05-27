@@ -4,7 +4,11 @@
 - Local API: `http://localhost:9090`
 
 ## Authentication
-JWT is issued at `/api/auth/login` and stored as `authToken` HttpOnly cookie.
+JWT is issued at `/api/auth/login` and stored in HttpOnly cookies:
+- `adminAuthToken` for Administrator (`Role.ADMIN`) sessions.
+- `authToken` for Customer and standard user sessions.
+
+This dual-cookie separation allows concurrent Administrator and Customer login sessions on `localhost` without cookie collisions.
 
 All `/api/*` and `/admin/*` endpoints are protected except the following public endpoints.
 - `POST /api/users/register`
@@ -31,7 +35,9 @@ Request body:
 ```json
 { "username": "jane", "password": "Secret@123" }
 ```
-Response: JSON with role and user identifiers
+Response: JSON with role and user identifiers. In addition, an HttpOnly cookie is set with the JWT token:
+- `adminAuthToken` cookie is set if the logged-in role is `ADMIN`.
+- `authToken` cookie is set if the logged-in role is `CUSTOMER`.
 Example request:
 ```
 POST /api/auth/login
@@ -48,7 +54,7 @@ Method: POST
 Auth: Required
 Request parameters: None
 Request body: None
-Response: JSON message
+Response: JSON message. In addition, both `authToken` and `adminAuthToken` cookies are cleared from the browser to ensure complete, secure session termination.
 Example request:
 ```
 POST /api/auth/logout
