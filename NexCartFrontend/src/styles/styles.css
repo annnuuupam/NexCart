@@ -1525,10 +1525,11 @@ html[data-theme="dark"] .product-meta {
 
 .pdp-grid {
   display: grid;
-  grid-template-columns: minmax(320px, 500px) 1fr 300px;
-  gap: 16px;
+  grid-template-columns: minmax(320px, 480px) 1fr 320px;
+  gap: 24px;
   align-items: start;
-  margin-top: 14px;
+  margin-top: 24px;
+  margin-bottom: 32px;
 }
 
 .pdp-gallery-card,
@@ -1536,15 +1537,25 @@ html[data-theme="dark"] .product-meta {
 .pdp-buy-card,
 .pdp-review-form,
 .pdp-review-list {
-  background: var(--glass-bg);
-  border: 1px solid var(--glass-border);
-  border-radius: var(--radius);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.03);
+  transition: box-shadow 0.3s ease;
+}
+
+html[data-theme="dark"] .pdp-gallery-card,
+html[data-theme="dark"] .pdp-info-card,
+html[data-theme="dark"] .pdp-buy-card,
+html[data-theme="dark"] .pdp-review-form,
+html[data-theme="dark"] .pdp-review-list {
+  background: var(--surface-alt);
+  border-color: var(--glass-border);
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
 }
 
 .pdp-gallery-card {
-  padding: 12px;
+  padding: 16px;
 }
 
 .pdp-main-image-wrap {
@@ -1552,152 +1563,227 @@ html[data-theme="dark"] .product-meta {
   overflow: hidden;
   border: 1px solid var(--border);
   background: var(--surface);
+  position: relative;
 }
 
 .pdp-main-image {
   width: 100%;
   aspect-ratio: 1 / 1;
   object-fit: cover;
+  transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.pdp-main-image-wrap:hover .pdp-main-image {
+  transform: scale(1.05);
 }
 
 .pdp-thumbnails {
-  margin-top: 10px;
+  margin-top: 12px;
   display: flex;
-  gap: 8px;
+  gap: 10px;
   overflow-x: auto;
-  padding-bottom: 4px;
+  padding-bottom: 8px;
+}
+
+.pdp-thumbnails::-webkit-scrollbar {
+  height: 4px;
+}
+
+.pdp-thumbnails::-webkit-scrollbar-thumb {
+  background: var(--border);
+  border-radius: 4px;
 }
 
 .pdp-thumb {
-  border: 1px solid var(--border);
+  border: 2px solid transparent;
   background: var(--surface);
   border-radius: 10px;
-  width: 62px;
-  height: 62px;
-  padding: 4px;
+  width: 70px;
+  height: 70px;
+  padding: 2px;
   cursor: pointer;
   flex: 0 0 auto;
+  transition: all 0.2s ease;
+  opacity: 0.6;
 }
 
-.pdp-thumb.active,
-.pdp-thumb:hover {
+.pdp-thumb.active {
   border-color: var(--primary);
-  box-shadow: 0 0 0 2px color-mix(in srgb, var(--primary) 20%, transparent);
+  opacity: 1;
+}
+
+.pdp-thumb:hover:not(.active) {
+  opacity: 0.9;
+  transform: translateY(-2px);
 }
 
 .pdp-thumb img {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  border-radius: 7px;
+  border-radius: 6px;
 }
 
 .pdp-info-card {
-  padding: 16px;
-  display: grid;
-  gap: 10px;
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
 }
 
 .pdp-title {
-  font-size: clamp(1.3rem, 2vw, 1.8rem);
+  font-size: clamp(1.5rem, 2.5vw, 2.2rem);
   font-weight: 800;
   color: var(--text);
-  line-height: 1.35;
+  line-height: 1.2;
+  letter-spacing: -0.03em;
 }
 
 .pdp-rating-row {
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 10px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid var(--border);
 }
 
 .pdp-rating-pill {
   display: inline-flex;
   align-items: center;
-  gap: 4px;
-  padding: 5px 10px;
+  gap: 6px;
+  padding: 6px 12px;
   border-radius: 999px;
-  background: #16a34a;
-  color: #fff;
-  font-size: 0.82rem;
+  background: color-mix(in srgb, var(--primary) 12%, transparent);
+  color: var(--primary);
+  font-size: 0.88rem;
   font-weight: 700;
 }
 
 .pdp-rating-count {
-  font-size: 0.85rem;
+  font-size: 0.9rem;
   color: var(--text-muted);
+  font-weight: 500;
 }
 
 .pdp-price {
-  font-size: 2rem;
+  font-size: 2.5rem;
   font-weight: 800;
-  color: var(--primary);
-  letter-spacing: -0.02em;
+  color: var(--text);
+  letter-spacing: -0.04em;
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+}
+
+.pdp-price::before {
+  content: "Rs.";
+  font-size: 1.2rem;
+  font-weight: 600;
+  color: var(--text-muted);
 }
 
 .pdp-meta {
-  font-size: 0.9rem;
+  font-size: 0.95rem;
   color: var(--text-muted);
-  font-weight: 600;
+  font-weight: 500;
+  background: var(--bg);
+  padding: 8px 12px;
+  border-radius: 8px;
+  display: inline-flex;
+  width: fit-content;
 }
 
 .pdp-description {
   color: var(--text);
-  font-size: 0.95rem;
-  line-height: 1.6;
+  font-size: 1rem;
+  line-height: 1.7;
+  margin-top: 8px;
 }
 
 .pdp-highlights {
   display: grid;
-  gap: 8px;
-  margin-top: 6px;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 12px;
+  margin-top: 12px;
 }
 
 .pdp-highlights p {
-  display: inline-flex;
+  display: flex;
   align-items: center;
-  gap: 8px;
-  font-size: 0.88rem;
+  gap: 10px;
+  font-size: 0.9rem;
   color: var(--text);
   font-weight: 600;
+  background: var(--bg);
+  padding: 12px 16px;
+  border-radius: 12px;
+  border: 1px solid var(--border);
+}
+
+.pdp-highlights p svg {
+  color: var(--primary);
 }
 
 .pdp-buy-card {
   position: sticky;
   top: 95px;
-  padding: 14px;
-  display: grid;
-  gap: 10px;
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
 }
 
 .pdp-buy-price {
-  font-size: 1.6rem;
+  font-size: 2rem;
   font-weight: 800;
   color: var(--text);
+  letter-spacing: -0.03em;
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+}
+
+.pdp-buy-price::before {
+  content: "Rs.";
+  font-size: 1.2rem;
+  font-weight: 600;
+  color: var(--text-muted);
 }
 
 .pdp-buy-stock {
   color: #16a34a;
   font-weight: 700;
-  font-size: 0.9rem;
+  font-size: 0.95rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: rgba(22, 163, 74, 0.1);
+  padding: 6px 12px;
+  border-radius: 999px;
+  width: fit-content;
 }
 
 .pdp-cta {
   border: 0;
-  border-radius: 10px;
-  padding: 10px 12px;
+  border-radius: 12px;
+  padding: 14px;
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: 8px;
-  font-size: 0.88rem;
+  gap: 10px;
+  font-size: 1rem;
   font-weight: 700;
   cursor: pointer;
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.2s;
+  width: 100%;
 }
 
 .pdp-cta:hover {
-  transform: translateY(-1px);
+  transform: translateY(-2px);
+}
+
+.pdp-cta:active {
+  transform: translateY(0);
 }
 
 .pdp-cta-cart {
@@ -1717,19 +1803,22 @@ html[data-theme="dark"] .product-meta {
 }
 
 .pdp-reviews-section {
-  margin-top: 18px;
+  margin-top: 32px;
   display: grid;
-  gap: 12px;
+  gap: 20px;
 }
 
 .pdp-reviews-section h3 {
-  font-size: 1.2rem;
+  font-size: 1.5rem;
   font-weight: 800;
   color: var(--text);
+  letter-spacing: -0.02em;
 }
 
 .pdp-review-form {
-  padding: 14px;
+  padding: 24px;
+  display: grid;
+  gap: 16px;
 }
 
 .pdp-review-comment {
@@ -1737,23 +1826,38 @@ html[data-theme="dark"] .product-meta {
 }
 
 .pdp-review-list {
-  padding: 12px;
+  padding: 24px;
   display: grid;
-  gap: 8px;
+  gap: 16px;
 }
 
 .pdp-review-item {
-  border-bottom: 1px solid var(--glass-border);
-  padding: 8px 0;
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 16px;
+  transition: transform 0.2s ease;
 }
 
-.pdp-review-item:last-child {
-  border-bottom: 0;
+.pdp-review-item:hover {
+  transform: translateX(4px);
 }
 
 .pdp-review-head {
-  margin-bottom: 4px;
+  margin-bottom: 8px;
   color: var(--text);
+  font-size: 0.95rem;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.pdp-review-head b {
+  background: var(--primary-soft);
+  color: var(--primary);
+  padding: 4px 8px;
+  border-radius: 6px;
+  font-size: 0.85rem;
 }
 
 @media (max-width: 1180px) {
@@ -1764,29 +1868,42 @@ html[data-theme="dark"] .product-meta {
   .pdp-buy-card {
     grid-column: 1 / -1;
     position: static;
-    grid-template-columns: 1fr 1fr;
+    flex-direction: row;
+    flex-wrap: wrap;
     align-items: center;
+    justify-content: space-between;
   }
 
   .pdp-buy-price,
   .pdp-buy-stock {
-    grid-column: 1 / -1;
+    flex: 1 1 100%;
+  }
+
+  .pdp-cta {
+    flex: 1;
+    min-width: 200px;
   }
 }
 
 @media (max-width: 760px) {
   .pdp-grid {
     grid-template-columns: 1fr;
+    gap: 16px;
   }
 
   .pdp-buy-card {
-    grid-template-columns: 1fr;
+    flex-direction: column;
+  }
+
+  .pdp-cta {
+    width: 100%;
   }
 
   .pdp-price {
-    font-size: 1.6rem;
+    font-size: 2rem;
   }
 }
+
 
 /* ===== Wishlist page ===== */
 .wishlist-main {
