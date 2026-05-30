@@ -1100,8 +1100,10 @@ html[data-theme="dark"] {
   background: var(--surface);
   border: 1px solid var(--border);
   border-radius: 16px;
-  padding: 18px;
-  width: 320px;
+  padding: 16px;
+  width: 340px;
+  max-width: 90vw;
+  box-sizing: border-box;
   box-shadow: 0 12px 32px rgba(0, 0, 0, 0.16);
   z-index: 2000;
   animation: slideDown 0.2s cubic-bezier(0.16, 1, 0.3, 1) forwards;
@@ -1124,10 +1126,12 @@ html[data-theme="dark"] .location-dropdown {
   display: flex;
   gap: 10px;
   margin-bottom: 16px;
+  width: 100%;
 }
 
 .location-input {
   flex: 1;
+  min-width: 0;
   padding: 10px 14px;
   border: 1.5px solid var(--border);
   border-radius: 10px;
@@ -1136,6 +1140,7 @@ html[data-theme="dark"] .location-dropdown {
   font-size: 0.9rem;
   font-weight: 600;
   transition: border-color 0.2s, box-shadow 0.2s;
+  box-sizing: border-box;
 }
 
 .location-input:focus {
@@ -1155,6 +1160,7 @@ html[data-theme="dark"] .location-dropdown {
   cursor: pointer;
   transition: transform 0.15s, box-shadow 0.2s;
   box-shadow: 0 4px 12px color-mix(in srgb, var(--primary) 25%, transparent);
+  flex-shrink: 0;
 }
 
 .location-save-btn:hover {
