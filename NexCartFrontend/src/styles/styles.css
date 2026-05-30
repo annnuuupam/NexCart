@@ -2944,6 +2944,7 @@ html[data-theme="dark"] .product-meta {
   display: flex;
   align-items: center;
   justify-content: space-between;
+}
 .footer-bottom-market p {
   margin: 0;
   font-size: 0.82rem;
@@ -3872,8 +3873,6 @@ html[data-theme="dark"] .product-meta {
   overflow: hidden;
 }
 
-  gap: 8px;
-}
 .ft-bottom-link {
   font-size: 0.8rem;
   font-weight: 600;
