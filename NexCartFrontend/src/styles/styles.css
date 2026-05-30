@@ -1968,6 +1968,48 @@ html[data-theme="dark"] .pdp-review-list {
   gap: 20px;
 }
 
+.pdp-star-rating-input {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.pdp-star-label {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--text);
+}
+
+.pdp-stars-container {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.pdp-star-btn {
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  color: var(--text-muted);
+  transition: transform 0.2s ease, color 0.2s ease;
+  outline: none;
+}
+
+.pdp-star-btn:hover {
+  transform: scale(1.15);
+}
+
+.pdp-star-btn.active {
+  color: #f59e0b; /* Amber/Gold color for stars */
+}
+
+.pdp-star-btn:focus-visible {
+  box-shadow: 0 0 0 2px var(--primary-soft);
+  border-radius: 4px;
+}
+
+
 .pdp-review-grid {
   display: grid;
   grid-template-columns: minmax(100px, 150px) 1fr;

@@ -256,16 +256,21 @@ const ProductDetailsPage = () => {
 
           <form onSubmit={submitReview} className="pdp-review-form">
             <div className="pdp-review-grid">
-              <label>
-                Rating
-                <select className="pdp-input" value={reviewForm.rating} onChange={(e) => setReviewForm((p) => ({ ...p, rating: Number(e.target.value) }))}>
-                  <option value={5}>5</option>
-                  <option value={4}>4</option>
-                  <option value={3}>3</option>
-                  <option value={2}>2</option>
-                  <option value={1}>1</option>
-                </select>
-              </label>
+              <div className="pdp-star-rating-input">
+                <span className="pdp-star-label">Rating</span>
+                <div className="pdp-stars-container">
+                  {[1, 2, 3, 4, 5].map((star) => (
+                    <button
+                      key={star}
+                      type="button"
+                      onClick={() => setReviewForm((p) => ({ ...p, rating: star }))}
+                      className={`pdp-star-btn ${reviewForm.rating >= star ? "active" : ""}`}
+                    >
+                      <Star size={28} fill={reviewForm.rating >= star ? "currentColor" : "none"} />
+                    </button>
+                  ))}
+                </div>
+              </div>
               <label className="pdp-review-comment">
                 Comment
                 <textarea
