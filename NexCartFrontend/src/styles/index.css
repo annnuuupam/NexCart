@@ -1075,94 +1075,107 @@ html[data-theme="dark"] {
 
 .location-dropdown {
   position: absolute;
-  top: calc(100% + 8px);
+  top: calc(100% + 12px);
   left: 0;
   background: var(--surface);
   border: 1px solid var(--border);
-  border-radius: 12px;
-  padding: 14px;
-  width: 280px;
-  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.2);
+  border-radius: 16px;
+  padding: 18px;
+  width: 320px;
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.16);
   z-index: 2000;
-  animation: slideDown 0.15s ease-out forwards;
+  animation: slideDown 0.2s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
 
 html[data-theme="dark"] .location-dropdown {
-  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.6);
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.8);
+  border-color: rgba(255, 255, 255, 0.1);
 }
 
 .location-dropdown-title {
-  margin: 0 0 10px;
-  font-size: 0.82rem;
-  font-weight: 700;
+  margin: 0 0 14px;
+  font-size: 0.88rem;
+  font-weight: 800;
   color: var(--text);
+  letter-spacing: -0.01em;
 }
 
 .location-input-row {
   display: flex;
-  gap: 8px;
-  margin-bottom: 12px;
+  gap: 10px;
+  margin-bottom: 16px;
 }
 
 .location-input {
   flex: 1;
-  padding: 8px 10px;
+  padding: 10px 14px;
   border: 1.5px solid var(--border);
-  border-radius: 6px;
+  border-radius: 10px;
   background: var(--surface-alt);
   color: var(--text);
-  font-size: 0.85rem;
+  font-size: 0.9rem;
   font-weight: 600;
+  transition: border-color 0.2s, box-shadow 0.2s;
 }
 
 .location-input:focus {
   outline: none;
   border-color: var(--primary);
+  box-shadow: 0 0 0 4px color-mix(in srgb, var(--primary) 12%, transparent);
 }
 
 .location-save-btn {
-  padding: 0 12px;
+  padding: 0 16px;
   background: var(--primary);
   color: #fff;
   border: none;
-  border-radius: 6px;
-  font-size: 0.82rem;
+  border-radius: 10px;
+  font-size: 0.88rem;
   font-weight: 700;
   cursor: pointer;
-  transition: opacity 0.2s;
+  transition: transform 0.15s, box-shadow 0.2s;
+  box-shadow: 0 4px 12px color-mix(in srgb, var(--primary) 25%, transparent);
 }
 
 .location-save-btn:hover {
-  opacity: 0.9;
+  transform: translateY(-1px);
+  box-shadow: 0 6px 16px color-mix(in srgb, var(--primary) 35%, transparent);
+}
+
+.location-save-btn:active {
+  transform: translateY(0);
 }
 
 .location-quick-list {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 6px;
+  gap: 8px;
 }
 
 .location-quick-item {
-  padding: 8px;
+  padding: 10px 12px;
   text-align: left;
   background: transparent;
-  border: 1px solid var(--border);
-  border-radius: 6px;
+  border: 1px solid color-mix(in srgb, var(--border) 60%, transparent);
+  border-radius: 10px;
   color: var(--text-muted);
-  font-size: 0.82rem;
+  font-size: 0.85rem;
   font-weight: 600;
   cursor: pointer;
-  transition: all 0.15s;
+  transition: all 0.2s ease;
 }
 
 .location-quick-item:hover {
   background: var(--surface-alt);
+  border-color: var(--border);
   color: var(--text);
+  transform: translateY(-1px);
 }
 
 .location-quick-item.active {
-  background: color-mix(in srgb, var(--primary) 10%, transparent);
-  border-color: var(--primary);
+  background: color-mix(in srgb, var(--primary) 8%, transparent);
+  border-color: color-mix(in srgb, var(--primary) 40%, transparent);
   color: var(--primary);
+  font-weight: 700;
 }
 
