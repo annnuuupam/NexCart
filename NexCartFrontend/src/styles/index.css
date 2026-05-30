@@ -1231,3 +1231,45 @@ html[data-theme="dark"] .location-dropdown {
   font-weight: 600;
 }
 
+/* ===== Pagination ===== */
+.market-pager {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+  margin-top: 48px;
+  margin-bottom: 24px;
+}
+.market-pager p {
+  font-size: 0.95rem;
+  color: var(--text-muted);
+  font-weight: 500;
+}
+.market-pager-actions {
+  display: flex;
+  gap: 12px;
+}
+.market-pager-btn {
+  padding: 10px 24px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  color: var(--text);
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+}
+.market-pager-btn:hover:not(:disabled) {
+  border-color: var(--primary);
+  color: var(--primary);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px color-mix(in srgb, var(--primary) 15%, transparent);
+}
+.market-pager-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  background: var(--surface-alt);
+}
+
