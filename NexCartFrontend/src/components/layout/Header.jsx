@@ -7,6 +7,7 @@ import { CartIcon } from "../cart/CartIcon";
 import { ProfileDropdown } from "../profile/ProfileDropdown";
 import { ThemeToggle } from "./ThemeToggle";
 import Logo from "./Logo";
+import "../../styles/styles.css";
 
 const LOCATION_KEY = "nexcart_delivery_country";
 const QUICK_COUNTRIES = ["India","United States","United Kingdom","Canada","Australia","Germany","UAE","Singapore","Japan","France"];
