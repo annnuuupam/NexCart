@@ -175,14 +175,33 @@ const ProductDetailsPage = () => {
     <div className="customer-homepage">
       <Header cartCount={cartCount} username={username} />
       <main className="main-content product-page-main">
-        <button
-          type="button"
-          className="inline-flex w-fit items-center gap-2 rounded-full border-2 border-indigo-200 bg-indigo-50/50 px-6 py-2.5 text-sm font-bold text-indigo-700 transition-all hover:bg-indigo-100 hover:text-indigo-800 dark:border-indigo-500/30 dark:bg-indigo-500/10 dark:text-indigo-400 dark:hover:bg-indigo-500/20 mb-6 mt-4 ml-6"
-          onClick={() => navigate("/customerhome")}
-        >
-          <ArrowLeft size={16} className="text-indigo-500 dark:text-indigo-400" />
-          Back to products
-        </button>
+        <nav className="pdp-top-nav" aria-label="Product navigation">
+          <button
+            type="button"
+            className="pdp-back-link"
+            onClick={() => navigate("/customerhome")}
+          >
+            <ArrowLeft size={16} aria-hidden="true" />
+            Back to products
+          </button>
+          <ol className="pdp-breadcrumb">
+            <li>
+              <button type="button" onClick={() => navigate("/customerhome")}>
+                Products
+              </button>
+            </li>
+            {product.categoryName ? (
+              <>
+                <li aria-hidden="true">/</li>
+                <li>{product.categoryName}</li>
+              </>
+            ) : null}
+            <li aria-hidden="true">/</li>
+            <li className="pdp-breadcrumb-current" aria-current="page">
+              {product.name}
+            </li>
+          </ol>
+        </nav>
 
         <section className="pdp-grid">
           <div className="pdp-gallery-card">
@@ -236,10 +255,10 @@ const ProductDetailsPage = () => {
           <h3>Ratings & Reviews</h3>
 
           <form onSubmit={submitReview} className="pdp-review-form">
-            <div className="checkout-profile-grid">
+            <div className="pdp-review-grid">
               <label>
                 Rating
-                <select value={reviewForm.rating} onChange={(e) => setReviewForm((p) => ({ ...p, rating: Number(e.target.value) }))}>
+                <select className="pdp-input" value={reviewForm.rating} onChange={(e) => setReviewForm((p) => ({ ...p, rating: Number(e.target.value) }))}>
                   <option value={5}>5</option>
                   <option value={4}>4</option>
                   <option value={3}>3</option>
@@ -250,6 +269,7 @@ const ProductDetailsPage = () => {
               <label className="pdp-review-comment">
                 Comment
                 <textarea
+                  className="pdp-input"
                   value={reviewForm.comment}
                   onChange={(e) => setReviewForm((p) => ({ ...p, comment: e.target.value }))}
                   rows={3}
@@ -257,7 +277,7 @@ const ProductDetailsPage = () => {
                 />
               </label>
             </div>
-            <button type="submit" className="checkout-profile-save">Submit review</button>
+            <button type="submit" className="pdp-submit-btn">Submit review</button>
           </form>
 
           <div className="pdp-review-list">
