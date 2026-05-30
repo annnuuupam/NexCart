@@ -1,4 +1,5 @@
-import React, { useMemo, useState, useEffect } from "react";
+import React, { useMemo, useState, useEffect, useRef } from "react";
+import { ChevronDown } from "lucide-react";
 
 import { ProductList } from "../../components/product/ProductList";
 import { ProductCardSkeleton } from "../../components/ui/Skeletons";
@@ -44,6 +45,8 @@ export default function CustomerHomePage() {
   const [searchTrigger, setSearchTrigger] = useState(0);
   const [searchScope, setSearchScope] = useState("all");
   const [sortBy, setSortBy] = useState("relevance");
+  const [isSortOpen, setIsSortOpen] = useState(false);
+  const sortMenuRef = useRef(null);
   const [selectedCategory, setSelectedCategory] = useState("all");
   const [selectedPriceBand, setSelectedPriceBand] = useState("all");
   const [minRating, setMinRating] = useState(0);
@@ -173,6 +176,17 @@ export default function CustomerHomePage() {
 
     window.addEventListener("resize", handleResize);
     return () => window.removeEventListener("resize", handleResize);
+  }, []);
+
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (sortMenuRef.current && !sortMenuRef.current.contains(event.target)) {
+        setIsSortOpen(false);
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
   useEffect(() => {
@@ -430,21 +444,44 @@ export default function CustomerHomePage() {
             >
               Filters{activeFilterCount ? ` (${activeFilterCount})` : ""}
             </button>
-            <label htmlFor="market-sort-select">Sort by</label>
-            <div className="market-sort-menu">
-              <select
+            <label id="market-sort-label">Sort by</label>
+            <div className="market-sort-menu" ref={sortMenuRef}>
+              <button
+                type="button"
                 id="market-sort-select"
-                className="market-sort-select"
-                value={sortBy}
-                onChange={(event) => setSortBy(event.target.value)}
-                aria-label="Sort products"
+                className="market-sort-trigger"
+                aria-labelledby="market-sort-label market-sort-select"
+                aria-haspopup="listbox"
+                aria-expanded={isSortOpen}
+                onClick={() => setIsSortOpen((open) => !open)}
               >
-                {sortOptions.map((option) => (
-                  <option key={option.value} value={option.value}>
-                    {option.label}
-                  </option>
-                ))}
-              </select>
+                <span>{sortOptions.find((option) => option.value === sortBy)?.label || "Relevance"}</span>
+                <ChevronDown
+                  size={16}
+                  className={`market-sort-chevron${isSortOpen ? " open" : ""}`}
+                  aria-hidden="true"
+                />
+              </button>
+              {isSortOpen ? (
+                <ul className="market-sort-dropdown" role="listbox" aria-labelledby="market-sort-label">
+                  {sortOptions.map((option) => (
+                    <li key={option.value} role="presentation">
+                      <button
+                        type="button"
+                        role="option"
+                        aria-selected={sortBy === option.value}
+                        className={`market-sort-option${sortBy === option.value ? " active" : ""}`}
+                        onClick={() => {
+                          setSortBy(option.value);
+                          setIsSortOpen(false);
+                        }}
+                      >
+                        {option.label}
+                      </button>
+                    </li>
+                  ))}
+                </ul>
+              ) : null}
             </div>
           </div>
         </section>

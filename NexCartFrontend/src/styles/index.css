@@ -600,10 +600,11 @@ html[data-theme="dark"] .search-clear {
   color: var(--text);
 }
 
-html[data-theme="dark"] .market-sort-menu,
+html[data-theme="dark"] .market-sort-trigger,
 html[data-theme="dark"] .market-sort-dropdown {
   background: var(--surface);
   border-color: var(--border);
+  color: var(--text);
 }
 
 html[data-theme="dark"] .summary-row,
