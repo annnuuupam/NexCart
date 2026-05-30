@@ -23,8 +23,8 @@ const request = async (path, options = {}) => {
     error.payload = payload;
 
     if (response.status === 401 || response.status === 403) {
-      localStorage.clear();
-      sessionStorage.clear();
+      // Only clear admin-specific data — do NOT wipe customer session (wishlist, cart, theme, store name)
+      sessionStorage.removeItem("adminUser");
       if (typeof window !== "undefined") {
         window.location.href = "/admin";
       }
@@ -35,6 +35,7 @@ const request = async (path, options = {}) => {
 
   return payload;
 };
+
 
 const requestWithFallback = async (paths, options = {}) => {
   let lastError = null;

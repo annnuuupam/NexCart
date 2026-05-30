@@ -76,19 +76,20 @@ const Navbar = ({ title, onMenuToggle, theme, onThemeToggle }) => {
   };
 
   useEffect(() => {
-    const fetchAvatar = async () => {
+    const fetchAdminProfile = async () => {
       try {
-        const res = await fetch(`${API_BASE_URL}/api/users/profile`, { credentials: "include" });
-        if (res.ok) {
-          const data = await res.json();
-          if (data.avatarUrl && String(data.avatarUrl).trim()) setAvatarUrl(String(data.avatarUrl).trim());
-          if (data.email) setAdminEmail(data.email);
-          if (data.username || data.name) setAdminName(data.username || data.name);
-        }
+        const res = await fetch(`${API_BASE_URL}/api/auth/me`, { credentials: "include" });
+        if (!res.ok) return;
+        const data = await res.json();
+        // Only show info if the session belongs to an ADMIN
+        if (!String(data.role || "").toUpperCase().includes("ADMIN")) return;
+        if (data.email) setAdminEmail(data.email);
+        if (data.username || data.name) setAdminName(data.username || data.name);
       } catch (e) {}
-    }
-    fetchAvatar();
+    };
+    fetchAdminProfile();
   }, []);
+
 
   useEffect(() => {
     fetchNotifications();

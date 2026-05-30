@@ -365,7 +365,13 @@ public class PaymentService {
         BigDecimal gstPercentage = systemSettingsService.getBigDecimalSetting("gst_percentage");
 
         boolean isInternational = shippingCountry != null && !shippingCountry.isBlank() && !"india".equalsIgnoreCase(shippingCountry.trim());
-        BigDecimal shipping = subtotal.compareTo(freeThreshold) >= 0 ? BigDecimal.ZERO : (isInternational ? internationalCharge : domesticCharge);
+
+        // Use effective cart value (after discount) to determine free shipping eligibility.
+        // e.g. subtotal=1000, discount=500, threshold=999 → effective=500 → shipping applies.
+        BigDecimal effectiveCartValue = subtotal.subtract(discount).max(BigDecimal.ZERO);
+        BigDecimal shipping = effectiveCartValue.compareTo(freeThreshold) >= 0
+                ? BigDecimal.ZERO
+                : (isInternational ? internationalCharge : domesticCharge);
 
         BigDecimal taxable = subtotal.add(shipping).subtract(discount).max(BigDecimal.ZERO);
         BigDecimal tax = taxEnabled ? taxable.multiply(gstPercentage).divide(BigDecimal.valueOf(100), 2, RoundingMode.HALF_UP) : BigDecimal.ZERO;

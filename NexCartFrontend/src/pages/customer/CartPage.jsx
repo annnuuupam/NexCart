@@ -322,11 +322,14 @@ const CartPage = () => {
   const gstPercentage = Number(settings.tax?.gstPercentage ?? 0);
   const taxEnabled = Boolean(settings.tax?.taxEnabled);
   const discountValue = Number(couponInfo?.discountAmount || 0);
-  const remainingForFreeShipping = Math.max(freeShippingMin - subtotalValue, 0);
+  // Effective cart value (after coupon) is used for free-shipping eligibility
+  const effectiveCartValue = Math.max(subtotalValue - discountValue, 0);
+  const remainingForFreeShipping = Math.max(freeShippingMin - effectiveCartValue, 0);
   const freeShippingUnlocked = remainingForFreeShipping <= 0;
 
   const isInternational = profileDraft.country && profileDraft.country.trim().toLowerCase() !== "india";
-  const shipping = subtotalValue >= freeShippingMin ? 0 : (isInternational ? internationalCharge : domesticCharge);
+  const shipping = effectiveCartValue >= freeShippingMin ? 0 : (isInternational ? internationalCharge : domesticCharge);
+
 
   const preTaxTotal = Math.max(subtotalValue + shipping - discountValue, 0);
   const tax = taxEnabled ? (preTaxTotal * gstPercentage) / 100 : 0;

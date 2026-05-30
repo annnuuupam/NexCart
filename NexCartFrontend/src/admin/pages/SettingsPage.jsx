@@ -2,6 +2,7 @@ import React, { useEffect, useMemo, useState } from "react";
 import { Building2, CreditCard, Truck, ShieldCheck, Save, RefreshCw, CheckCircle2, AlertCircle, Percent } from "lucide-react";
 import { adminApi } from "../services/adminApi";
 import { useToast } from "../../components/ui/ToastContext";
+import { broadcastStoreNameUpdate } from "../../hooks/useStoreName";
 
 const defaultStore = {
   storeName: "",
@@ -185,6 +186,9 @@ const SettingsPage = () => {
       };
 
       await adminApi.updateSettings(payload);
+
+      // Broadcast to ALL open tabs instantly (customer navbar, footer, login, etc.)
+      broadcastStoreNameUpdate(storeSettings.storeName?.trim() || "NexCart");
 
       setInitialSnapshot(JSON.stringify(payload));
       setSecuritySettings((prev) => ({

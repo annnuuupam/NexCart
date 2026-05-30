@@ -1,4 +1,4 @@
-﻿import React, { useEffect, useMemo, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import { Outlet, useLocation, useNavigate } from "react-router-dom";
 import Sidebar from "../components/Sidebar";
 import Navbar from "../components/Navbar";
@@ -51,8 +51,9 @@ const AdminLayout = () => {
     } catch (error) {
       console.error("Logout request failed", error);
     } finally {
-      localStorage.clear();
-      sessionStorage.clear();
+      // Only clear admin-specific data — preserve customer data (wishlist, theme, store name)
+      sessionStorage.removeItem("adminUser");
+      localStorage.removeItem(THEME_KEY);
       navigate("/admin", { replace: true });
     }
   };
