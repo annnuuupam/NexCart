@@ -260,6 +260,41 @@ html[data-theme="dark"] .login-form-card {
   color: color-mix(in srgb, var(--text-muted) 55%, transparent);
 }
 
+/* ===== Password visibility toggle ===== */
+.password-input-wrap {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.password-input-wrap input {
+  width: 100%;
+  padding-right: 46px;
+}
+
+.password-toggle-btn {
+  position: absolute;
+  right: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  border: none;
+  background: transparent;
+  color: var(--text-muted);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 4px;
+  border-radius: 6px;
+  transition: color 0.2s ease, background 0.2s ease;
+  line-height: 0;
+}
+
+.password-toggle-btn:hover {
+  color: var(--primary);
+  background: color-mix(in srgb, var(--primary) 10%, transparent);
+}
+
 /* ===== Custom Dropdown Trigger (Role Selection) ===== */
 .login-dropdown-trigger {
   width: 100%;
