@@ -620,39 +620,76 @@ const CartPage = () => {
                 <button className="checkout-profile-save" type="button" onClick={saveProfileDraft}>Save profile</button>
               </div>
 
-              <div className="checkout-profile-card">
-                <h3>Limited-time coupon</h3>
-                <div className="checkout-profile-grid">
-                  <label>
-                    Coupon Code
-                    <input type="text" value={couponCode} onChange={(e) => setCouponCode(e.target.value.toUpperCase())} placeholder="Enter coupon code" />
-                  </label>
-                </div>
-                {couponListLoading ? (
-                  <p className="coupon-list-status">Loading available coupons...</p>
-                ) : availableCoupons.length ? (
-                  <div className="coupon-list">
-                    {availableCoupons.map((coupon) => (
-                      <button
-                        key={coupon.code}
-                        type="button"
-                        className="coupon-pill"
-                        onClick={() => applyCoupon(coupon.code)}
-                        title="Apply coupon"
-                      >
-                        <span className="coupon-code">{coupon.code}</span>
-                        <span className="coupon-meta">{formatCouponMeta(coupon)}</span>
-                      </button>
-                    ))}
+              <div className="checkout-profile-card coupon-card">
+                <h3>Limited-Time Coupon</h3>
+
+                {/* ── APPLIED STATE ── */}
+                {couponInfo ? (
+                  <div className="coupon-applied-banner">
+                    <div className="coupon-applied-left">
+                      <span className="coupon-applied-check">✓</span>
+                      <div>
+                        <p className="coupon-applied-code">{couponInfo.code}</p>
+                        <p className="coupon-applied-desc">
+                          {formatCouponMeta(couponInfo)} · You save{" "}
+                          <strong>{formatPrice(discountValue)}</strong>
+                        </p>
+                      </div>
+                    </div>
+                    <button
+                      type="button"
+                      className="coupon-remove-btn"
+                      onClick={clearCoupon}
+                    >
+                      Remove
+                    </button>
                   </div>
                 ) : (
-                  <p className="coupon-list-status">No active coupons right now.</p>
+                  /* ── NOT APPLIED STATE ── */
+                  <>
+                    <div className="coupon-input-row">
+                      <input
+                        type="text"
+                        className="coupon-text-input"
+                        value={couponCode}
+                        onChange={(e) => setCouponCode(e.target.value.toUpperCase())}
+                        placeholder="Enter coupon code"
+                      />
+                      <button
+                        className="coupon-apply-btn"
+                        type="button"
+                        onClick={applyCoupon}
+                        disabled={couponLoading}
+                      >
+                        {couponLoading ? "Applying…" : "Apply"}
+                      </button>
+                    </div>
+
+                    {couponListLoading ? (
+                      <p className="coupon-list-status">Loading available coupons…</p>
+                    ) : availableCoupons.length ? (
+                      <div className="coupon-list">
+                        <p className="coupon-list-label">Available coupons — click to apply</p>
+                        {availableCoupons.map((coupon) => (
+                          <button
+                            key={coupon.code}
+                            type="button"
+                            className="coupon-pill"
+                            onClick={() => applyCoupon(coupon.code)}
+                            title="Apply coupon"
+                          >
+                            <span className="coupon-code">{coupon.code}</span>
+                            <span className="coupon-meta">{formatCouponMeta(coupon)}</span>
+                          </button>
+                        ))}
+                      </div>
+                    ) : (
+                      <p className="coupon-list-status">No active coupons right now.</p>
+                    )}
+                  </>
                 )}
-                <div className="profile-edit-actions" style={{ marginTop: 10 }}>
-                  <button className="checkout-profile-save" type="button" onClick={applyCoupon} disabled={couponLoading}>{couponLoading ? "Applying..." : "Apply Coupon"}</button>
-                  {couponInfo ? <button className="profile-cancel-btn" type="button" onClick={clearCoupon}>Remove</button> : null}
-                </div>
               </div>
+
 
               <div className="checkout-profile-card">
                 <h3>Payment Method</h3>
