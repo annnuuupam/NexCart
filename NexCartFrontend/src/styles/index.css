@@ -1147,9 +1147,39 @@ html[data-theme="dark"] .location-dropdown {
 }
 
 .location-quick-list {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 8px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  max-height: 260px;
+  overflow-y: auto;
+  padding-right: 4px;
+  margin-right: -4px;
+}
+
+.location-quick-list::-webkit-scrollbar {
+  width: 6px;
+}
+
+.location-quick-list::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.location-quick-list::-webkit-scrollbar-thumb {
+  background: color-mix(in srgb, var(--border) 60%, transparent);
+  border-radius: 4px;
+}
+
+.location-quick-list::-webkit-scrollbar-thumb:hover {
+  background: var(--border);
+}
+
+.location-no-results {
+  padding: 12px;
+  text-align: center;
+  color: var(--text-muted);
+  font-size: 0.85rem;
+  font-weight: 500;
+  font-style: italic;
 }
 
 .location-quick-item {
