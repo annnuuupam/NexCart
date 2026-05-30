@@ -260,7 +260,7 @@ html[data-theme="dark"] .error-message {
   top: -8px;
   right: -8px;
   background: var(--accent);
-  color: #111827;
+  color: #ffffff;
   border-radius: 999px;
   font-size: 0.72rem;
   font-weight: 800;
@@ -922,8 +922,8 @@ html[data-theme="dark"] .product-meta {
   justify-content: center;
   border: 0;
   border-radius: 0 999px 999px 0;
-  background: linear-gradient(135deg, #fbbf24, #f59e0b);
-  color: #111827;
+  background: var(--primary);
+  color: #ffffff;
   font-weight: 700;
   padding: 0 24px;
   cursor: pointer;
@@ -933,7 +933,7 @@ html[data-theme="dark"] .product-meta {
 }
 
 .search-submit:hover {
-  background: linear-gradient(135deg, #fcd34d, #f59e0b);
+  background: var(--primary-hover);
   box-shadow: -4px 0 12px rgba(245, 158, 11, 0.2);
 }
 
@@ -1420,9 +1420,9 @@ html[data-theme="dark"] .product-meta {
 }
 
 .product-btn-primary {
-  color: #111827;
-  background: linear-gradient(135deg, #fbbf24, #f59e0b);
-  box-shadow: 0 5px 14px rgba(245, 158, 11, 0.3);
+  color: #ffffff;
+  background: var(--primary);
+  box-shadow: 0 6px 16px var(--primary-soft);
 }
 
 .product-btn-primary:hover {
@@ -4402,8 +4402,8 @@ html[data-theme="dark"] .support-link-card:hover {
   padding: 10px 16px;
   font-weight: 700;
   cursor: pointer;
-  color: #111827;
-  background: linear-gradient(135deg, #fbbf24, #f59e0b);
+  color: #ffffff;
+  background: var(--primary);
 }
 
 .support-track-result {
@@ -4562,8 +4562,8 @@ html[data-theme="dark"] .support-link-card:hover {
 }
 
 .order-action-return {
-  background: linear-gradient(135deg, #f59e0b, #d97706);
-  color: #111827;
+  background: var(--primary-hover);
+  color: #ffffff;
   box-shadow: 0 6px 16px rgba(217, 119, 6, 0.28);
 }
 
@@ -4679,8 +4679,8 @@ html[data-theme="dark"] .support-link-card:hover {
   padding: 10px 16px;
   font-weight: 700;
   cursor: pointer;
-  color: #111827;
-  background: linear-gradient(135deg, #fbbf24, #f59e0b);
+  color: #ffffff;
+  background: var(--primary);
 }
 
 .support-ticket-form button:disabled {
@@ -5322,8 +5322,8 @@ html[data-theme="dark"] .support-link-card:hover {
 }
 
 .product-btn-primary {
-  color: #111827;
-  background: linear-gradient(135deg, #fde68a, #f59e0b);
+  color: #ffffff;
+  background: var(--primary-hover);
 }
 
 .product-btn-secondary {
@@ -5446,9 +5446,9 @@ html[data-theme="dark"] .support-link-card:hover {
 .add-to-cart-btn,
 .checkout-button,
 .form-button {
-  background: linear-gradient(135deg, #fbbf24, #f59e0b);
-  color: #111827;
-  box-shadow: 0 10px 22px rgba(245, 158, 11, 0.28);
+  background: var(--primary);
+  color: #ffffff;
+  box-shadow: 0 6px 16px var(--primary-soft);
 }
 
 .product-btn-primary:hover,
