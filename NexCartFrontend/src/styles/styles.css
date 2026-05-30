@@ -1948,6 +1948,7 @@ html[data-theme="dark"] .pdp-review-list {
 }
 
 .pdp-reviews-section {
+  max-width: 800px;
   margin-top: 32px;
   display: grid;
   gap: 20px;
