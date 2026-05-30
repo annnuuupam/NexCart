@@ -237,10 +237,14 @@ export function Header({
               aria-label="Change delivery location"
               title="Click to change delivery location"
             >
-              <MapPin size={13} className="location-pin-icon" />
-              <span className="location-label">Deliver to</span>
-              <span className="location-value">{deliveryCountry || "Your location"}</span>
-              <svg className="location-chevron" width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" style={{ transform: isLocationOpen ? "rotate(180deg)" : "rotate(0deg)", transition: "transform 0.2s" }}><polyline points="6 9 12 15 18 9"/></svg>
+              <div className="location-icon-wrapper">
+                <MapPin size={14} className="location-pin-icon" />
+              </div>
+              <div className="location-text-stack">
+                <span className="location-label">Deliver to</span>
+                <span className="location-value">{deliveryCountry || "Your location"}</span>
+              </div>
+              <svg className="location-chevron" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" style={{ transform: isLocationOpen ? "rotate(180deg)" : "rotate(0deg)", transition: "transform 0.2s" }}><polyline points="6 9 12 15 18 9"/></svg>
             </button>
 
             {isLocationOpen && (

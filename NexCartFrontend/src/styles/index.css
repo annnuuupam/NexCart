@@ -1032,45 +1032,65 @@ html[data-theme="dark"] {
 }
 
 .header-location {
-  display: grid;
-  grid-template-columns: auto 1fr auto;
+  display: flex;
   align-items: center;
-  gap: 4px 6px;
+  gap: 8px;
   background: transparent;
   border: 1px solid transparent;
-  padding: 4px 8px;
-  border-radius: 8px;
+  padding: 4px 6px;
+  border-radius: 12px;
   cursor: pointer;
-  transition: background 0.15s, border-color 0.15s;
+  transition: all 0.2s ease;
   text-align: left;
 }
 
 .header-location:hover {
-  background: var(--surface-alt);
-  border-color: var(--border);
+  background: color-mix(in srgb, var(--primary) 5%, transparent);
+  border-color: color-mix(in srgb, var(--primary) 15%, transparent);
+}
+
+.location-icon-wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--primary);
+  background: color-mix(in srgb, var(--primary) 12%, transparent);
+  width: 28px;
+  height: 28px;
+  border-radius: 8px;
 }
 
 .location-pin-icon {
-  grid-row: 1 / -1;
-  color: var(--text-muted);
+  color: var(--primary);
+}
+
+.location-text-stack {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+  gap: 2px;
 }
 
 .location-label {
-  font-size: 0.65rem;
+  font-size: 0.6rem;
+  font-weight: 700;
   color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
   line-height: 1;
 }
 
 .location-value {
-  font-size: 0.8rem;
+  font-size: 0.85rem;
   font-weight: 700;
   color: var(--text);
   line-height: 1;
 }
 
 .location-chevron {
-  grid-row: 1 / -1;
   color: var(--text-muted);
+  margin-left: 2px;
 }
 
 .location-dropdown {
