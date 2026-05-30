@@ -1,12 +1,15 @@
 import React, { useState, useRef, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { Bell } from "lucide-react";
+import { Bell, MapPin } from "lucide-react";
 import API_BASE_URL from "../../config/api";
 import { useToast } from "../ui/ToastContext";
 import { CartIcon } from "../cart/CartIcon";
 import { ProfileDropdown } from "../profile/ProfileDropdown";
 import { ThemeToggle } from "./ThemeToggle";
 import Logo from "./Logo";
+
+const LOCATION_KEY = "nexcart_delivery_country";
+const QUICK_COUNTRIES = ["India","United States","United Kingdom","Canada","Australia","Germany","UAE","Singapore","Japan","France"];
 
 export function Header({
   cartCount,
@@ -22,6 +25,7 @@ export function Header({
   const [isScopeOpen, setIsScopeOpen] = useState(false);
   const scopeMenuRef = useRef(null);
   const bellRef = useRef(null);
+  const locationRef = useRef(null);
   const toast = useToast();
   const [isNotificationsOpen, setIsNotificationsOpen] = useState(false);
   const [notifications, setNotifications] = useState([]);
@@ -31,6 +35,11 @@ export function Header({
   const [notificationsError, setNotificationsError] = useState("");
   const [userId, setUserId] = useState(null);
   const wsClientRef = useRef(null);
+  const [deliveryCountry, setDeliveryCountry] = useState(
+    () => localStorage.getItem(LOCATION_KEY) || ""
+  );
+  const [isLocationOpen, setIsLocationOpen] = useState(false);
+  const [locationInput, setLocationInput] = useState("");
 
   const scopeOptions = [
     { value: "all", label: "All" },
@@ -47,11 +56,41 @@ export function Header({
       if (bellRef.current && !bellRef.current.contains(event.target)) {
         setIsNotificationsOpen(false);
       }
+      if (locationRef.current && !locationRef.current.contains(event.target)) {
+        setIsLocationOpen(false);
+      }
     };
-
     document.addEventListener("mousedown", handleClickOutside);
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
+
+  // Fetch user's saved country from profile on mount
+  useEffect(() => {
+    const loadCountry = async () => {
+      const cached = localStorage.getItem(LOCATION_KEY);
+      if (cached) { setDeliveryCountry(cached); return; }
+      try {
+        const res = await fetch(`${API_BASE_URL}/api/users/profile`, { credentials: "include" });
+        if (!res.ok) return;
+        const data = await res.json();
+        const country = data?.country || data?.shippingAddress?.country || "";
+        if (country) {
+          setDeliveryCountry(country);
+          localStorage.setItem(LOCATION_KEY, country);
+        }
+      } catch (_) {}
+    };
+    loadCountry();
+  }, []);
+
+  const handleLocationSave = (country) => {
+    const trimmed = country.trim();
+    if (!trimmed) return;
+    setDeliveryCountry(trimmed);
+    localStorage.setItem(LOCATION_KEY, trimmed);
+    setIsLocationOpen(false);
+    setLocationInput("");
+  };
 
   const formatTimeAgo = (value) => {
     if (!value) return "";
@@ -175,9 +214,47 @@ export function Header({
       <div className="header-content">
         <div className="header-left">
           <Logo />
-          <div className="header-location">
-            <span className="location-label">Deliver to</span>
-            <span className="location-value">India</span>
+          <div className="header-location-wrap" ref={locationRef}>
+            <button
+              type="button"
+              className="header-location"
+              onClick={() => { setIsLocationOpen(v => !v); setLocationInput(""); }}
+              aria-label="Change delivery location"
+              title="Click to change delivery location"
+            >
+              <MapPin size={13} className="location-pin-icon" />
+              <span className="location-label">Deliver to</span>
+              <span className="location-value">{deliveryCountry || "Your location"}</span>
+              <svg className="location-chevron" width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" style={{ transform: isLocationOpen ? "rotate(180deg)" : "rotate(0deg)", transition: "transform 0.2s" }}><polyline points="6 9 12 15 18 9"/></svg>
+            </button>
+
+            {isLocationOpen && (
+              <div className="location-dropdown">
+                <p className="location-dropdown-title">Choose your delivery location</p>
+                <div className="location-input-row">
+                  <input
+                    type="text"
+                    className="location-input"
+                    value={locationInput}
+                    onChange={e => setLocationInput(e.target.value)}
+                    placeholder="Type country name…"
+                    onKeyDown={e => { if (e.key === "Enter") handleLocationSave(locationInput); }}
+                    autoFocus
+                  />
+                  <button type="button" className="location-save-btn" onClick={() => handleLocationSave(locationInput)}>Save</button>
+                </div>
+                <div className="location-quick-list">
+                  {QUICK_COUNTRIES.map(c => (
+                    <button
+                      key={c}
+                      type="button"
+                      className={`location-quick-item${deliveryCountry === c ? " active" : ""}`}
+                      onClick={() => handleLocationSave(c)}
+                    >{c}</button>
+                  ))}
+                </div>
+              </div>
+            )}
           </div>
         </div>
 
