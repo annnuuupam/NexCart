@@ -1701,15 +1701,19 @@ html[data-theme="dark"] .product-meta {
 }
 
 .pdp-cta-cart {
-  background: linear-gradient(135deg, #fbbf24, #f59e0b);
-  color: #111827;
-  box-shadow: 0 6px 16px rgba(245, 158, 11, 0.3);
+  background: linear-gradient(135deg, var(--primary), var(--primary-hover));
+  color: #fff;
+  box-shadow: 0 6px 16px var(--primary-soft);
 }
 
 .pdp-cta-wishlist {
-  background: linear-gradient(135deg, #e11d48, #be185d);
-  color: #fff;
-  box-shadow: 0 6px 16px rgba(190, 24, 93, 0.3);
+  background: color-mix(in srgb, var(--primary) 10%, transparent);
+  color: var(--primary);
+  border: 1px solid color-mix(in srgb, var(--primary) 20%, transparent);
+  box-shadow: none;
+}
+.pdp-cta-wishlist:hover {
+  background: color-mix(in srgb, var(--primary) 15%, transparent);
 }
 
 .pdp-reviews-section {
