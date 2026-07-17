@@ -19,7 +19,7 @@
   justify-content: space-between;
   align-items: center;
   padding: 14px 28px;
-  border-bottom: 1px solid var(--border);
+  border-bottom: 1px solid color-mix(in srgb, var(--border) 70%, transparent);
   backdrop-filter: blur(14px) saturate(140%);
   -webkit-backdrop-filter: blur(14px) saturate(140%);
   background: color-mix(in srgb, var(--surface) 80%, transparent);
@@ -46,10 +46,11 @@
   box-shadow: 0 0 0 2px rgba(15, 118, 110, 0.3);
 }
 
-.login-brand span {
+.login-brand span,
+.logo-text {
   font-size: 1.35rem;
   font-weight: 800;
-  background: linear-gradient(135deg, var(--primary), #6366f1);
+  background: linear-gradient(135deg, var(--primary), var(--accent));
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
@@ -90,7 +91,7 @@
 .login-left {
   position: relative;
   overflow: hidden;
-  background: linear-gradient(150deg, #022c22 0%, #0f766e 52%, #1d4ed8 100%);
+  background: linear-gradient(150deg, #1e1b4b 0%, var(--primary) 55%, var(--accent) 100%);
   color: #fff;
   display: grid;
   place-items: center;
@@ -183,21 +184,31 @@
 
 /* ===== Right form panel ===== */
 .login-right {
-  display: grid;
-  place-items: center;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
   padding: 48px 36px;
   background: var(--bg);
+  overflow-y: auto;
+}
+
+.login-right-inner {
+  width: min(460px, 100%);
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  padding-bottom: 48px;
 }
 
 /* ===== Form card ===== */
 .login-form-card {
-  width: min(460px, 100%);
+  width: 100%;
   background: var(--surface);
   border: 1px solid var(--border);
-  border-radius: 24px;
+  border-radius: 28px;
   box-shadow:
     0 0 0 1px rgba(15, 118, 110, 0.06),
-    0 24px 56px rgba(15, 23, 42, 0.1),
+    0 30px 70px rgba(15, 23, 42, 0.14),
     0 8px 18px rgba(15, 23, 42, 0.06);
   padding: 38px 36px;
 }
@@ -400,6 +411,12 @@ html[data-theme="dark"] .login-dropdown-menu {
   transform: translateY(0);
 }
 
+.login-btn:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+  transform: none;
+}
+
 /* ===== Forgot password ===== */
 .login-forgot {
   margin-top: 14px;
@@ -458,6 +475,7 @@ html[data-theme="dark"] .login-error {
 
   .login-right {
     padding: 36px 24px;
+    align-items: flex-start;
   }
 }
 
@@ -478,29 +496,10 @@ html[data-theme="dark"] .login-error {
   .login-form-title {
     font-size: 1.6rem;
   }
-}
 
-/* ===== Login polish overrides ===== */
-.login-form-card {
-  border-radius: 28px;
-  box-shadow: 0 30px 70px rgba(15, 23, 42, 0.14);
-}
-
-.login-navbar {
-  border-bottom: 1px solid color-mix(in srgb, var(--border) 70%, transparent);
-}
-
-
-/* ===== Stripe palette login overrides ===== */
-.login-left {
-  background: linear-gradient(150deg, #1e1b4b 0%, var(--primary) 55%, var(--accent) 100%);
-}
-
-.login-brand span,
-.logo-text {
-  background: linear-gradient(135deg, var(--primary), var(--accent));
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
+  .login-right {
+    padding: 24px 16px;
+  }
 }
 
 /* ===== Modal ===== */
@@ -635,4 +634,335 @@ html[data-theme="dark"] .login-error {
   color: var(--text);
 }
 
+/* ═══════════════════════════════════════════════════════════════════
+   DEMO ACCOUNTS CARD — glassmorphism, animations, responsive
+═══════════════════════════════════════════════════════════════════ */
 
+.demo-card {
+  width: 100%;
+  border-radius: 24px;
+  border: 1px solid color-mix(in srgb, var(--primary) 25%, var(--border));
+  background: color-mix(in srgb, var(--surface) 85%, transparent);
+  backdrop-filter: blur(20px) saturate(160%);
+  -webkit-backdrop-filter: blur(20px) saturate(160%);
+  box-shadow:
+    0 0 0 1px color-mix(in srgb, var(--primary) 12%, transparent),
+    0 20px 50px rgba(15, 23, 42, 0.1),
+    inset 0 1px 0 rgba(255, 255, 255, 0.08);
+  overflow: hidden;
+  padding: 26px 28px 28px;
+}
+
+html[data-theme="dark"] .demo-card {
+  background: color-mix(in srgb, rgba(17, 24, 39, 0.9) 90%, transparent);
+  border-color: color-mix(in srgb, var(--primary) 30%, rgba(55, 65, 81, 0.8));
+  box-shadow:
+    0 0 0 1px color-mix(in srgb, var(--primary) 20%, transparent),
+    0 20px 50px rgba(0, 0, 0, 0.35),
+    inset 0 1px 0 rgba(255, 255, 255, 0.05);
+}
+
+/* ── Card Header ─────────────────────────────────────────────────── */
+.demo-card-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.demo-card-title-row {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  flex: 1;
+  min-width: 0;
+}
+
+.demo-card-rocket {
+  font-size: 1.5rem;
+  line-height: 1;
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+
+.demo-card-title {
+  margin: 0 0 3px;
+  font-size: 1.05rem;
+  font-weight: 800;
+  color: var(--text);
+  letter-spacing: -0.02em;
+}
+
+.demo-card-subtitle {
+  margin: 0;
+  font-size: 0.82rem;
+  color: var(--text-muted);
+  line-height: 1.5;
+}
+
+/* ── Show Credentials Toggle ─────────────────────────────────────── */
+.demo-toggle-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  flex-shrink: 0;
+  border: 1.5px solid var(--border);
+  border-radius: 999px;
+  background: var(--surface);
+  color: var(--text-muted);
+  font-size: 0.78rem;
+  font-weight: 700;
+  padding: 6px 12px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  white-space: nowrap;
+}
+
+.demo-toggle-btn:hover,
+.demo-toggle-btn--active {
+  border-color: var(--primary);
+  color: var(--primary);
+  background: color-mix(in srgb, var(--primary) 8%, var(--surface));
+}
+
+.demo-toggle-icon {
+  flex-shrink: 0;
+  transition: transform 0.25s ease;
+}
+
+.demo-toggle-icon--rotated {
+  /* no rotation needed — icon changes via JSX */
+}
+
+/* ── Divider ─────────────────────────────────────────────────────── */
+.demo-card-divider {
+  height: 1px;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    color-mix(in srgb, var(--primary) 30%, var(--border)),
+    transparent
+  );
+  margin: 18px 0;
+}
+
+/* ── Accounts grid ───────────────────────────────────────────────── */
+.demo-accounts-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+}
+
+@media (max-width: 500px) {
+  .demo-accounts-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* ── Single account item ─────────────────────────────────────────── */
+.demo-account-item {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  background: color-mix(in srgb, var(--surface) 60%, transparent);
+  border: 1px solid var(--border);
+  border-radius: 18px;
+  padding: 16px;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.demo-account-item:hover {
+  border-color: color-mix(in srgb, var(--primary) 40%, var(--border));
+  box-shadow: 0 6px 20px color-mix(in srgb, var(--primary) 10%, transparent);
+}
+
+html[data-theme="dark"] .demo-account-item {
+  background: color-mix(in srgb, rgba(31, 41, 55, 0.7) 80%, transparent);
+  border-color: rgba(55, 65, 81, 0.8);
+}
+
+/* ── Account header (icon + meta) ─────────────────────────────────── */
+.demo-account-header {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+}
+
+.demo-account-icon {
+  font-size: 1.4rem;
+  line-height: 1;
+  flex-shrink: 0;
+}
+
+.demo-account-meta {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  min-width: 0;
+}
+
+/* ── Role badge ──────────────────────────────────────────────────── */
+.demo-role-badge {
+  display: inline-block;
+  font-size: 0.72rem;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  padding: 3px 9px;
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--primary) 14%, transparent);
+  color: var(--primary);
+  border: 1px solid color-mix(in srgb, var(--primary) 25%, transparent);
+  width: fit-content;
+}
+
+.demo-account-item:first-child .demo-role-badge {
+  background: color-mix(in srgb, #f59e0b 12%, transparent);
+  color: #b45309;
+  border-color: color-mix(in srgb, #f59e0b 30%, transparent);
+}
+
+html[data-theme="dark"] .demo-account-item:first-child .demo-role-badge {
+  color: #fbbf24;
+  background: color-mix(in srgb, #f59e0b 15%, transparent);
+  border-color: color-mix(in srgb, #f59e0b 30%, transparent);
+}
+
+.demo-account-desc {
+  margin: 0;
+  font-size: 0.78rem;
+  color: var(--text-muted);
+  line-height: 1.5;
+}
+
+/* ── Credential reveal ───────────────────────────────────────────── */
+.demo-creds {
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  background: color-mix(in srgb, var(--primary) 6%, transparent);
+  border: 1px dashed color-mix(in srgb, var(--primary) 30%, var(--border));
+  border-radius: 12px;
+  padding: 10px 12px;
+}
+
+.demo-cred-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.demo-cred-label {
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  flex-shrink: 0;
+}
+
+.demo-cred-value {
+  font-family: "Courier New", "SF Mono", monospace;
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: var(--text);
+  background: color-mix(in srgb, var(--primary) 10%, transparent);
+  padding: 2px 8px;
+  border-radius: 6px;
+  word-break: break-all;
+}
+
+/* ── Demo login buttons ───────────────────────────────────────────── */
+.demo-login-btn {
+  position: relative;
+  overflow: hidden;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 11px 14px;
+  border: 0;
+  border-radius: 12px;
+  font-size: 0.85rem;
+  font-weight: 800;
+  color: #fff;
+  cursor: pointer;
+  letter-spacing: 0.01em;
+  transition: transform 0.2s ease, box-shadow 0.2s ease, opacity 0.2s;
+  margin-top: auto;
+}
+
+.demo-login-btn::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.18), transparent);
+  transform: translateX(-100%);
+  transition: transform 0.45s ease;
+}
+
+.demo-login-btn:hover:not(:disabled)::after {
+  transform: translateX(100%);
+}
+
+.demo-login-btn:hover:not(:disabled) {
+  transform: translateY(-2px);
+}
+
+.demo-login-btn:active:not(:disabled) {
+  transform: translateY(0);
+}
+
+.demo-login-btn:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+  transform: none;
+}
+
+/* Admin — amber/gold gradient */
+.demo-login-btn--admin {
+  background: linear-gradient(135deg, #d97706 0%, #b45309 55%, #92400e 100%);
+  box-shadow: 0 4px 16px rgba(217, 119, 6, 0.4);
+}
+
+.demo-login-btn--admin:hover:not(:disabled) {
+  box-shadow: 0 8px 24px rgba(217, 119, 6, 0.55);
+}
+
+/* Customer — primary indigo/cyan gradient */
+.demo-login-btn--customer {
+  background: linear-gradient(135deg, var(--primary) 0%, #0f766e 55%, var(--accent) 100%);
+  box-shadow: 0 4px 16px color-mix(in srgb, var(--primary) 45%, transparent);
+}
+
+.demo-login-btn--customer:hover:not(:disabled) {
+  box-shadow: 0 8px 24px color-mix(in srgb, var(--primary) 55%, transparent);
+}
+
+.demo-btn-icon {
+  font-size: 1rem;
+  line-height: 1;
+}
+
+/* ── Loading spinner ─────────────────────────────────────────────── */
+.demo-btn-loading {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.demo-spinner {
+  width: 16px;
+  height: 16px;
+  animation: demo-spin 0.9s linear infinite;
+  flex-shrink: 0;
+}
+
+@keyframes demo-spin {
+  from { transform: rotate(0deg); }
+  to   { transform: rotate(360deg); }
+}
